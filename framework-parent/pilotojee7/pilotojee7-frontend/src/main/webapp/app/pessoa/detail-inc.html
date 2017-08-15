@@ -1,0 +1,75 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaForm.endereco.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="endereco">Endereco</label>					        
+				            <ui-select id="endereco" name="endereco" ng-model="vmPessoa.entity.endereco" theme="bootstrap" 
+				            	ng-disabled="vmPessoa.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
+							    <ui-select-choices repeat="endereco in vmPessoa.enderecoList track by endereco.id"
+							    	refresh="vmPessoa.listarEndereco($select.search)" refresh-delay="300">
+							        <div ng-bind-html="endereco.id | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+		    
+		    	
+		    <div class="row">
+				<div class="col-md-12">
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Lista de PessoaContato</h3>
+							<div class="box-tools pull-right">
+								<button id="openModalPessoaContato" name="openModalPessoaContato" class="btn btn-primary" ng-show="!vmPessoa.viewMode" ng-click="vmPessoa.openModalPessoaContato()"
+									title="Adicionar PessoaContato"><i class="fa fa-plus"></i><span class="hidden-xs"> Adicionar PessoaContato</span>
+								</button>
+							</div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<div class="table-responsive">
+								<table
+									class="table table-responsive table-bordered table-striped clearfix">
+									<thead>
+										<tr>
+											<th>Id</th>								
+											<th></th>
+										</tr>
+									</thead>
+									<tbody id="search-results-body">
+										<tr ng-repeat="item in vmPessoa.entity.contatos track by $index">
+											<td>{{item.id}}</td>
+											<td align="center">
+												<button type="button" class="btn btn-danger" ng-click="vmPessoa.removePessoaContato($index)"><i class="fa fa-trash"></i><span class="hidden-xs"> Remover</span></button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.box-body -->
+					</div>
+				</div>
+		    </div>
+		    	
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaForm.nomePessoa.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nomePessoa">NomePessoa</label>					        
+				            <input id="nomePessoa" name="nomePessoa" type="text" class="form-control" ng-model="vmPessoa.entity.nomePessoa"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmPessoa.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PessoaForm.nomePessoa.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="PessoaForm.nomePessoa.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="PessoaForm.nomePessoa.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

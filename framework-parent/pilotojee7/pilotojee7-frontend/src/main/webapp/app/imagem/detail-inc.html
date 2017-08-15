@@ -1,0 +1,76 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': ImagemForm.nome.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nome">Nome</label>					        
+				            <input id="nome" name="nome" type="text" class="form-control" ng-model="vmImagem.entity.nome"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmImagem.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="ImagemForm.nome.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="ImagemForm.nome.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="ImagemForm.nome.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': ImagemForm.contentType.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="contentType">ContentType</label>					        
+				            <input id="contentType" name="contentType" type="text" class="form-control" ng-model="vmImagem.entity.contentType"
+							ng-required="true" ng-maxlength="30" ng-disabled="vmImagem.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="ImagemForm.contentType.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="ImagemForm.contentType.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="ImagemForm.contentType.$error.maxlength">O tamanho máximo é 30</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': ImagemForm.fileExtension.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="fileExtension">FileExtension</label>					        
+				            <input id="fileExtension" name="fileExtension" type="text" class="form-control" ng-model="vmImagem.entity.fileExtension"
+							ng-required="true" ng-maxlength="10" ng-disabled="vmImagem.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="ImagemForm.fileExtension.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="ImagemForm.fileExtension.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="ImagemForm.fileExtension.$error.maxlength">O tamanho máximo é 10</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': ImagemForm.data.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="data">Data</label>					        
+				            <input id="data" name="data" type="text" class="form-control" ng-model="vmImagem.entity.data"
+							ng-required="true" ng-disabled="vmImagem.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="ImagemForm.data.$error.required">obrigatório</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': ImagemForm.length.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="length">Length</label>					        
+				            <input id="length" name="length" type="text" class="form-control" ng-model="vmImagem.entity.length"
+							ng-required="true" ng-disabled="vmImagem.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="ImagemForm.length.$error.required">obrigatório</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

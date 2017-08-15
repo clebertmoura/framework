@@ -1,0 +1,22 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header modal-primary">
+			<div class="row">
+				<div class="col-lg-9">
+					<h3>Filial</h3>
+				</div>
+			</div>
+		</div>
+		<div class="modal-body">
+			<form id="FilialForm" name="FilialForm" class="form-horizontal" role="form">
+			
+				<ng-include src="'app/filial/detail-inc.html'"></ng-include>
+				
+				<div class="modal-footer">
+					<button class="btn btn-primary" ng-click="vmFilial.onClickModalConfirmar()">Confirmar</button>
+					<button class="btn btn-warning" ng-click="vmFilial.onClickModalCancelar()">Cancelar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

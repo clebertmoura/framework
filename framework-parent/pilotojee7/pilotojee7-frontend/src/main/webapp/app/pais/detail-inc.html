@@ -1,0 +1,62 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PaisForm.nome.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nome">Nome</label>					        
+				            <input id="nome" name="nome" type="text" class="form-control" ng-model="vmPais.entity.nome"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmPais.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PaisForm.nome.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="PaisForm.nome.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="PaisForm.nome.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PaisForm.codigoOnuAlpha.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="codigoOnuAlpha">CodigoOnuAlpha</label>					        
+				            <input id="codigoOnuAlpha" name="codigoOnuAlpha" type="text" class="form-control" ng-model="vmPais.entity.codigoOnuAlpha"
+							ng-maxlength="3" ng-disabled="vmPais.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PaisForm.codigoOnuAlpha.$error.maxlength">O tamanho máximo é 3</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PaisForm.codigoOnu.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="codigoOnu">CodigoOnu</label>					        
+				            <input id="codigoOnu" name="codigoOnu" type="text" class="form-control" ng-model="vmPais.entity.codigoOnu"
+							ng-maxlength="3" ng-disabled="vmPais.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PaisForm.codigoOnu.$error.maxlength">O tamanho máximo é 3</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PaisForm.imagem.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="imagem">Imagem</label>					        
+				            <ui-select id="imagem" name="imagem" ng-model="vmPais.entity.imagem" theme="bootstrap" 
+				            	ng-disabled="vmPais.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="imagem in vmPais.imagemList track by imagem.id"
+							    	refresh="vmPais.listarImagem($select.search)" refresh-delay="300">
+							        <div ng-bind-html="imagem.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

@@ -1,0 +1,251 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		Endereco <small>Listagem</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Cadastros</a></li>
+		<li class="active">Endereco</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<!-- Box das ações no formulário -->
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Ações</h3>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body">
+			<a class="btn btn-primary btn-sm" href="#/Endereco/new"><i class="fa fa-plus"></i> Criar</a>
+		</div>
+	</div>
+
+	<!-- Box dos filtros -->
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Filtro</h3>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body">
+			<form id="EnderecoSearch">
+			
+			
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+				    		<label for="cidade">Cidade</label>					        
+				            <ui-select id="cidade" name="cidade" ng-model="vm.searchData.cidade" theme="bootstrap">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="cidade in vm.cidadeList track by cidade.id"
+							    	refresh="vm.listarCidade($select.search)" refresh-delay="300">
+							        <div ng-bind-html="cidade.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+			    </div>
+				
+			    
+			    <div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+				    		<label for="dataHoraCadastro">DataHoraCadastro</label>					        
+					            <p class="input-group">
+									<input id="dataHoraCadastro" name="dataHoraCadastro" type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm:ss" ng-model="vm.searchData.dataHoraCadastro"
+										is-open="vm.dataHoraCadastroPopupOpened" button-bar="{show: true, now: {show: true, text: 'Agora'}, today: {show: true, text: 'Hoje'}, clear: {show: true, text: 'Limpar'}, date: {show: true, text: 'Data'}, time: {show: true, text: 'Hora'}, close: {show: true, text: 'Fechar'}}" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="vm.dataHoraCadastroPopupOpened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+									</span>
+						        </p>
+						</div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="lat">Lat</label>					        
+					        <input id="lat" name="lat" class="form-control" type="text" ng-model="vm.searchData.lat" placeholder="Filtrar por lat"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="lng">Lng</label>					        
+					        <input id="lng" name="lng" class="form-control" type="text" ng-model="vm.searchData.lng" placeholder="Filtrar por lng"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+				    		<label for="bairro">Bairro</label>					        
+				            <ui-select id="bairro" name="bairro" ng-model="vm.searchData.bairro" theme="bootstrap">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="bairro in vm.bairroList track by bairro.id"
+							    	refresh="vm.listarBairro($select.search)" refresh-delay="300">
+							        <div ng-bind-html="bairro.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+			    </div>
+				
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+				    		<label for="uf">Uf</label>					        
+				            <ui-select id="uf" name="uf" ng-model="vm.searchData.uf" theme="bootstrap">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="uf in vm.ufList track by uf.id"
+							    	refresh="vm.listarUf($select.search)" refresh-delay="300">
+							        <div ng-bind-html="uf.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+			    </div>
+				
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+				    		<label for="pais">Pais</label>					        
+				            <ui-select id="pais" name="pais" ng-model="vm.searchData.pais" theme="bootstrap">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="pais in vm.paisList track by pais.id"
+							    	refresh="vm.listarPais($select.search)" refresh-delay="300">
+							        <div ng-bind-html="pais.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+			    </div>
+				
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="logradouro">Logradouro</label>					        
+					        <input id="logradouro" name="logradouro" class="form-control" type="text" ng-model="vm.searchData.logradouro" placeholder="Filtrar por logradouro"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="numero">Numero</label>					        
+					        <input id="numero" name="numero" class="form-control" type="text" ng-model="vm.searchData.numero" placeholder="Filtrar por numero"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="complemento">Complemento</label>					        
+					        <input id="complemento" name="complemento" class="form-control" type="text" ng-model="vm.searchData.complemento" placeholder="Filtrar por complemento"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="cep">Cep</label>					        
+					        <input id="cep" name="cep" class="form-control" type="text" ng-model="vm.searchData.cep" placeholder="Filtrar por cep"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="pontoReferencia">PontoReferencia</label>					        
+					        <input id="pontoReferencia" name="pontoReferencia" class="form-control" type="text" ng-model="vm.searchData.pontoReferencia" placeholder="Filtrar por pontoReferencia"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+	
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+				            <a id="Search" name="Search" class="btn btn-primary" ng-click="vm.search()"><span class="glyphicon glyphicon-search"></span> Buscar</a>
+				        </div>
+					</div>
+				</div>		        
+		    </form>
+		</div>
+	</div>
+
+	<!-- Box da listagem -->
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Listagem</h3>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body">
+			<div id="search-results">
+				<div class="table-responsive">
+					<table
+						class="table table-responsive table-bordered table-striped clearfix">
+						<thead>
+							<tr>
+								<th>Id</th>								
+								<th width="20%">Ações</th>
+							</tr>
+						</thead>
+						<tbody id="search-results-body">
+							<tr ng-repeat="result in vm.filteredResults | limitTo:pageSize">
+								<td><a href="" ng-click="vm.view(result)">{{result.id}}</a></td>
+								<td align="center">
+									<button type="button" class="btn btn-warning" ng-click="vm.edit(result)"><i class="fa fa-edit"></i><span class="hidden-xs"> Editar</span></button>
+									<button type="button" class="btn btn-danger" ng-click="vm.remove(result)"><i class="fa fa-trash"></i><span class="hidden-xs"> Remover</span></button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<ul class="pagination pagination-centered">
+					<li ng-class="{disabled:vm.currentPage == 0}"><a id="prev" href ng-click="vm.previous()">«</a></li>
+					<li ng-repeat="n in vm.pageRange" ng-class="{active:vm.currentPage == n}" ng-click="vm.setPage(n)"><a href ng-bind="n + 1">1</a></li>
+					<li ng-class="{disabled: currentPage == (numberOfPages - 1)}">
+						<a id="next" href ng-click="vm.next()">»</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- /.content -->

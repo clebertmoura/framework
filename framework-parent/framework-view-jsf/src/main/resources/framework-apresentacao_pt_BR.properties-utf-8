@@ -1,0 +1,10 @@
+# Erros inesperados
+erro.inesperado.instanciar=Ocorreu um erro inesperado ao instanciar entidade de {0}.
+erro.inesperado.salvar=Ocorreu um erro inesperado ao salvar registro de {0}.
+erro.inesperado.remover=Ocorreu um erro inesperado ao remover registro de {0}.
+
+# Erros de negócio
+erro.negocio.salvar=Erro ao salvar registro de {0}.
+erro.negocio.remover=Erro ao remover registro de {0}.
+
+erro.geral.nenhumRegistroSelecionado=Nenhum registro foi selecionado!

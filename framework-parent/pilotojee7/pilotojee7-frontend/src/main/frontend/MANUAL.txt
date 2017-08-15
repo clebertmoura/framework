@@ -1,0 +1,46 @@
+######################################
+# Manual de configuração do projeto
+######################################
+
+Pré-requisitos: Deve ser instalado o NodeJS com os seguintes utilitários: grunt, grunt-cli, bower.
+
+#############################################
+1. Configuração de acesso ao proxy (NodeJS):
+
+No diretório do usuário, criar ou editar o arquivo .npmrc, com o seguinte conteúdo:
+
+------------------------------------
+
+http_proxy=http://login:senha@proxy.tjpe.gov.br:8080
+https_proxy=http://login:senha@proxy.tjpe.gov.br:8080
+proxy=http://login:senha@proxy.tjpe.gov.br:8080/
+https-proxy=http://login:senha@proxy.tjpe.gov.br:8080
+prefix = "D:\\DevTJPE\\nodejs"
+cache = "D:\\DevTJPE\\nodejs\\npm-cache"
+
+------------------------------------
+
+#############################################
+2. Configuração de acesso ao proxy (Bower):
+
+No diretório do usuário, criar ou editar o arquivo .bowerrc, com o seguinte conteúdo:
+
+------------------------------------
+
+{
+	"registry": "http://bower.herokuapp.com",
+	"proxy":"http://login:senha@proxy.tjpe.gov.br:8080",
+	"https-proxy":"http://login:senha@proxy.tjpe.gov.br:8080"
+}
+
+------------------------------------
+
+#############################################
+3. Inicialização do projeto
+
+Após o checkout do projeto ou geração de um novo projeto pelo archetype, devem ser executados os seguintes comandos utilizando a linha de comando:
+
+1. Acessar o diretório lib existente no webapp;
+2. Executar o comando: npm install
+3. Executar o comando: bower install
+4. Executar o comando: grunt

@@ -1,0 +1,11 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+{
+  "realm": "${symbol_dollar}{keycloak.realm}",
+  "bearer-only": true,
+  "auth-server-url": "${symbol_dollar}{keycloak.auth-server-url}",
+  "ssl-required": "external",
+  "resource": "${symbol_dollar}{keycloak.resource}",
+  "use-resource-role-mappings": true
+}

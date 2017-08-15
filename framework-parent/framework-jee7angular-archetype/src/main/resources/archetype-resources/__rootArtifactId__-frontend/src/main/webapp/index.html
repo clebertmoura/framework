@@ -1,0 +1,194 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>${rootArtifactId}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    
+    <!-- build:css css/third-party.css -->
+	<!-- bower:css -->
+	<link rel="stylesheet" href="lib/vendor/components-font-awesome/css/font-awesome.css" />
+	<link rel="stylesheet" href="lib/vendor/ionicons/css/ionicons.css" />
+	<link rel="stylesheet" href="lib/vendor/angular-ui-select/dist/select.css" />
+	<link rel="stylesheet" href="lib/vendor/ng-img-crop/compile/minified/ng-img-crop.css" />
+	<link rel="stylesheet" href="lib/vendor/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="lib/vendor/AdminLTE/dist/css/AdminLTE.css" />
+	<!-- endbower -->
+	<!-- endbuild -->
+	
+	<!-- build:css css/application.css -->
+	<!-- endbuild -->
+	
+    <!-- Bootstrap 3.3.5 -->
+    <!-- <link rel="stylesheet" href="lib/AdminLTE/bootstrap/css/bootstrap.min.css"> -->
+    <!-- Theme style -->
+    <!-- <link rel="stylesheet" href="lib/AdminLTE/dist/css/AdminLTE.min.css"> -->
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <!-- <link rel="stylesheet" href="lib/AdminLTE/dist/css/skins/_all-skins.min.css"> -->
+
+    <link rel="stylesheet" href="assets/css/app.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+        <script src="lib/vendor/AdminLTE/plugins/html5shiv-3.7.3/lib/AdminLTE/dist/html5shiv.min.js"></script>
+        <script src="lib/vendor/AdminLTE/plugins/respond-1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+
+		<header class="main-header">
+			<!-- Logo -->
+			<div ng-include="'templates/header/logo.html'"></div>
+			<!-- Header Navbar: style can be found in header.less -->
+			<nav class="navbar navbar-static-top" role="navigation">
+				<!-- Sidebar toggle button-->
+				<a href="${symbol_pound}" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						<!-- Messages: style can be found in dropdown.less-->
+						<!-- <li class="dropdown messages-menu" ng-include="'templates/header/navbar-menu/messages.html'"></li> -->
+						<!-- Notifications: style can be found in dropdown.less -->
+						<!--<li class="dropdown notifications-menu" ng-include="'templates/header/navbar-menu/notifications.html'"></li>-->
+						<!-- Tasks: style can be found in dropdown.less -->
+						<!--<li class="dropdown tasks-menu" ng-include="'templates/header/navbar-menu/tasks.html'"></li>-->
+						<!-- User Account: style can be found in dropdown.less -->
+						<li class="dropdown user user-menu" ng-controller="LoginController" ng-include="'templates/header/navbar-menu/user.html'"></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<!-- =============================================== -->
+
+		<!-- Left side column. contains the sidebar -->
+		<aside class="main-sidebar">
+			<!-- sidebar: style can be found in sidebar.less -->
+			<ng-include src="'templates/sidebar/main-sidebar.html'"></ng-include>
+		</aside>
+
+		<!-- =============================================== -->
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<div ng-controller="FlashController as vm" class="alert alert-dismissible" ng-class="'alert-' + vm.FlashFactory.getMessage().cssClass" role="alert" 
+			ng-show="vm.showAlert">
+                <button type="button" class="close" ng-click="vm.hideAlert()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span ng-bind="vm.FlashFactory.getMessage().text">
+     			</span>
+            </div>
+            <div id="main" ng-view>
+            </div>
+		</div>
+		<!-- /.content-wrapper -->
+
+		<ng-include src="'templates/footer/footer.html'"></ng-include>
+		
+		<!-- Control Sidebar -->
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Create the tabs -->
+			<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+				<li><a href="${symbol_pound}control-sidebar-home-tab" data-toggle="tab" ><i class="fa fa-home"></i></a></li>
+				<li><a href="${symbol_pound}control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+			</ul>
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<!-- Home tab content -->
+				<div class="tab-pane" id="control-sidebar-home-tab">
+					<ng-include src="'templates/control-sidebar/home-tab.html'"></ng-include>
+				</div>
+				<!-- /.tab-pane -->
+				<!-- Settings tab content -->
+				<div class="tab-pane" id="control-sidebar-settings-tab">
+					<ng-include src="'templates/control-sidebar/settings-tab.html'"></ng-include>
+				</div>
+				<!-- /.tab-pane -->
+			</div>
+		</aside>
+		<!-- /.control-sidebar -->
+		<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+		<div class="control-sidebar-bg"></div>
+	</div><!-- ./wrapper -->
+
+	<!-- build:js lib/third-party.js -->
+	<!-- bower:js -->
+	<script src="lib/vendor/modernizr/modernizr.js"></script>
+	<script src="lib/vendor/jquery/dist/jquery.js"></script>
+	<script src="lib/vendor/angular/angular.js"></script>
+	<script src="lib/vendor/angular-sanitize/angular-sanitize.js"></script>
+	<script src="lib/vendor/angular-resource/angular-resource.js"></script>
+	<script src="lib/vendor/angular-route/angular-route.js"></script>
+	<script src="lib/vendor/angular-cookies/angular-cookies.js"></script>
+	<script src="lib/vendor/angular-animate/angular-animate.js"></script>
+	<script src="lib/vendor/fastclick/lib/fastclick.js"></script>
+	<script src="lib/vendor/slimScroll/jquery.slimscroll.min.js"></script>
+	<script src="lib/vendor/angular-ui-mask/dist/mask.js"></script>
+	<script src="lib/vendor/angular-input-masks/angular-input-masks-standalone.js"></script>
+	<script src="lib/vendor/ngMask/dist/ngMask.js"></script>
+	<script src="lib/vendor/displayMask/dist/display-mask.js"></script>
+	<script src="lib/vendor/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="lib/vendor/PACE/pace.js"></script>
+	<script src="lib/vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="lib/vendor/angular-button-spinner/dist/angular-button-spinner.js"></script>
+	<script src="lib/vendor/angular-ui-select/dist/select.js"></script>
+	<script src="lib/vendor/angularUtils-pagination/dirPagination.js"></script>
+	<script src="lib/vendor/ng-file-upload/ng-file-upload.js"></script>
+	<script src="lib/vendor/ng-img-crop/compile/minified/ng-img-crop.js"></script>
+	<script src="lib/vendor/moment/moment.js"></script>
+	<script src="lib/vendor/keycloak/dist/keycloak.js"></script>
+	<script src="lib/vendor/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
+	<script src="lib/vendor/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
+	<script src="lib/vendor/angular-thumbnail/angular-thumbnail.min.js"></script>
+	<script src="lib/vendor/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="lib/vendor/AdminLTE/dist/js/app.js"></script>
+	<!-- endbower -->
+	<!-- endbuild -->
+	
+    <script src="app/app.js"></script>
+	<script src="app/auth/authorization.factory.js"></script>
+
+	<script src="app/shared/shared.module.js"></script>
+	
+    <script src="app/shared/directives/access.directive.js"></script>
+    <script src="app/shared/directives/datepicker.directive.js"></script>
+    <script src="app/shared/directives/timepicker.directive.js"></script>
+    <script src="app/shared/directives/datetimepicker.directive.js"></script>
+    
+    <script src="app/shared/filters/startfrom.filter.js"></script>
+    <script src="app/shared/filters/search.filter.js"></script>
+	
+	<script src="app/shared/flash/flash.controller.js"></script>
+    <script src="app/shared/flash/flash.factory.js"></script>
+    
+    <script src="app/shared/login/login.controller.js"></script>
+	
+	<script src="app/shared/interceptors/auth.interceptor.js"></script>
+	<script src="app/shared/interceptors/error.interceptor.js"></script>
+	
+	<script src="app/shared/home/home.controller.js"></script>
+
+	<script src="app/shared/util/constants.js"></script>
+	<script src="app/shared/util/locationParser.js"></script>
+
+	<script src="app/imports.js"></script>
+
+	<script src="app/sobre/sobre.module.js"></script>
+    <script src="app/sobre/sobre.routes.js"></script>
+
+    <script src="app/shared/util/base.controller.js"></script>
+    
+  </body>
+</html>

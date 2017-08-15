@@ -1,0 +1,34 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': TipoFuncionarioForm.descricao.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="descricao">Descricao</label>					        
+				            <input id="descricao" name="descricao" type="text" class="form-control" ng-model="vmTipoFuncionario.entity.descricao"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmTipoFuncionario.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="TipoFuncionarioForm.descricao.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="TipoFuncionarioForm.descricao.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="TipoFuncionarioForm.descricao.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': TipoFuncionarioForm.empresa.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="empresa">Empresa</label>					        
+				            <ui-select id="empresa" name="empresa" ng-model="vmTipoFuncionario.entity.empresa" theme="bootstrap" 
+				            	ng-disabled="vmTipoFuncionario.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
+							    <ui-select-choices repeat="empresa in vmTipoFuncionario.empresaList track by empresa.id"
+							    	refresh="vmTipoFuncionario.listarEmpresa($select.search)" refresh-delay="300">
+							        <div ng-bind-html="empresa.id | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

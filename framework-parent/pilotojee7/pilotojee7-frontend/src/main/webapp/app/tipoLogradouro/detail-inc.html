@@ -1,0 +1,16 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': TipoLogradouroForm.descricao.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="descricao">Descricao</label>					        
+				            <input id="descricao" name="descricao" type="text" class="form-control" ng-model="vmTipoLogradouro.entity.descricao"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmTipoLogradouro.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="TipoLogradouroForm.descricao.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="TipoLogradouroForm.descricao.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="TipoLogradouroForm.descricao.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

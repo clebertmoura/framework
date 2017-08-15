@@ -1,0 +1,185 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		PessoaFisica <small>Cadastro</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Cadastros</a></li>
+		<li class="active">PessoaFisica</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 ng-show="vm.editMode && !vm.entity.id">Criar PessoaFisica</h3>
+			<h3 ng-show="vm.editMode && vm.entity.id">Editar PessoaFisica</h3>
+			<h3 ng-show="vm.viewMode">Visualizar PessoaFisica</h3>
+		</div>
+		<div class="box-body">
+			<form id="PessoaFisicaForm" name="PessoaFisicaForm" class="form-horizontal" role="form">
+			    
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.endereco.$invalid}">
+				    		<div class="col-sm-12">
+					    		<label for="endereco">Endereco</label>					        
+					            <ui-select id="endereco" name="endereco" ng-model="vm.entity.endereco" theme="bootstrap" 
+					            	ng-disabled="vm.viewMode" >
+									<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
+								    <ui-select-choices repeat="endereco in vm.enderecoList track by endereco.id"
+								    	refresh="vm.listarEndereco($select.search)" refresh-delay="300">
+								        <div ng-bind-html="endereco.id | highlight: $select.search"></div>
+								    </ui-select-choices>
+								</ui-select>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+			    
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.contatos.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="contatos">Contatos</label>
+								<ui-select id="contatos" multiple ng-model="vm.entity.contatos" theme="bootstrap" ng-disabled="vm.viewMode">
+									<ui-select-match placeholder="Selecione...">{{$item.id}}</ui-select-match>
+								    <ui-select-choices repeat="pessoaContato in vm.pessoaContatoList track by pessoaContato.id"
+								    	refresh="vm.listarPessoaContato($select.search)" refresh-delay="300">
+								        <div ng-bind-html="pessoaContato.id | highlight: $select.search"></div>
+								    </ui-select-choices>
+								</ui-select>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.nomePessoa.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="nomePessoa">NomePessoa</label>					        
+					            <input id="nomePessoa" name="nomePessoa" type="text" class="form-control" ng-model="vm.entity.nomePessoa"
+								ng-required="true" ng-maxlength="255" ng-disabled="vm.viewMode">
+					            </input>
+				            	<span class="help-block error" ng-show="PessoaFisicaForm.nomePessoa.$error.required">obrigatório</span>
+            					<span class="help-block error" ng-show="PessoaFisicaForm.nomePessoa.$error.minlength">O tamanho mínimo é 1</span>
+				            	<span class="help-block error" ng-show="PessoaFisicaForm.nomePessoa.$error.maxlength">O tamanho máximo é 255</span>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.cpf.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="cpf">Cpf</label>					        
+					            <input id="cpf" name="cpf" type="text" class="form-control" ng-model="vm.entity.cpf"
+								ng-maxlength="11" ng-disabled="vm.viewMode">
+					            </input>
+				            	<span class="help-block error" ng-show="PessoaFisicaForm.cpf.$error.maxlength">O tamanho máximo é 11</span>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+			    <div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.dataNascimento.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="dataNascimento">DataNascimento</label>					        
+					            <p class="input-group">
+									<input id="dataNascimento" name="dataNascimento" type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm:ss" ng-model="vm.entity.dataNascimento" ng-disabled="vm.viewMode"
+										is-open="vm.dataNascimentoPopupOpened" button-bar="{show: true, now: {show: true, text: 'Agora'}, today: {show: true, text: 'Hoje'}, clear: {show: true, text: 'Limpar'}, date: {show: true, text: 'Data'}, time: {show: true, text: 'Hora'}, close: {show: true, text: 'Fechar'}}"
+										/>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="vm.dataNascimentoPopupOpened = true" ng-disabled="vm.viewMode"><i class="glyphicon glyphicon-calendar"></i></button>
+									</span>
+						        </p>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.rg.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="rg">Rg</label>					        
+					            <input id="rg" name="rg" type="text" class="form-control" ng-model="vm.entity.rg"
+								ng-maxlength="30" ng-disabled="vm.viewMode">
+					            </input>
+				            	<span class="help-block error" ng-show="PessoaFisicaForm.rg.$error.maxlength">O tamanho máximo é 30</span>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.nomeMae.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="nomeMae">NomeMae</label>					        
+					            <input id="nomeMae" name="nomeMae" type="text" class="form-control" ng-model="vm.entity.nomeMae"
+								ng-maxlength="255" ng-disabled="vm.viewMode">
+					            </input>
+				            	<span class="help-block error" ng-show="PessoaFisicaForm.nomeMae.$error.maxlength">O tamanho máximo é 255</span>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.nomePai.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="nomePai">NomePai</label>					        
+					            <input id="nomePai" name="nomePai" type="text" class="form-control" ng-model="vm.entity.nomePai"
+								ng-maxlength="255" ng-disabled="vm.viewMode">
+					            </input>
+				            	<span class="help-block error" ng-show="PessoaFisicaForm.nomePai.$error.maxlength">O tamanho máximo é 255</span>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.genero.$invalid}">
+				    		<div class="col-sm-12">
+					        	<label for="genero">Genero</label>					        
+					            <ui-select id="genero" name="genero" ng-model="vm.entity.genero" theme="bootstrap" 
+					            	ng-disabled="vm.viewMode">
+									<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.label}}</ui-select-match>
+								    <ui-select-choices repeat="item.key as item in generoList | filter: { label: $select.search }">
+								        <div ng-bind-html="item.label | highlight: $select.search"></div>
+								    </ui-select-choices>
+								</ui-select>
+					        </div>
+						</div>
+					</div>
+			    </div>
+			    
+	    		<div class="row">
+					<div class="col-md-12">
+					    <div class="form-group">
+					        <div class="col-sm-12">
+					            <button id="edit" name="edit" class="btn btn-warning" ng-show="vm.viewMode" ng-click="vm.editInView()"><span class="glyphicon glyphicon-ok-sign"></span> Editar</button>
+					            <button id="save" name="save" class="btn btn-primary" ng-disabled="vm.viewMode || vm.isClean() || PessoaFisicaForm.$invalid" ng-click="vm.save()"><span class="glyphicon glyphicon-ok-sign"></span> Salvar</button>
+					            <button id="cancel" name="cancel" class="btn btn-default" ng-click="vm.cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancelar</button>
+					        </div>
+					    </div>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+	</div>
+
+</section>
+<!-- /.content -->

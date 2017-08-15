@@ -1,0 +1,48 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': CidadeForm.nome.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nome">Nome</label>					        
+				            <input id="nome" name="nome" type="text" class="form-control" ng-model="vmCidade.entity.nome"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmCidade.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="CidadeForm.nome.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="CidadeForm.nome.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="CidadeForm.nome.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': CidadeForm.uf.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="uf">Uf</label>					        
+				            <ui-select id="uf" name="uf" ng-model="vmCidade.entity.uf" theme="bootstrap" 
+				            	ng-disabled="vmCidade.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="uf in vmCidade.ufList track by uf.id"
+							    	refresh="vmCidade.listarUf($select.search)" refresh-delay="300">
+							        <div ng-bind-html="uf.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': CidadeForm.codigoIbge.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="codigoIbge">CodigoIbge</label>					        
+				            <input id="codigoIbge" name="codigoIbge" type="text" class="form-control" ng-model="vmCidade.entity.codigoIbge"
+							ng-maxlength="45" ng-disabled="vmCidade.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="CidadeForm.codigoIbge.$error.maxlength">O tamanho máximo é 45</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
