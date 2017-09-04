@@ -73,9 +73,7 @@ public class ${entityName}Resource extends <#if entityMetamodel.baseEntityAudite
 
 	@Override
 	public void loadFromEntity(${entityName} entity) {
-	<#if entityMetamodel.baseEntityAudited>
 		super.loadFromEntity(entity);
-	</#if>
 	<#list entityProperties as entityProperty>
 		<#if !entityProperty.transient && entityProperty.simpleAttribute>
 		set${entityProperty.propertyName}(entity.get${entityProperty.propertyName}());
