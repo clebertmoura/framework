@@ -30,6 +30,8 @@ public abstract class BaseEntityResourceImpl<PK extends Serializable, E extends 
 	
 	private PK id;
 	private Long versaoEntidade;
+	
+	protected boolean onlyId = false;
 
 	/**
 	 * 
@@ -50,9 +52,11 @@ public abstract class BaseEntityResourceImpl<PK extends Serializable, E extends 
 	 * 	Se for true, será carregado apenas o id da entidade.
 	 */
 	public BaseEntityResourceImpl(final E entity, boolean onlyId) {
+		this.onlyId = onlyId;
 		if (entity != null) {
 			setId(entity.getId());
 			if (!onlyId) {
+				setVersaoEntidade(entity.getVersaoEntidade());
 				loadFromEntity(entity);
 			}
 		}
@@ -65,7 +69,9 @@ public abstract class BaseEntityResourceImpl<PK extends Serializable, E extends 
 	 * @param entity
 	 * @param resource
 	 */
-	public abstract void loadFromEntity(E entity);
+	public void loadFromEntity(E entity){
+		setVersaoEntidade(entity.getVersaoEntidade());
+	}
 	
 	/**
 	 * Deve ser sobrescrito na classe concreta para inicializar campos extras.

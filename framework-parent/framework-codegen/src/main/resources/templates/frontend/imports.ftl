@@ -7,4 +7,5 @@
 	<script src="app/${entity.simpleNameCamelCase}/${entity.simpleNameCamelCase}.service.js"></script>
 	<script src="app/${entity.simpleNameCamelCase}/${entity.simpleNameCamelCase}.routes.js"></script>
 	
+	
 </#list>
