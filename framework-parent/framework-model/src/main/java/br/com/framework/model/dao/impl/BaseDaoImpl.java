@@ -524,6 +524,8 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		String value = "";
 		if (Enum.class.isAssignableFrom(fieldValue.getClass())) {
 			value = ((Enum)fieldValue).name();
+		} else {
+			value = fieldValue.toString();
 		}
 		for (Enum enum1 : enumConstants) {
 			boolean match = false;
