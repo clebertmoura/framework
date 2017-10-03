@@ -1,18 +1,23 @@
 			<div class="row">
 				<div class="col-md-12">
-		    		<div class="form-group" ng-class="{'has-error': ClienteForm.pessoa.$invalid}">
-			    		<div class="col-sm-12">
-				    		<label for="pessoa">Pessoa</label>					        
-				            <ui-select id="pessoa" name="pessoa" ng-model="vmCliente.entity.pessoa" theme="bootstrap" 
-				            	ng-disabled="vmCliente.viewMode" >
-								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
-							    <ui-select-choices repeat="pessoa in vmCliente.pessoaList track by pessoa.id"
-							    	refresh="vmCliente.listarPessoa($select.search)" refresh-delay="300">
-							        <div ng-bind-html="pessoa.id | highlight: $select.search"></div>
-							    </ui-select-choices>
-							</ui-select>
+			    		<div class="form-group" ng-class="{'has-error': ClienteForm.tipoPessoa.$invalid}">
+				    		<div class="col-sm-12">
+					    		<div class="radio">
+								<label>
+									<input type="radio" name="tipoPessoa" id="tipoPessoa" value="F" checked="" ng-model="vmCliente.tipoPessoa" />
+									Pessoa f&iacute;sica
+								</label>
+								<span>&nbsp;</span>
+								<label>
+									<input type="radio" name="tipoPessoa" id="tipoPessoa" value="J" ng-model="vmCliente.tipoPessoa" />
+									Pessoa jur&iacute;dica
+								</label>
+							</div>
 				        </div>
 					</div>
 				</div>
 		    </div>
 		    
+		    <ng-include ng-show="vmCliente.tipoPessoa == 'F'" src="'app/pessoaFisica/detail-inc.html'" ng-controller="PessoaJuridicaController as vmPessoaJuridica"></ng-include>
+		    <ng-include ng-show="vmCliente.tipoPessoa == 'J'" src="'app/pessoaJuridica/detail-inc.html'" ng-controller="PessoaJuridicaController as vmPessoaJuridica"></ng-include>
+		    	

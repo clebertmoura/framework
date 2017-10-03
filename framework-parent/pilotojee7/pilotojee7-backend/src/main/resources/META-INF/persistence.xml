@@ -18,7 +18,7 @@
 			<property name="hibernate.transaction.jta.platform" value="${jtaPlatform}" />
 			
 			<!-- Propriedades que habilitam o hibernate-envers para regitros de logs de auditoria -->
-			<property name="org.hibernate.envers.default_schema" value="DBARCHETYPE01_LOG" />
+			<property name="org.hibernate.envers.default_schema" value="LOG" />
 			<property name="org.hibernate.envers.revision_listener"	value="br.com.framework.pilotojee7.core.listener.AppRevisionLogListener" />
 			<property name="org.hibernate.envers.audit_strategy_validity_store_revend_timestamp" value="true" />
 			

@@ -65,7 +65,7 @@
 			<properties>
 				<keycloak.resource>${project.artifactId}</keycloak.resource>
 				<keycloak.credentials.secret>470103f0-1b85-4ec8-a3e4-f7a49bac14a3</keycloak.credentials.secret>
-				<backendUrl>http://localhost:8080/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>http://[host:port]/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		<profile>
@@ -73,7 +73,7 @@
 			<properties>
 				<keycloak.resource>${project.artifactId}</keycloak.resource>
 				<keycloak.credentials.secret>470103f0-1b85-4ec8-a3e4-f7a49bac14a3</keycloak.credentials.secret>
-				<backendUrl>http://localhost:8080/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>http://[host:port]/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		<profile>
@@ -81,7 +81,7 @@
 			<properties>
 				<keycloak.resource>${project.artifactId}</keycloak.resource>
 				<keycloak.credentials.secret>470103f0-1b85-4ec8-a3e4-f7a49bac14a3</keycloak.credentials.secret>
-				<backendUrl>http://localhost:8080/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>http://[host:port]/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 	</profiles>

@@ -21,7 +21,10 @@ var app = angular.module('app',['ngRoute','ngResource', 'app.shared',
 	'app.pessoaJuridica',
 	'app.tipoFuncionario',
 	'app.tipoLogradouro',
-	'app.simcard'
+	'app.simcard',
+	'app.keycloakGrupo',
+	'app.keycloakUsuario',
+	'app.relatorio'
 	]);
 
 /**

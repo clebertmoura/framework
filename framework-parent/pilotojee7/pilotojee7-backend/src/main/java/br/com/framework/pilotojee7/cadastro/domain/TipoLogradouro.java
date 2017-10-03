@@ -14,7 +14,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import br.com.framework.pilotojee7.core.domain.BaseEntityImpl;
 
 @Entity
-@Table(name = "TIPO_LOGRADOURO", schema = "DBARCHETYPE01")
+@Table(name = "TIPO_LOGRADOURO", schema = "CADASTRO")
 @Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 public class TipoLogradouro extends BaseEntityImpl<Long> {
 
@@ -24,7 +24,7 @@ public class TipoLogradouro extends BaseEntityImpl<Long> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TIPO_LOGRADOURO")
-	@SequenceGenerator(name = "SEQ_TIPO_LOGRADOURO", schema = "DBARCHETYPE01", sequenceName = "SEQ_TIPO_LOGRADOURO", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_TIPO_LOGRADOURO", schema = "CADASTRO", sequenceName = "SEQ_TIPO_LOGRADOURO", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_TIPO_LOGRADOURO")
 	public Long getId() {
 		return super.getId();

@@ -19,7 +19,7 @@ import br.com.framework.pilotojee7.core.domain.BaseEntityImpl;
  *
  */
 @Entity
-@Table(name = "UF", schema = "DBARCHETYPE01", uniqueConstraints = {
+@Table(name = "UF", schema = "CADASTRO", uniqueConstraints = {
 		@UniqueConstraint(columnNames = {"NOME", "ID_PAIS"}, name = "UK_UF_NOME_NO_PAIS"),
 		@UniqueConstraint(columnNames = {"SIGLA", "ID_PAIS"}, name = "UK_UF_SIGLA_NO_PAIS")}
 )
@@ -34,7 +34,7 @@ public class Uf extends BaseEntityImpl<Long>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_UF")
-	@SequenceGenerator(name = "SEQ_UF", schema = "DBARCHETYPE01", sequenceName = "DBARCHETYPE01.SEQ_UF", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_UF", schema = "CADASTRO", sequenceName = "CADASTRO.SEQ_UF", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_UF")
 	public Long getId() {
 		return super.getId();

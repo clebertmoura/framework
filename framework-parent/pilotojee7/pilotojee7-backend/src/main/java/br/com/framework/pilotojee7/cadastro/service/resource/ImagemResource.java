@@ -2,6 +2,8 @@ package br.com.framework.pilotojee7.cadastro.service.resource;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.codec.binary.Base64;
+
 import br.com.framework.pilotojee7.cadastro.domain.Imagem;
 import br.com.framework.service.impl.BaseEntityAuditedResourceImpl;
 
@@ -13,29 +15,30 @@ import br.com.framework.service.impl.BaseEntityAuditedResourceImpl;
 @XmlRootElement
 public class ImagemResource extends BaseEntityAuditedResourceImpl<Long, Imagem> {
 
-	private static final long serialVersionUID = -1L;
-	
+	private static final long serialVersionUID = -6491435032710958369L;
+
 	private String nome;
 	private String contentType;
 	private String fileExtension;
-	private byte[] data;
 	private int length;
-	
+	private String data;
+
+	private boolean loadData = true;
+
 	public ImagemResource() {
 		super();
 	}
 
-	/**
-	 * @param entity
-	 * @param onlyId
-	 */
 	public ImagemResource(Imagem entity, boolean onlyId) {
+		this(entity, onlyId, false);
+	}
+	
+	public ImagemResource(Imagem entity, boolean onlyId, boolean loadData) {
 		super(entity, onlyId);
+		this.loadData = loadData;
+		loadExtraFromEntity(entity);
 	}
 
-	/**
-	 * @param entity
-	 */
 	public ImagemResource(Imagem entity) {
 		super(entity);
 	}
@@ -46,40 +49,54 @@ public class ImagemResource extends BaseEntityAuditedResourceImpl<Long, Imagem> 
 		setNome(entity.getNome());
 		setContentType(entity.getContentType());
 		setFileExtension(entity.getFileExtension());
-		setData(entity.getData());
 		setLength(entity.getLength());
 	}
 
-	public String getNome() {
-		return this.nome;
+	@Override
+	public void loadExtraFromEntity(Imagem entity) {
+		super.loadExtraFromEntity(entity);
+		if (loadData) {
+			setData(Base64.encodeBase64String(entity.getData()));
+		}
 	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public String getContentType() {
-		return this.contentType;
+		return contentType;
 	}
+
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
+
 	public String getFileExtension() {
-		return this.fileExtension;
+		return fileExtension;
 	}
+
 	public void setFileExtension(String fileExtension) {
 		this.fileExtension = fileExtension;
 	}
-	public byte[] getData() {
-		return this.data;
-	}
-	public void setData(byte[] data) {
-		this.data = data;
-	}
+
 	public int getLength() {
-		return this.length;
+		return length;
 	}
+
 	public void setLength(int length) {
 		this.length = length;
 	}
-
 }
-

@@ -8,6 +8,7 @@ import br.com.framework.pilotojee7.cadastro.dao.ClienteDao;
 import br.com.framework.pilotojee7.cadastro.dao.PessoaFisicaDao;
 import br.com.framework.pilotojee7.cadastro.dao.PessoaJuridicaDao;
 import br.com.framework.pilotojee7.cadastro.domain.Cliente;
+import br.com.framework.pilotojee7.cadastro.domain.Pessoa;
 import br.com.framework.pilotojee7.cadastro.domain.PessoaFisica;
 import br.com.framework.pilotojee7.cadastro.domain.PessoaJuridica;
 import br.com.framework.pilotojee7.cadastro.manager.ClienteManager;
@@ -53,22 +54,22 @@ public class ClienteEndpoint extends BaseEntityAuditedResourceEndpointImpl<Long,
 		}
 		// inicializa os atributos da entidade.
 		// inicializa entidades relacionadas
+		Pessoa pessoa = null;
 		if (resource.getPessoaFisica() != null) {
 			PessoaFisica pessoaFisica = null;
 			if (resource.getPessoaFisica().getId() != null) {
 				pessoaFisica = pessoaFisicaDao.findById(resource.getPessoaFisica().getId()).getUniqueResult();
 			}
-			pessoaFisica = pessoaFisicaEndpoint.fromResource(pessoaFisica, resource.getPessoaFisica());
-			entity.setPessoa(pessoaFisica);
+			pessoa = pessoaFisica = pessoaFisicaEndpoint.fromResource(pessoaFisica, resource.getPessoaFisica());
 		}
 		if (resource.getPessoaJuridica() != null) {
 			PessoaJuridica pessoaJuridica = null;
 			if (resource.getPessoaJuridica().getId() != null) {
 				pessoaJuridica = pessoaJuridicaDao.findById(resource.getPessoaJuridica().getId()).getUniqueResult();
 			}
-			pessoaJuridica = pessoaJuridicaEndpoint.fromResource(pessoaJuridica, resource.getPessoaJuridica());
-			entity.setPessoa(pessoaJuridica);
+			pessoa = pessoaJuridica = pessoaJuridicaEndpoint.fromResource(pessoaJuridica, resource.getPessoaJuridica());
 		}
+		entity.setPessoa(pessoa);
 		return entity;
 	}
 

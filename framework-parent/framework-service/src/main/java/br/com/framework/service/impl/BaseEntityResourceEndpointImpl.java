@@ -37,6 +37,9 @@ import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.model.dao.api.BaseDao;
 import br.com.framework.model.exception.ModelException;
 import br.com.framework.model.manager.api.BaseManager;
+import br.com.framework.model.manager.sync.EntitySyncRequest;
+import br.com.framework.model.manager.sync.EntitySyncResponse;
+import br.com.framework.model.manager.sync.SyncPageResponse;
 import br.com.framework.search.api.Search;
 import br.com.framework.search.api.SearchResult;
 import br.com.framework.search.api.SearchUniqueResult;
@@ -48,6 +51,8 @@ import br.com.framework.service.api.BaseEntityResourceEndpoint;
 import br.com.framework.service.api.BaseResource;
 import br.com.framework.service.api.Error;
 import br.com.framework.service.api.PaginatedResourceResponse;
+import br.com.framework.service.sync.ResourceSyncRequest;
+import br.com.framework.service.sync.ResourceSyncResponse;
 import br.com.framework.service.util.LoadRelatedEntityResource;
 import br.com.framework.service.util.UtilBuilder;
 
@@ -540,6 +545,43 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 			result = countFindByRestrictions.getUniqueResult();
 		}
 		return result;
+	}
+	
+	/**
+	 * Sincroniza os registros.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	@POST
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response synchronize(ResourceSyncRequest request) {
+		ResourceSyncResponse<PK, R> response = new ResourceSyncResponse<>();
+		EntitySyncRequest syncRequest = new EntitySyncRequest(request.getLastSync(), request.getFirst(), request.getMax());
+		syncRequest.setRestrictions(request.getRestrictions());
+		syncRequest.setOrderings(request.getOrderings());
+		try {
+			EntitySyncResponse<PK,E> syncResponse = getManager().synchronize(syncRequest);
+			response.setLastSync(syncResponse.getLastSync());
+			if (syncResponse.getInserted() != null) {
+				SyncPageResponse<R> inserted = new SyncPageResponse<>(syncResponse.getInserted().getCountRegisters(), toResources(syncResponse.getInserted().getRegisters()));
+				response.setInserted(inserted);
+			}
+			if (syncResponse.getUpdated() != null) {
+				SyncPageResponse<R> updated = new SyncPageResponse<>(syncResponse.getUpdated().getCountRegisters(), toResources(syncResponse.getInserted().getRegisters()));
+				response.setUpdated(updated);
+			}
+			response.setDeleted(syncResponse.getDeleted());
+			response.setExpired(syncResponse.getExpired());
+			
+			return Response.ok(response).build();
+			
+		} catch (RuntimeException e) {
+			logger.error("Ocorreu um erro ao sincronizar.", e);
+			return Response.serverError().build();
+		}
+		
 	}
 
 }

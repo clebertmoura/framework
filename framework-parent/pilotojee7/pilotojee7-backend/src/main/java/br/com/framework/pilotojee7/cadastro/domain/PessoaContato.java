@@ -22,7 +22,7 @@ import br.com.framework.search.indexer.annotations.Indexed;
  *
  */
 @Entity
-@Table(name="PESSOA_CONTATO", schema = "DBARCHETYPE01")
+@Table(name="PESSOA_CONTATO", schema = "CADASTRO")
 @Audited
 @Indexed
 public class PessoaContato extends BaseEntityImpl<Long> {
@@ -39,7 +39,7 @@ public class PessoaContato extends BaseEntityImpl<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PESSOA_CONTATO")
-	@SequenceGenerator(name = "SEQ_PESSOA_CONTATO", schema = "DBARCHETYPE01", sequenceName = "SEQ_PESSOA_CONTATO", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_PESSOA_CONTATO", schema = "CADASTRO", sequenceName = "SEQ_PESSOA_CONTATO", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_PESSOA_CONTATO")
 	@DocumentId
 	public Long getId() {

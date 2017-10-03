@@ -1,0 +1,115 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': RelatorioFiltroForm.rotulo.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="rotulo">R&oacute;otulo</label>					        
+				            <input id="rotulo" name="rotulo" type="text" class="form-control" ng-model="vmRelatorioFiltro.entity.rotulo"
+							ng-required="true" ng-maxlength="50" ng-disabled="vmRelatorioFiltro.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="RelatorioFiltroForm.rotulo.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="RelatorioFiltroForm.rotulo.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="RelatorioFiltroForm.rotulo.$error.maxlength">O tamanho máximo é 50</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': RelatorioFiltroForm.ordem.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="ordem">Ordem</label>					        
+				            <input id="ordem" name="ordem" type="text" class="form-control" ng-model="vmRelatorioFiltro.entity.ordem"
+							ng-required="true" ng-disabled="vmRelatorioFiltro.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="RelatorioFiltroForm.ordem.$error.required">obrigatório</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+		    
+			<!-- <div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': RelatorioFiltroForm.relatorio.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="relatorio">Relatorio</label>					        
+				            <ui-select id="relatorio" name="relatorio" ng-model="vmRelatorioFiltro.entity.relatorio" theme="bootstrap" 
+				            	ng-disabled="vmRelatorioFiltro.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="relatorio in vmRelatorioFiltro.relatorioList track by relatorio.id"
+							    	refresh="vmRelatorioFiltro.listarRelatorio($select.search)" refresh-delay="300">
+							        <div ng-bind-html="relatorio.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div> -->
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': RelatorioFiltroForm.filtro.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="filtro">Filtro</label>					        
+				            <ui-select id="filtro" name="filtro" ng-model="vmRelatorioFiltro.entity.filtro" theme="bootstrap" 
+				            	ng-disabled="vmRelatorioFiltro.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="filtro in vmRelatorioFiltro.filtroList track by filtro.id"
+							    	refresh="vmRelatorioFiltro.listarFiltro($select.search)" refresh-delay="300">
+							        <div ng-bind-html="filtro.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+		    <div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': RelatorioFiltroForm.parametro.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="parametro">Nome do parâmetro</label>					        
+				            <input id="parametro" name="parametro" type="text" class="form-control" ng-model="vmRelatorioFiltro.entity.parametro"
+							ng-required="true" ng-maxlength="50" ng-disabled="vmRelatorioFiltro.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="RelatorioFiltroForm.parametro.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="RelatorioFiltroForm.parametro.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="RelatorioFiltroForm.parametro.$error.maxlength">O tamanho máximo é 50</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': RelatorioFiltroForm.permissao.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="permissao">Permiss&atilde;o</label>					        
+				            <input id="permissao" name="permissao" type="text" class="form-control" ng-model="vmRelatorioFiltro.entity.permissao"
+							ng-maxlength="255" ng-disabled="vmRelatorioFiltro.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="RelatorioFiltroForm.permissao.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': RelatorioFiltroForm.habilitado.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="habilitado">Habilitado</label>					        
+				            <ui-select id="habilitado" name="habilitado" ng-model="vmRelatorioFiltro.entity.habilitado" theme="bootstrap" 
+				            	ng-disabled="vmRelatorioFiltro.viewMode" ng-required="true">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.label}}</ui-select-match>
+							    <ui-select-choices repeat="item.key as item in vmRelatorioFiltro.habilitadoList | filter: { label: $select.search }">
+							        <div ng-bind-html="item.label | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+			            	<span class="help-block error" ng-show="RelatorioFiltroForm.habilitado.$error.required">obrigatório</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

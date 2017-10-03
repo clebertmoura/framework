@@ -1,0 +1,68 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		Relat&oacute;rios <small>Executar</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Relat&oacute;rios</a></li>
+		<li class="active">Executar</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<div class="box">
+		<div class="box-header with-border">
+			<h3>Executar relat&oacute;rios</h3>
+		</div>
+		<div class="box-body">
+			<form id="ExecutarRelatorioForm" name="ExecutarRelatorioForm" class="form-horizontal" role="form">
+
+				<div class="table-responsive">
+					<p>
+						Selecione a categoria do relat&oacute;rio
+					</p>
+					<table class="table table-bordered text-center">
+						<tbody>
+							<tr>
+								<td ng-repeat="item in vmExecutarRelatorio.categoriaList track by item.id" access="{{item.permissao}}">
+									<button	type="button" class="btn btn-block btn-primary btn-lg" ng-click="vmExecutarRelatorio.carregarRelatorios(item)">{{item.nome}}</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="table-responsive" ng-show="vmExecutarRelatorio.relatorios.length > 0">
+					<p>
+						Selecione o relat&oacute;rio
+					</p>
+					<ul class="treeview-menu" style="display: block;">
+						<li ng-repeat="item in vmExecutarRelatorio.relatorios track by item.id" access="{{item.permissao}}"
+							ng-click="vmExecutarRelatorio.selecionarRelatorio(item)">
+							<a href=""><i class="fa fa-circle-o"></i> {{item.nome}}</a>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="row"><div class="col">&nbsp;</div></div>
+				
+	    		<div class="row">
+					<div class="col-md-12">
+					    <div class="form-group">
+					        <div class="col-sm-12">
+					            <button id="executar" name="executar" class="btn btn-primary" ng-click="vmExecutarRelatorio.executar()"><span class="glyphicon glyphicon-glyphicon-play-circle"></span> Visualizar</button>
+					        </div>
+					    </div>
+					</div>
+				</div>
+				
+			</form>
+		</div>
+		
+	</div>
+
+</section>
+<!-- /.content -->
