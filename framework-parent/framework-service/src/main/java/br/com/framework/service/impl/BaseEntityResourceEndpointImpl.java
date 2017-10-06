@@ -512,6 +512,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 		return result;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	@POST
     @Path("/findByRestrictions")
@@ -524,9 +525,16 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 		if (countFindByRestrictions != null && countFindByRestrictions.getUniqueResult() != null) {
 			response.setTotalRecords(countFindByRestrictions.getUniqueResult());
 		}
-		SearchResult<E> findByRestrictions = getSearch().findByRestrictions(request.getRestrictions(), 
-				request.getFirst(), request.getMax(), 
-				request.getOrderings().toArray(new Ordering[0]));
+		SearchResult<E> findByRestrictions = null;
+		if (BaseDao.class.isAssignableFrom(getSearch().getClass())) {
+			findByRestrictions = ((BaseDao)getSearch()).findByRestrictions(request.getRestrictions(), 
+					request.getFirst(), request.getMax(), request.getEntityGraphName(),
+					request.getOrderings().toArray(new Ordering[0]));
+		} else {
+			findByRestrictions = getSearch().findByRestrictions(request.getRestrictions(), 
+					request.getFirst(), request.getMax(), 
+					request.getOrderings().toArray(new Ordering[0]));
+		}
 		if (findByRestrictions != null && !findByRestrictions.getResults().isEmpty()) {
 			response.setResults(toResources(findByRestrictions.getResults()));
 		}

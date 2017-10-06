@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.Entity;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
@@ -109,21 +111,46 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	protected SearchUtil getSearchUtil() {
 		return searchUtil;
 	}
+	
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public SearchUniqueResult<E> findById(PK id, String entityGraphName) throws SearchException, PersistenceException {
+		long start = System.currentTimeMillis();
+		Map<String, Object> hints = new HashMap<>();
+		if (entityGraphName != null) {
+			try{
+				EntityGraph graph = getEntityManager().getEntityGraph(entityGraphName);
+				hints.put("javax.persistence.fetchgraph", graph);
+			} catch (IllegalArgumentException e) {
+				logger.warn(String.format("EntityGraph %s não encontrado! O resultado será carregado de forma padrão.", entityGraphName), e);
+			}
+		}
+		E result = getEntityManager().find(getEntityClass(), id, hints);
+		return getSearchUtil().searchUniqueResult(getEntityClass(), result, System.currentTimeMillis() - start);
+	}
 
 	@Override
 	public SearchUniqueResult<E> findById(PK id) throws SearchException {
-		long start = System.currentTimeMillis();
-		E result = getEntityManager().find(getEntityClass(), id);
-		return getSearchUtil().searchUniqueResult(getEntityClass(), result, System.currentTimeMillis() - start);
+		return findById(id, null);
 	}
+	
 
 	@Override
 	public SearchResult<E> findByRestrictions(
 			List<Restriction> restrictions, int first, int max,
 			Ordering... orderings) throws SearchException {
+		return findByRestrictions(restrictions, first, max, null, orderings);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public SearchResult<E> findByRestrictions(
+			List<Restriction> restrictions, int first, int max, String entityGraphName,
+			Ordering... orderings) throws SearchException, PersistenceException {
 		long start = System.currentTimeMillis();
 		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<E> criteriaQuery = cBuilder.createQuery(getEntityClass());
+		criteriaQuery.distinct(true);
 		Root<E> from = criteriaQuery.from(getEntityClass());
 		Map<String, Path<?>> mapFieldPaths = new HashMap<String, Path<?>>();
 		addDefaultRestrictionFieldStatus(restrictions);
@@ -173,6 +200,14 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			}
 		}
 		TypedQuery<E> query = getEntityManager().createQuery(criteriaQuery);
+		if (entityGraphName != null) {
+			try{
+				EntityGraph graph = getEntityManager().getEntityGraph(entityGraphName);
+				query.setHint("javax.persistence.fetchgraph", graph);
+			} catch (IllegalArgumentException e) {
+				logger.warn(String.format("EntityGraph %s não encontrado! O resultado será carregado de forma padrão.", entityGraphName), e);
+			}
+		}
 		if (first > -1 && max > 0) {
 			query.setFirstResult(first);
 			query.setMaxResults(max);
@@ -218,28 +253,36 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		Long result = query.getSingleResult();
 		return getSearchUtil().searchUniqueResult(Long.class, result, System.currentTimeMillis() - start);
 	}
+	
 
 	@Override
-	public SearchResult<E> findByExample(E exemplo, boolean isLike,
+	public SearchResult<E> findByExample(E e, boolean isLike, boolean isCaseSensitive, int first,
+			int max, String entityGraphName, Ordering... orderings)
+			throws SearchException, PersistenceException {
+		List<Restriction> restrictions = createFiltersMapByExample(e, isLike, isCaseSensitive);
+		return findByRestrictions(restrictions, first, max, entityGraphName, orderings);
+	}
+
+	@Override
+	public SearchResult<E> findByExample(E e, boolean isLike,
 			boolean isCaseSensitive, int first, int max,
 			Ordering... orderings) throws SearchException, PersistenceException {
-		List<Restriction> restrictions = createFiltersMapByExample(exemplo, isLike, isCaseSensitive);
-		return findByRestrictions(restrictions, first, max, orderings);
+		return findByExample(e, isLike, isCaseSensitive, first, max, null, orderings);
 	}
 
 	@Override
-	public SearchUniqueResult<Long> getCountFindByExample(E exemplo,
+	public SearchUniqueResult<Long> getCountFindByExample(E e,
 			boolean isLike, boolean isCaseSensitive)
 			throws SearchException, PersistenceException {
-		List<Restriction> restrictions = createFiltersMapByExample(exemplo, isLike, isCaseSensitive);
+		List<Restriction> restrictions = createFiltersMapByExample(e, isLike, isCaseSensitive);
 		return getCountFindByRestrictions(restrictions);
 	}
+	
 
 	@Override
-	public SearchUniqueResult<E> findUniqueByExample(E e,
-			boolean isLike, boolean isCaseSensitive)
-			throws SearchException, PersistenceException, NonUniqueResultException {
-		SearchResult<E> searchResult = findByExample(e, isLike, isCaseSensitive, -1, -1);
+	public SearchUniqueResult<E> findUniqueByExample(E e, boolean isLike, boolean isCaseSensitive,
+			String entityGraphName) throws SearchException, PersistenceException, NonUniqueResultException {
+		SearchResult<E> searchResult = findByExample(e, isLike, isCaseSensitive, -1, -1, entityGraphName);
 		if (!searchResult.getResults().isEmpty()) {
 			if (searchResult.getResults().size() > 1) {
 				throw new NonUniqueResultException();
@@ -252,9 +295,23 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 
 	@Override
+	public SearchUniqueResult<E> findUniqueByExample(E e,
+			boolean isLike, boolean isCaseSensitive)
+			throws SearchException, PersistenceException, NonUniqueResultException {
+		return findUniqueByExample(e, isLike, isCaseSensitive, null);
+	}
+	
+
+	@Override
+	public SearchUniqueResult<E> findUniqueByExample(E e, String entityGraphName)
+			throws SearchException, PersistenceException, NonUniqueResultException {
+		return findUniqueByExample(e, false, true, entityGraphName);
+	}
+
+	@Override
 	public SearchUniqueResult<E> findUniqueByExample(E e)
 			throws SearchException, PersistenceException, NonUniqueResultException {
-		return findUniqueByExample(e, false, true);
+		return findUniqueByExample(e, null);
 	}
 	
 	/**
@@ -676,4 +733,17 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	public void detach(E entity) {
 		getEntityManager().detach(entity);
 	}
+
+	@Override
+	public SearchResult<E> findByRestriction(Restriction restriction, int first, int max, String entityGraphName,
+			Ordering... orderings) throws SearchException {
+		return findByRestrictions(Arrays.asList(restriction), first, max, entityGraphName, orderings);
+	}
+
+	@Override
+	public SearchResult<E> findByRestriction(Restriction restriction, String entityGraphName, Ordering... orderings)
+			throws SearchException {
+		return findByRestriction(restriction, -1, -1, entityGraphName, orderings);
+	}
+
 }

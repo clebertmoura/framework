@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
 
 import br.com.framework.pilotojee7.backend.keycloak.dao.KeycloakGrupoDao;
 import br.com.framework.pilotojee7.backend.keycloak.service.endpoint.KeycloakGrupoEndpoint;
@@ -21,12 +19,7 @@ import br.com.framework.pilotojee7.cadastro.manager.NoticiaManager;
 import br.com.framework.pilotojee7.cadastro.service.resource.CategoriaNoticiaResource;
 import br.com.framework.pilotojee7.cadastro.service.resource.ImagemResource;
 import br.com.framework.pilotojee7.cadastro.service.resource.NoticiaResource;
-import br.com.framework.pilotojee7.core.enums.SimNao;
-import br.com.framework.search.impl.Operator;
-import br.com.framework.search.impl.Restriction;
 import br.com.framework.service.impl.BaseEntityAuditedResourceEndpointImpl;
-import br.com.framework.service.impl.SynchronizeResponse;
-import br.com.framework.service.impl.FindByRestrictionsRequest;
 import br.com.framework.service.util.LoadRelatedEntityResource;
 
 /**
@@ -97,46 +90,6 @@ public class NoticiaEndpoint extends BaseEntityAuditedResourceEndpointImpl<Long,
 
 		loadEntityRelations(entity.getGrupos(), resource.getGrupos(), keycloakGrupoDao);
 		return entity;
-	}
-	
-	@POST
-	@Path("/sincronizarNoticias")
-	public Response sincronizarNoticias(FindByRestrictionsRequest findByResRequest) {
-		
-		SimNao destaque = null;
-		Long dataUltimaSincronizacao = null;
-		Integer first = findByResRequest.getFirst();
-		Integer max = findByResRequest.getMax();
-		List<Long> idsCategorias = new ArrayList<Long>();
-		String titulo = null;
-		
-		for (Restriction restriction : findByResRequest.getRestrictions()) {
-			if (restriction.getField().equals("destaque") && restriction.getOperator().equals(Operator.EQ)) {
-				if (restriction.getValue().equals("S")) {
-					destaque = SimNao.S;
-				} else {
-					destaque = SimNao.N;
-				}
-			}
-			if (restriction.getField().equals("dataUltimaSincronizacao") && restriction.getValue() != null
-					&& restriction.getValue() != "") {
-				dataUltimaSincronizacao = Long.parseLong(findByResRequest.getRestrictions().get(0).getValue().toString());
-			}
-			if (restriction.getField().equals("categorias") && restriction.getValue() != null) {
-				List<Integer> ids = (List<Integer>) restriction.getValue();
-				for (int i = 0; i < ids.size(); i++) {
-					idsCategorias.add(Long.valueOf(ids.get(i)));
-				}
-			}
-			if (restriction.getField().equals("titulo") && restriction.getValue() != null) {
-				titulo = restriction.getValue().toString();
-			}
-		}
-		
-		SynchronizeResponse<NoticiaResource> sincronizarNoticias = getManager().sincronizarNoticias(dataUltimaSincronizacao, destaque, first, max, idsCategorias, titulo);
-
-		return Response.ok(sincronizarNoticias).build();
-
 	}
 
 	protected List<NoticiaResource> toResources(List<Noticia> itemList, boolean onlyId, boolean loadBase64) {
