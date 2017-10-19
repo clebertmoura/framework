@@ -315,6 +315,30 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 	
 	/**
+	 * Consulta um registro único com base na lista de {@link Restriction}
+	 * 
+	 * @param restrictions
+	 * @param entityGraphName
+	 * @return
+	 * @throws SearchException
+	 * @throws NonUniqueResultException
+	 */
+	public SearchUniqueResult<E> findUniqueByRestrictions(
+			List<Restriction> restrictions, String entityGraphName) throws SearchException,
+			NonUniqueResultException {
+		SearchResult<E> searchResult = findByRestrictions(restrictions, -1, -1, entityGraphName);
+		if (!searchResult.getResults().isEmpty()) {
+			if (searchResult.getResults().size() > 1) {
+				throw new NonUniqueResultException();
+			} else {
+				return searchUtil.searchUniqueResult(getDocumentClass(), searchResult.getResults().get(0), searchResult.getExecutionTime());
+			}
+		} else {
+			return searchUtil.searchUniqueResult(getDocumentClass(), null, searchResult.getExecutionTime());
+		}
+	}
+	
+	/**
 	 * Verifica se o tipo é equivalente da tipos de Data. 
 	 * 
 	 * @param clazz
