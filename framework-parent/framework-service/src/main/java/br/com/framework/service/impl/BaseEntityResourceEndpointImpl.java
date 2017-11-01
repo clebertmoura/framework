@@ -563,6 +563,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	 */
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	@POST
+	@Path("/synchronize")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response synchronize(ResourceSyncRequest request) {
 		ResourceSyncResponse<PK, R> response = new ResourceSyncResponse<>();
