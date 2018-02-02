@@ -70,6 +70,7 @@ public abstract class BaseEntityResourceImpl<PK extends Serializable, E extends 
 	 * @param resource
 	 */
 	public void loadFromEntity(E entity){
+		setId(entity.getId());
 		setVersaoEntidade(entity.getVersaoEntidade());
 	}
 	

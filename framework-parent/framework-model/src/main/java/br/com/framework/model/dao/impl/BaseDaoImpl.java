@@ -555,6 +555,40 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 							logger.error(String.format("Erro ao criar predicado. Field %s, classe %s", leaf, path.getParentPath().getJavaType().getSimpleName()), e);
 						}
 						break;
+					case NI:
+						try {
+							if (Enum.class.isAssignableFrom(fieldClass)) {
+								List<Enum> itensIn = new ArrayList<Enum>();
+								Enum[] enumConstants = (Enum[])fieldClass.getEnumConstants();
+								if (value instanceof Collection) {
+									Iterator<Serializable> iterator = ((Collection) value).iterator();
+									while(iterator.hasNext()) {
+										Object item = iterator.next();
+										Enum enumValue = getEnumValue(item, enumConstants, false, false);
+										if (enumValue != null) {
+											itensIn.add(enumValue);
+										}
+									}
+								}
+								
+								if (!itensIn.isEmpty()) {
+									predicate = path.in(itensIn).not();
+								}
+							} else if (BaseEntity.class.isAssignableFrom(fieldClass)) {
+								List<Long> itensIn = new ArrayList<Long>();
+								Iterator<Serializable> iterator = ((Collection) value).iterator();
+								while(iterator.hasNext()) {
+									Serializable itemId = iterator.next();
+									itensIn.add(Long.parseLong(itemId.toString()));
+								}
+								predicate = from.join(leaf).get("id").in(itensIn).not();
+							} else {
+								predicate = path.in((Collection) value).not();
+							}
+						} catch (Exception e) {
+							logger.error(String.format("Erro ao criar predicado. Field %s, classe %s", leaf, path.getParentPath().getJavaType().getSimpleName()), e);
+						}
+						break;
 					case LK:
 						if (Enum.class.isAssignableFrom(fieldClass)) {
 							Enum[] enumConstants = (Enum[]) fieldClass.getEnumConstants();

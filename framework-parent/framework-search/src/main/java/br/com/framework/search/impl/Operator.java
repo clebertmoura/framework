@@ -41,6 +41,10 @@ public enum Operator {
 	 */
 	IN,
 	/**
+	 * Not In
+	 */
+	NI,
+	/**
 	 * Like
 	 */
 	LK,
