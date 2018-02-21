@@ -13,6 +13,7 @@
 		
 		vm.${entityNameCamelCase}List = vm.${entityNameCamelCase}List || [];
 		vm.listar${entityName} = listar${entityName};
+		vm.findById = findById;
 		
 		function listar${entityName}(valorCampo) {
 			var vRestrictions = [];
@@ -39,6 +40,10 @@
 					angular.copy(items.results, vm.${entityNameCamelCase}List);
 	        	}
 	        );
+		}
+		
+		function findById(id) {
+	    	return ${entityName}Factory.get({EntityId: id});
 		}
 		
 	};
