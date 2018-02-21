@@ -354,7 +354,7 @@ public class GeneratorProcessor extends AbstractProcessor {
 							entityMetamodel.getImportSet().add(typeArgumentClassName);
 						}
 					}
-					if (propertyName.equals("Id")) {
+					if (propertyName.equalsIgnoreCase("Id")) {
 						entityPropertyId = entityProperty;
 					}
 					if (entityMetamodel.getPropertyLabel() == null &&

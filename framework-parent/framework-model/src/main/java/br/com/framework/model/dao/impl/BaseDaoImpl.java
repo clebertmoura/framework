@@ -60,7 +60,7 @@ import br.com.framework.util.reflection.ReflectionUtils;
  * @param <E> Entidade de domínio.
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<PK>> extends SearchImpl<PK, E>
 		implements BaseDao<PK, E> {
 
@@ -115,6 +115,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 
 	@SuppressWarnings("rawtypes")
 	@Override
+	
 	public SearchUniqueResult<E> findById(PK id, String entityGraphName) throws SearchException, PersistenceException {
 		long start = System.currentTimeMillis();
 		Map<String, Object> hints = new HashMap<>();

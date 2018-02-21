@@ -12,7 +12,7 @@ import ${modulePackage}.domain.${entityName};
 
 <#list entityMetamodel.propertiesDaos as entityProperty>
 	<#if !entityProperty.transient && !entityProperty.simpleAttribute>
-		<#if entityProperty.listAttribute>
+		<#if entityProperty.listOrSetAttribute>
 import ${entityProperty.typeArgumentClassName};
 import ${entityProperty.typeArgumentClassNameAsResourceImport};
 		<#else>
@@ -44,8 +44,8 @@ public class ${entityName}Resource extends <#if entityMetamodel.baseEntityAudite
 	</#list>
 	<#list entityProperties as entityProperty>
 		<#if !entityProperty.transient && !entityProperty.simpleAttribute>
-			<#if entityProperty.listAttribute>
-	private List<${entityProperty.typeArgumentSimpleClassName}Resource> ${entityProperty.propertyNameCamelCase};
+			<#if entityProperty.listOrSetAttribute>
+	private <#if entityProperty.listAttribute>List<#else>Set</#if><${entityProperty.typeArgumentSimpleClassName}Resource> ${entityProperty.propertyNameCamelCase};
 			<#else>
 	private ${entityProperty.typeClassSimpleName}Resource ${entityProperty.propertyNameCamelCase};
 			</#if>
@@ -117,14 +117,14 @@ public class ${entityName}Resource extends <#if entityMetamodel.baseEntityAudite
 	</#list>
 	<#list entityProperties as entityProperty>
 		<#if !entityProperty.transient && !entityProperty.simpleAttribute>
-			<#if entityProperty.listAttribute>
-	public List<${entityProperty.typeArgumentSimpleClassName}Resource> get${entityProperty.propertyName}() {
+			<#if entityProperty.listOrSetAttribute>
+	public <#if entityProperty.listAttribute>List<#else>Set</#if><${entityProperty.typeArgumentSimpleClassName}Resource> get${entityProperty.propertyName}() {
 		if (${entityProperty.propertyNameCamelCase} == null) {
-			${entityProperty.propertyNameCamelCase} = new ArrayList<${entityProperty.typeArgumentSimpleClassName}Resource>();
+			${entityProperty.propertyNameCamelCase} = new <#if entityProperty.listAttribute>ArrayList<#else>HashSet</#if><${entityProperty.typeArgumentSimpleClassName}Resource>();
 		}
 		return this.${entityProperty.propertyNameCamelCase};
 	}
-	public void set${entityProperty.propertyName}(List<${entityProperty.typeArgumentSimpleClassName}Resource> ${entityProperty.propertyNameCamelCase}) {
+	public void set${entityProperty.propertyName}(<#if entityProperty.listAttribute>List<#else>Set</#if><${entityProperty.typeArgumentSimpleClassName}Resource> ${entityProperty.propertyNameCamelCase}) {
 		this.${entityProperty.propertyNameCamelCase} = ${entityProperty.propertyNameCamelCase};
 	}
 			<#else>

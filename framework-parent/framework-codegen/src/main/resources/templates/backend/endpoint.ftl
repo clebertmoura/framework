@@ -16,7 +16,7 @@ import ${modulePackage}.service.resource.${entityName}Resource;
 
 <#list entityMetamodel.propertiesDaos as entityProperty>
 	<#if !entityProperty.transient && !entityProperty.simpleAttribute>
-		<#if entityProperty.listAttribute>
+		<#if entityProperty.listOrSetAttribute>
 import ${entityProperty.typeArgumentClassName};
 import ${entityProperty.typeArgumentClassNameAsDaoImport};
 import ${entityProperty.typeArgumentClassNameAsResourceImport};
@@ -47,7 +47,7 @@ public class ${entityName}Endpoint extends <#if entityMetamodel.baseEntityAudite
 	
 	<#list entityMetamodel.propertiesDaos as entityProperty>
 		<#if !entityProperty.transient && !entityProperty.simpleAttribute>
-			<#if entityProperty.listAttribute>
+			<#if entityProperty.listOrSetAttribute>
 	@Inject
 	private ${entityProperty.typeArgumentSimpleClassName}Dao ${entityProperty.typeArgumentSimpleClassNameCamelCase}Dao;
 	@Inject
@@ -87,7 +87,7 @@ public class ${entityName}Endpoint extends <#if entityMetamodel.baseEntityAudite
 		// inicializa entidades relacionadas
 		<#list entityProperties as entityProperty>
 			<#if !entityProperty.transient && !entityProperty.simpleAttribute>
-				<#if entityProperty.listAttribute>
+				<#if entityProperty.listOrSetAttribute>
 					<#if !entityProperty.imageAttribute>
 						<#if entityProperty.oneToOne>
 							<#if entityProperty.oneToOneWithMappedBy>

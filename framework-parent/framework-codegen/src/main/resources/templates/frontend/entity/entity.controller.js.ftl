@@ -4,14 +4,14 @@
 
     inheritance.controller('${entityName}Controller', ${entityName}Controller);
 
-    ${entityName}Controller.$inject = ['$controller', '$routeParams', '$rootScope', '$scope', '$filter', '$location', '$uibModal', 'FlashFactory', <#if entityMetamodel.enumModules?size gt 0><#list entityMetamodel.enumModules as enumModuleName>'${enumModuleName}EnumsService', </#list></#if> '${entityName}Factory', '${entityName}Service'<#if entityMetamodel.propertiesDaos?size gt 0>, </#if><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listAttribute>'${entityProperty.typeArgumentSimpleClassName}Factory', <#else>'${entityProperty.typeClassSimpleName}Factory', </#if></#if></#list><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listAttribute>'${entityProperty.typeArgumentSimpleClassName}Service'<#if !entityProperty?is_last>, </#if><#else>'${entityProperty.typeClassSimpleName}Service'<#if !entityProperty?is_last>, </#if></#if></#if></#list>];
+    ${entityName}Controller.$inject = ['$controller', '$routeParams', '$rootScope', '$scope', '$filter', '$location', '$uibModal', 'FlashFactory', <#if entityMetamodel.enumModules?size gt 0><#list entityMetamodel.enumModules as enumModuleName>'${enumModuleName}EnumsService', </#list></#if> '${entityName}Factory', '${entityName}Service'<#if entityMetamodel.propertiesDaos?size gt 0>, </#if><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listOrSetAttribute>'${entityProperty.typeArgumentSimpleClassName}Factory', <#else>'${entityProperty.typeClassSimpleName}Factory', </#if></#if></#list><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listOrSetAttribute>'${entityProperty.typeArgumentSimpleClassName}Service'<#if !entityProperty?is_last>, </#if><#else>'${entityProperty.typeClassSimpleName}Service'<#if !entityProperty?is_last>, </#if></#if></#if></#list>];
 
 
   /**
    * Controlador da entidade ${entityName} que estende as funcionalidades do BaseController. 
    */
   function ${entityName}Controller($controller, $routeParams, $rootScope, $scope, $filter, $location, $uibModal, FlashFactory, 
-  	<#if entityMetamodel.enumModules?size gt 0><#list entityMetamodel.enumModules as enumModuleName>${enumModuleName}EnumsService, </#list></#if> ${entityName}Factory, ${entityName}Service<#if entityMetamodel.propertiesDaos?size gt 0>, </#if><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listAttribute>${entityProperty.typeArgumentSimpleClassName}Factory, <#else>${entityProperty.typeClassSimpleName}Factory, </#if></#if></#list><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listAttribute>${entityProperty.typeArgumentSimpleClassName}Service<#if !entityProperty?is_last>, </#if><#else>${entityProperty.typeClassSimpleName}Service<#if !entityProperty?is_last>, </#if></#if></#if></#list>) {
+  	<#if entityMetamodel.enumModules?size gt 0><#list entityMetamodel.enumModules as enumModuleName>${enumModuleName}EnumsService, </#list></#if> ${entityName}Factory, ${entityName}Service<#if entityMetamodel.propertiesDaos?size gt 0>, </#if><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listOrSetAttribute>${entityProperty.typeArgumentSimpleClassName}Factory, <#else>${entityProperty.typeClassSimpleName}Factory, </#if></#if></#list><#list entityMetamodel.propertiesDaos as entityProperty><#if !entityProperty.transient && !entityProperty.simpleAttribute><#if entityProperty.listOrSetAttribute>${entityProperty.typeArgumentSimpleClassName}Service<#if !entityProperty?is_last>, </#if><#else>${entityProperty.typeClassSimpleName}Service<#if !entityProperty?is_last>, </#if></#if></#if></#list>) {
 
     var vm = this;
 
@@ -38,7 +38,7 @@
     	}
 				</#if>
 			<#else>
-				<#if !entityProperty.listAttribute>
+				<#if !entityProperty.listOrSetAttribute>
 		if (vm.searchData.${entityProperty.propertyNameCamelCase} && vm.searchData.${entityProperty.propertyNameCamelCase} != null) {
     		restrictions.push({field: '${entityProperty.propertyNameCamelCase}.id', operator: 'EQ', value: vm.searchData.${entityProperty.propertyNameCamelCase}.id});
     	}
@@ -59,7 +59,7 @@
 	// Carregamento de relacionamentos
     <#list entityMetamodel.propertiesDaos as entityProperty>
 		<#if !entityProperty.transient && !entityProperty.simpleAttribute && !entityProperty.imageAttribute>
-			<#if entityProperty.listAttribute>
+			<#if entityProperty.listOrSetAttribute>
 				<#if entityProperty.oneToMany && entityProperty.oneToManyWithMappedBy>
 	vm.entity.${entityProperty.propertyNameCamelCase} = vm.entity.${entityProperty.propertyNameCamelCase} || [];
 	vm.openModal${entityProperty.typeArgumentSimpleClassName} = openModal${entityProperty.typeArgumentSimpleClassName};

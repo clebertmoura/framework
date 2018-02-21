@@ -103,7 +103,7 @@
 			    
 				</#if>
 			<#else>
-				<#if !entityProperty.listAttribute>
+				<#if !entityProperty.listOrSetAttribute>
 				
 				<div class="row">
 					<div class="col-md-12">
