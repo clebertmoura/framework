@@ -82,7 +82,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	 */
 	public SearchUniqueResult<Long> getCountFindByExample(E e,
 			boolean isLike, boolean isCaseSensitive) throws SearchException, PersistenceException;
-
+	
 	/**
 	 * Pesquisa um registro único utilizando uma entidade exemplo.
 	 * 
@@ -161,6 +161,24 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 			Ordering... orderings) throws SearchException, PersistenceException;
 	
 	/**
+	 * Pesquisa registros de acordo com as restrições informadas, com suporte a orenação e paginação.
+	 * 
+	 * @param restrictions
+	 * @param useOperatorOr - Habilita a utilização do operador OR nas {@link Restriction}.
+	 * @param first
+	 * @param max
+	 * @param entityGraphName
+	 * 	Nome do {@link EntityGraph} a ser utilizado na query. Pode ser nulo.
+	 * @param orderings
+	 * @return
+	 * @throws SearchException
+	 * @throws PersistenceException
+	 */
+	public SearchResult<E> findByRestrictions(
+			List<Restriction> restrictions, boolean useOperatorOr, int first, int max, String entityGraphName,
+			Ordering... orderings) throws SearchException, PersistenceException;
+	
+	/**
 	 * Pesquisa registros de acordo com a restrição informada, com suporte a orenação e paginação.
 	 *  
 	 * @param restriction
@@ -187,5 +205,34 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	 */
 	public SearchResult<E> findByRestriction(Restriction restriction, String entityGraphName, Ordering... orderings)
 			throws SearchException;
+	
+	/**
+	 * Pesquisa um registro único utilizando uma entidade exemplo.
+	 * 
+	 * @param restrictions
+	 * @param entityGraphName
+	 * @return
+	 * @throws SearchException
+	 * @throws NonUniqueResultException
+	 */
+	public SearchUniqueResult<E> findUniqueByRestrictions(
+			List<Restriction> restrictions, String entityGraphName) throws SearchException,
+			NonUniqueResultException;
+	
+	/**
+	 * Pesquisa um registro único utilizando uma entidade exemplo.
+	 * 
+	 * @param restrictions
+	 * @param useOperatorOr - Habilita a utilização do operador OR nas {@link Restriction}.
+	 * @param entityGraphName
+	 * 	Nome do {@link EntityGraph} a ser utilizado na query. Pode ser nulo.
+	 * @return
+	 * @throws SearchException
+	 * @throws NonUniqueResultException
+	 */
+	public SearchUniqueResult<E> findUniqueByRestrictions(
+			List<Restriction> restrictions, boolean useOperatorOr, String entityGraphName) throws SearchException,
+			NonUniqueResultException;
+
 
 }

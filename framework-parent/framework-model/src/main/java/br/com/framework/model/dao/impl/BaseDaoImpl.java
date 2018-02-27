@@ -144,10 +144,10 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		return findByRestrictions(restrictions, first, max, null, orderings);
 	}
 	
+	@Override
 	@SuppressWarnings("rawtypes")
-	public SearchResult<E> findByRestrictions(
-			List<Restriction> restrictions, int first, int max, String entityGraphName,
-			Ordering... orderings) throws SearchException, PersistenceException {
+	public SearchResult<E> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr, int first, int max,
+			String entityGraphName, Ordering... orderings) throws SearchException, PersistenceException {
 		long start = System.currentTimeMillis();
 		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<E> criteriaQuery = cBuilder.createQuery(getEntityClass());
@@ -157,7 +157,12 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		addDefaultRestrictionFieldStatus(restrictions);
 		List<Predicate> predicates = createQueryRestrictionsPredicates(restrictions, cBuilder, criteriaQuery, from, mapFieldPaths);
 		if (!predicates.isEmpty()) {
-			criteriaQuery.where(predicates.toArray(new Predicate[0]));
+			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
+			if (useOperatorOr) {
+				criteriaQuery.where(cBuilder.or(predicatesArray));
+			} else {
+				criteriaQuery.where(predicatesArray);
+			}
 		}
 		if (orderings != null && orderings.length > 0) {
 			List<javax.persistence.criteria.Order> orders = new ArrayList<javax.persistence.criteria.Order>();
@@ -216,6 +221,15 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		List<E> resultList = query.getResultList();
 		return getSearchUtil().searchResult(getEntityClass(), resultList, System.currentTimeMillis() - start);
 	}
+
+	/* (non-Javadoc)
+	 * @see br.com.framework.model.dao.api.BaseDao#findByRestrictions(java.util.List, int, int, java.lang.String, br.com.framework.search.impl.Ordering[])
+	 */
+	public SearchResult<E> findByRestrictions(
+			List<Restriction> restrictions, int first, int max, String entityGraphName,
+			Ordering... orderings) throws SearchException, PersistenceException {
+		return this.findByRestrictions(restrictions, false, first, max, entityGraphName, orderings);
+	}
 	
 	/**
 	 * Adiciona uma restrição padrão para o campo status das entidades na hierarquia de {@link BaseEntityAudited}
@@ -240,19 +254,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	@Override
 	public SearchUniqueResult<Long> getCountFindByRestrictions(
 			List<Restriction> restrictions) throws SearchException {
-		long start = System.currentTimeMillis();
-		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = cBuilder.createQuery(Long.class);
-		Root<E> from = criteriaQuery.from(getEntityClass());
-		criteriaQuery.select(cBuilder.count(from));
-		addDefaultRestrictionFieldStatus(restrictions);
-		List<Predicate> predicates = createQueryRestrictionsPredicates(restrictions, cBuilder, criteriaQuery, from, new HashMap<String, Path<?>>());
-		if (!predicates.isEmpty()) {
-			criteriaQuery.where(predicates.toArray(new Predicate[0]));
-		}
-		TypedQuery<Long> query = getEntityManager().createQuery(criteriaQuery);
-		Long result = query.getSingleResult();
-		return getSearchUtil().searchUniqueResult(Long.class, result, System.currentTimeMillis() - start);
+		return this.getCountFindByRestrictions(restrictions, false);
 	}
 	
 
@@ -315,19 +317,23 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		return findUniqueByExample(e, null);
 	}
 	
-	/**
-	 * Consulta um registro único com base na lista de {@link Restriction}
-	 * 
-	 * @param restrictions
-	 * @param entityGraphName
-	 * @return
-	 * @throws SearchException
-	 * @throws NonUniqueResultException
+	/* (non-Javadoc)
+	 * @see br.com.framework.model.dao.api.BaseDao#findUniqueByRestrictions(java.util.List, java.lang.String)
 	 */
+	@Override
 	public SearchUniqueResult<E> findUniqueByRestrictions(
 			List<Restriction> restrictions, String entityGraphName) throws SearchException,
 			NonUniqueResultException {
-		SearchResult<E> searchResult = findByRestrictions(restrictions, -1, -1, entityGraphName);
+		return findUniqueByRestrictions(restrictions, false, entityGraphName);
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.framework.model.dao.api.BaseDao#findUniqueByRestrictions(java.util.List, boolean, java.lang.String)
+	 */
+	@Override
+	public SearchUniqueResult<E> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr,
+			String entityGraphName) throws SearchException, NonUniqueResultException {
+		SearchResult<E> searchResult = findByRestrictions(restrictions, useOperatorOr, -1, -1, entityGraphName);
 		if (!searchResult.getResults().isEmpty()) {
 			if (searchResult.getResults().size() > 1) {
 				throw new NonUniqueResultException();
@@ -338,7 +344,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			return searchUtil.searchUniqueResult(getDocumentClass(), null, searchResult.getExecutionTime());
 		}
 	}
-	
+
 	/**
 	 * Verifica se o tipo é equivalente da tipos de Data. 
 	 * 
@@ -803,6 +809,47 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	public SearchResult<E> findByRestriction(Restriction restriction, String entityGraphName, Ordering... orderings)
 			throws SearchException {
 		return findByRestriction(restriction, -1, -1, entityGraphName, orderings);
+	}
+
+	@Override
+	public SearchUniqueResult<E> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr)
+			throws SearchException, NonUniqueResultException {
+		return findUniqueByRestrictions(restrictions, useOperatorOr, null);
+	}
+
+	@Override
+	public SearchResult<E> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr,
+			Ordering... orderings) throws SearchException {
+		return findByRestrictions(restrictions, useOperatorOr, -1, -1, orderings);
+	}
+
+	@Override
+	public SearchResult<E> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr, int first, int max,
+			Ordering... orderings) throws SearchException {
+		return findByRestrictions(restrictions, useOperatorOr, first, max, null, orderings);
+	}
+
+	@Override
+	public SearchUniqueResult<Long> getCountFindByRestrictions(List<Restriction> restrictions, boolean useOperatorOr)
+			throws SearchException {
+		long start = System.currentTimeMillis();
+		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = cBuilder.createQuery(Long.class);
+		Root<E> from = criteriaQuery.from(getEntityClass());
+		criteriaQuery.select(cBuilder.count(from));
+		addDefaultRestrictionFieldStatus(restrictions);
+		List<Predicate> predicates = createQueryRestrictionsPredicates(restrictions, cBuilder, criteriaQuery, from, new HashMap<String, Path<?>>());
+		if (!predicates.isEmpty()) {
+			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
+			if (useOperatorOr) {
+				criteriaQuery.where(cBuilder.or(predicatesArray));
+			} else {
+				criteriaQuery.where(predicatesArray);
+			}
+		}
+		TypedQuery<Long> query = getEntityManager().createQuery(criteriaQuery);
+		Long result = query.getSingleResult();
+		return getSearchUtil().searchUniqueResult(Long.class, result, System.currentTimeMillis() - start);
 	}
 
 }

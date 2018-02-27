@@ -521,17 +521,17 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	public PaginatedResourceResponse<R> findByRestrictions(
 			FindByRestrictionsRequest request) {
 		PaginatedResourceResponse<R> response = new PaginatedResourceResponseImpl<R>();
-		SearchUniqueResult<Long> countFindByRestrictions = getSearch().getCountFindByRestrictions(request.getRestrictions());
+		SearchUniqueResult<Long> countFindByRestrictions = getSearch().getCountFindByRestrictions(request.getRestrictions(), request.isUseOperatorOr());
 		if (countFindByRestrictions != null && countFindByRestrictions.getUniqueResult() != null) {
 			response.setTotalRecords(countFindByRestrictions.getUniqueResult());
 		}
 		SearchResult<E> findByRestrictions = null;
 		if (BaseDao.class.isAssignableFrom(getSearch().getClass())) {
-			findByRestrictions = ((BaseDao)getSearch()).findByRestrictions(request.getRestrictions(), 
+			findByRestrictions = ((BaseDao)getSearch()).findByRestrictions(request.getRestrictions(), request.isUseOperatorOr(), 
 					request.getFirst(), request.getMax(), request.getEntityGraphName(),
 					request.getOrderings().toArray(new Ordering[0]));
 		} else {
-			findByRestrictions = getSearch().findByRestrictions(request.getRestrictions(), 
+			findByRestrictions = getSearch().findByRestrictions(request.getRestrictions(), request.isUseOperatorOr(), 
 					request.getFirst(), request.getMax(), 
 					request.getOrderings().toArray(new Ordering[0]));
 		}
@@ -547,7 +547,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Long getCountFindByRestrictions(FindByRestrictionsRequest request) {
-		SearchUniqueResult<Long> countFindByRestrictions = getSearch().getCountFindByRestrictions(request.getRestrictions());
+		SearchUniqueResult<Long> countFindByRestrictions = getSearch().getCountFindByRestrictions(request.getRestrictions(), request.isUseOperatorOr());
 		Long result = 0L;
 		if (countFindByRestrictions != null) {
 			result = countFindByRestrictions.getUniqueResult();
