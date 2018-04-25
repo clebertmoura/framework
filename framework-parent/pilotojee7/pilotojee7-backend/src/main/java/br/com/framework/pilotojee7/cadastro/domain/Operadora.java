@@ -21,7 +21,7 @@ import br.com.framework.pilotojee7.core.domain.BaseEntityAuditedImpl;
  * @author Cleber Moura <cleber.moura@tecnofrota.com>
  */
 @Entity
-@Table(name = "OPERADORA", schema = "DBARCHETYPE01")
+@Table(name = "OPERADORA", schema = "CADASTRO")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Operadora extends BaseEntityAuditedImpl<Long>{
 
@@ -31,7 +31,7 @@ public class Operadora extends BaseEntityAuditedImpl<Long>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_OPERADORA")
-	@SequenceGenerator(name = "SEQ_OPERADORA", schema = "DBARCHETYPE01", sequenceName = "SEQ_OPERADORA", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_OPERADORA", schema = "CADASTRO", sequenceName = "SEQ_OPERADORA", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_OPERADORA")
 	public Long getId() {
 		return super.getId();

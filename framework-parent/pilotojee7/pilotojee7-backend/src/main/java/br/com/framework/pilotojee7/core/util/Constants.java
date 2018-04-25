@@ -42,4 +42,20 @@ public abstract class Constants extends br.com.framework.model.util.Constants{
 	public static final long LOGIN_TEMPO_RENOVA_SENHA = 90 * UM_DIA_EM_MILLIS;
 	public static final String LOGIN_REGEX_PATTERN = "((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=[\\S]+$).{8,})";
 	
+	/**
+	 * Keycloak
+	 */
+	public static final String KEYCLOAK_AUTHSERVERURL= "keycloak.auth-server-url";
+	public static final String KEYCLOAK_REALM= "keycloak.realm";
+	public static final String KEYCLOAK_USERNAME= "keycloak.username";
+	public static final String KEYCLOAK_PASSWORD= "keycloak.password";
+	public static final String KEYCLOAK_CLIENTID= "keycloak.clientId";
+	public static final String KEYCLOAK_CLIENTSECRET= "keycloak.clientSecret";
+	
+	/**
+	 * App System Base Path
+	 */
+	public static final String APP_SYSTEM_BASEPATH = "app.system.basePath";
+	public static final String APP_RELATORIOS_PATH = "relatorios";
+	
 }

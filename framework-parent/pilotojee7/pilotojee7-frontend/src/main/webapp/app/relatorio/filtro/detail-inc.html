@@ -1,0 +1,96 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': FiltroForm.nome.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nome">Nome</label>					        
+				            <input id="nome" name="nome" type="text" class="form-control" ng-model="vmFiltro.entity.nome"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmFiltro.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="FiltroForm.nome.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="FiltroForm.nome.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="FiltroForm.nome.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': FiltroForm.descricao.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="descricao">Descri&ccedil;&atilde;o</label>					        
+				            <input id="descricao" name="descricao" type="text" class="form-control" ng-model="vmFiltro.entity.descricao"
+							ng-maxlength="255" ng-disabled="vmFiltro.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="FiltroForm.descricao.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-2">
+		    		<div class="form-group" ng-class="{'has-error': FiltroForm.flagSql.$invalid}">
+		    			<div class="col-sm-12">
+				        	<label for="dados">Origem de dados</label>					        
+				            <div class="radio">
+				            	<label>
+									<input type="radio" name="flagSql" id="flagSqlS" value="S" ng-model="vmFiltro.entity.flagSql" checked="" ng-disabled="vmFiltro.viewMode" ng-click="vmFiltro.selectFlagSql()"> SQL &nbsp;
+								</label>
+								&nbsp;
+								<label>
+									<input type="radio" name="flagSql" id="flagSqlN" value="N" ng-model="vmFiltro.entity.flagSql" ng-disabled="vmFiltro.viewMode" ng-click="vmFiltro.selectFlagSql()"> JSON
+								</label>
+				            </div>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-7">
+		    		<div class="form-group" ng-class="{'has-error': FiltroForm.dados.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="dados" ng-show="vmFiltro.entity.flagSql == 'S'">SQL (Informar uma query que retorne chave/valor)</label>
+				        	<label for="dados" ng-show="vmFiltro.entity.flagSql == 'N'">JSON (Informar uma string JSON chave/valor)</label>
+				        	<textarea rows="6" cols="40" id="dados" name="dados" class="form-control" 
+				        		ng-model="vmFiltro.entity.dados" ng-disabled="vmFiltro.viewMode" />					        
+			            	<span class="help-block error" ng-show="FiltroForm.dados.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-3">
+		    		<div class="form-group">
+			    		<div class="col-sm-12">
+				        	<label for="dadosExemplo">Exemplo</label>
+				        	<textarea rows="6" cols="20" id="dadosExemplo" name="dadosExemplo" class="form-control" 
+				        		ng-model="vmFiltro.dadosExemplo" ng-disabled="true" />					        
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-2">
+		    		<div class="form-group" ng-class="{'has-error': FiltroForm.tipoFiltro.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="tipoFiltro">Tipo do filtro</label>					        
+				            <ui-select id="tipoFiltro" name="tipoFiltro" ng-model="vmFiltro.entity.tipoFiltro" theme="bootstrap" 
+				            	on-select="vmFiltro.onSelectTipoFiltro($item, $model)"
+				            	ng-disabled="vmFiltro.viewMode" ng-required="true">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.label}}</ui-select-match>
+							    <ui-select-choices repeat="item.key as item in vmFiltro.tipoFiltroList | filter: { label: $select.search }">
+							        <div ng-bind-html="item.label | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+			            	<span class="help-block error" ng-show="FiltroForm.tipoFiltro.$error.required">obrigatório</span>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-6">
+		    		<div class="form-group">
+			    		<div class="col-sm-12">
+			    			<label>Pré-visualização</label>
+			    			<filtro filtro-model="vmFiltro.entity" ng-model="vmFiltro.teste" controller="vmFiltro"></filtro>	
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

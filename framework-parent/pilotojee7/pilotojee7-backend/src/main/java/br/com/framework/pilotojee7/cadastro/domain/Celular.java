@@ -21,7 +21,7 @@ import br.com.framework.pilotojee7.core.domain.BaseEntityAuditedImpl;
 import br.com.framework.pilotojee7.core.enums.SimNao;
 
 @Entity
-@Table(name = "CELULAR", schema = "DBARCHETYPE01")
+@Table(name = "CELULAR", schema = "CADASTRO")
 public class Celular extends BaseEntityAuditedImpl<Long> {
 	
 	private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public class Celular extends BaseEntityAuditedImpl<Long> {
 	@Override
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CELULAR")
-	@SequenceGenerator(name = "SEQ_CELULAR", schema = "DBARCHETYPE01", sequenceName = "SEQ_CELULAR", allocationSize = 1, initialValue = 0)
+	@SequenceGenerator(name = "SEQ_CELULAR", schema = "CADASTRO", sequenceName = "SEQ_CELULAR", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_CELULAR")
 	public Long getId() {
 		return super.getId();

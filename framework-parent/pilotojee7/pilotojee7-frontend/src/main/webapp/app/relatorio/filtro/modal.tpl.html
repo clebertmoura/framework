@@ -1,0 +1,22 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header modal-primary">
+			<div class="row">
+				<div class="col-lg-9">
+					<h3>Filtro</h3>
+				</div>
+			</div>
+		</div>
+		<div class="modal-body">
+			<form id="FiltroForm" name="FiltroForm" class="form-horizontal" role="form">
+			
+				<ng-include src="'app/relatorio/filtro/detail-inc.html'"></ng-include>
+				
+				<div class="modal-footer">
+					<button class="btn btn-primary" ng-click="vmFiltro.onClickModalConfirmar()">Confirmar</button>
+					<button class="btn btn-warning" ng-click="vmFiltro.onClickModalCancelar()">Cancelar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

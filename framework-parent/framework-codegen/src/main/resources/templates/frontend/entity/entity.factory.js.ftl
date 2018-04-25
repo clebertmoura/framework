@@ -5,6 +5,8 @@
 	angular
 		.module('app.${entityNameCamelCase}')
 		.factory('${entityName}Factory', ${entityName}Factory);
+		
+	${entityName}Factory.$inject = ['$resource', 'Constants'];
 	
 	function ${entityName}Factory($resource, Constants) {
 		var resourceUrl = Constants.backendUrl + '${entityNameCamelCase}/';

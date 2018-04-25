@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import br.com.framework.pilotojee7.core.domain.BaseEntityAuditedImpl;
 
 @Entity
-@Table(name="IMAGEM", schema="DBARCHETYPE01")
+@Table(name="IMAGEM", schema="CADASTRO")
 @AttributeOverrides({
 	@AttributeOverride(name = "createDate", column = @Column(name = "PROC_DH_CRIACAO", nullable = false)),
 	@AttributeOverride(name = "lastModifiedDate", column = @Column(name = "IMAGEM_DH_MODIFICACAO", nullable = false)),
@@ -39,7 +39,7 @@ public class Imagem extends BaseEntityAuditedImpl<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_IMAGEM")
-	@SequenceGenerator(name = "SEQ_IMAGEM", schema = "DBARCHETYPE01", sequenceName = "SEQ_IMAGEM", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_IMAGEM", schema = "CADASTRO", sequenceName = "SEQ_IMAGEM", allocationSize = 1, initialValue = 1)
 	@Column(name = "IMAGEM_ID")
 	public Long getId() {
 		return super.getId();

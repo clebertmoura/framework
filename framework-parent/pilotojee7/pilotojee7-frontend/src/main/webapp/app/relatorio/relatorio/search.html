@@ -1,0 +1,162 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		Relatorio <small>Listagem</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Cadastros</a></li>
+		<li class="active">Relatorio</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<!-- Box das ações no formulário -->
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Ações</h3>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body">
+			<a class="btn btn-primary btn-sm" href="#/Relatorio/new"><i class="fa fa-plus"></i> Criar</a>
+		</div>
+	</div>
+
+	<!-- Box dos filtros -->
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Filtro</h3>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body">
+			<form id="RelatorioSearch">
+			
+			
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="nome">Nome</label>					        
+					        <input id="nome" name="nome" class="form-control" type="text" ng-model="vmRelatorio.searchData.nome" placeholder="Filtrar por nome"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="descricao">Descri&ccedil;&atilde;o</label>					        
+					        <input id="descricao" name="descricao" class="form-control" type="text" ng-model="vmRelatorio.searchData.descricao" placeholder="Filtrar por descricao"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+					    	<label for="permissao">Permiss&atilde;o</label>					        
+					        <input id="permissao" name="permissao" class="form-control" type="text" ng-model="vmRelatorio.searchData.permissao" placeholder="Filtrar por permissao"></input>
+					    </div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+				    		<label for="habilitado">Habilitado</label>					        
+				            <ui-select id="habilitado" name="habilitado" ng-model="vmRelatorio.searchData.habilitado" theme="bootstrap">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.label}}</ui-select-match>
+							    <ui-select-choices repeat="item.key as item in vmRelatorio.habilitadoList | filter: { label: $select.search }">
+							        <div ng-bind-html="item.label | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+			    </div>
+			    
+				
+				<div class="row">
+					<div class="col-md-12">
+			    		<div class="form-group">
+				    		<label for="categoria">Categoria</label>					        
+				            <ui-select id="categoria" name="categoria" ng-model="vmRelatorio.searchData.categoria" theme="bootstrap">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.nome}}</ui-select-match>
+							    <ui-select-choices repeat="categoria in vmRelatorio.categoriaList track by categoria.id"
+							    	refresh="vmRelatorio.listarCategoria($select.search)" refresh-delay="300">
+							        <div ng-bind-html="categoria.nome | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+			    </div>
+				
+	
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+				            <a id="Search" name="Search" class="btn btn-primary" ng-click="vmRelatorio.search()"><span class="glyphicon glyphicon-search"></span> Buscar</a>
+				        </div>
+					</div>
+				</div>		        
+		    </form>
+		</div>
+	</div>
+
+	<!-- Box da listagem -->
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Listagem</h3>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body">
+			<div id="search-results">
+				<div class="table-responsive">
+					<table
+						class="table table-responsive table-bordered table-striped clearfix">
+						<thead>
+							<tr>
+								<th>Nome</th>								
+								<th width="20%">Ações</th>
+							</tr>
+						</thead>
+						<tbody id="search-results-body">
+							<tr ng-repeat="result in vmRelatorio.filteredResults | limitTo:pageSize">
+								<td><a href="" ng-click="vmRelatorio.view(result)">{{result.nome}}</a></td>
+								<td align="center">
+									<button type="button" class="btn btn-warning" ng-click="vmRelatorio.edit(result)"><i class="fa fa-edit"></i><span class="hidden-xs"> Editar</span></button>
+									<button type="button" class="btn btn-danger" ng-click="vmRelatorio.remove(result)"><i class="fa fa-trash"></i><span class="hidden-xs"> Remover</span></button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<ul class="pagination pagination-centered">
+					<li ng-class="{disabled:vmRelatorio.currentPage == 0}"><a id="prev" href ng-click="vmRelatorio.previous()">«</a></li>
+					<li ng-repeat="n in vmRelatorio.pageRange" ng-class="{active:vmRelatorio.currentPage == n}" ng-click="vmRelatorio.setPage(n)"><a href ng-bind="n + 1">1</a></li>
+					<li ng-class="{disabled: vmRelatorio.currentPage == (vmRelatorio.numberOfPages - 1)}">
+						<a id="next" href ng-click="vmRelatorio.next()">»</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- /.content -->

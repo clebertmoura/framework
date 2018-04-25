@@ -103,7 +103,7 @@
 			    
 				</#if>
 			<#else>
-				<#if !entityProperty.listAttribute>
+				<#if !entityProperty.listOrSetAttribute>
 				
 				<div class="row">
 					<div class="col-md-12">
@@ -168,14 +168,13 @@
 						</tbody>
 					</table>
 				</div>
-
-				<ul class="pagination pagination-centered">
-					<li ng-class="{disabled:vm${entityName}.currentPage == 0}"><a id="prev" href ng-click="vm${entityName}.previous()">«</a></li>
-					<li ng-repeat="n in vm${entityName}.pageRange" ng-class="{active:vm${entityName}.currentPage == n}" ng-click="vm${entityName}.setPage(n)"><a href ng-bind="n + 1">1</a></li>
-					<li ng-class="{disabled: vm${entityName}.currentPage == (vm${entityName}.numberOfPages - 1)}">
-						<a id="next" href ng-click="vm${entityName}.next()">»</a>
-					</li>
-				</ul>
+				
+				<ul uib-pagination total-items="vm${entityName}.totalRecords"
+					items-per-page="vm${entityName}.registersPerPage"
+					first-text="<<" previous-text="<" next-text=">" last-text=">>"
+					ng-change="vm${entityName}.setPage()"
+					ng-model="vm${entityName}.currentPage" max-size="vm${entityName}.pageSize" class="pagination-sm"
+					boundary-links="true" ></ul>
 			</div>
 		</div>
 	</div>

@@ -25,6 +25,8 @@ public class FindByRestrictionsRequest implements Serializable {
 	private Integer first;
 	private Integer max;
 	private List<Ordering> orderings = new ArrayList<Ordering>();
+	private String entityGraphName;
+	private boolean useOperatorOr = false;
 
 	/**
 	 * 
@@ -102,6 +104,22 @@ public class FindByRestrictionsRequest implements Serializable {
 	 */
 	public void setOrderings(List<Ordering> orderings) {
 		this.orderings = orderings;
+	}
+
+	public String getEntityGraphName() {
+		return entityGraphName;
+	}
+
+	public void setEntityGraphName(String entityGraphName) {
+		this.entityGraphName = entityGraphName;
+	}
+
+	public boolean isUseOperatorOr() {
+		return useOperatorOr;
+	}
+
+	public void setUseOperatorOr(boolean useOperatorOr) {
+		this.useOperatorOr = useOperatorOr;
 	}
 
 

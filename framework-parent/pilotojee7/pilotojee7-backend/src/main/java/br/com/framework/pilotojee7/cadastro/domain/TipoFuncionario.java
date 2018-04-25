@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 import br.com.framework.pilotojee7.core.domain.BaseEntityAuditedImpl;
 
 @Entity
-@Table(name = "TIPO_FUNCIONARIO", schema = "DBARCHETYPE01")
+@Table(name = "TIPO_FUNCIONARIO", schema = "CADASTRO")
 public class TipoFuncionario extends BaseEntityAuditedImpl<Long> {
 
 	private static final long serialVersionUID = -1970388193748757292L;
@@ -26,7 +26,7 @@ public class TipoFuncionario extends BaseEntityAuditedImpl<Long> {
 	@Override
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TIPO_FUNC")
-	@SequenceGenerator(name = "SEQ_TIPO_FUNC", schema = "DBARCHETYPE01", sequenceName = "SEQ_TIPO_FUNC", allocationSize = 1, initialValue = 0)
+	@SequenceGenerator(name = "SEQ_TIPO_FUNC", schema = "CADASTRO", sequenceName = "SEQ_TIPO_FUNC", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_TIPO_FUNC")
 	public Long getId() {
 		return super.getId();

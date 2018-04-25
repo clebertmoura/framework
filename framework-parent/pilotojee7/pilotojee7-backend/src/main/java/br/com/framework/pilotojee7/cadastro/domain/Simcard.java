@@ -33,7 +33,7 @@ import br.com.framework.pilotojee7.core.enums.SimNao;
  * @author Cleber Moura <cleber.moura@tecnofrota.com>
  */
 @Entity
-@Table(name = "SIMCARD", schema = "DBARCHETYPE01")
+@Table(name = "SIMCARD", schema = "CADASTRO")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Simcard extends BaseEntityAuditedImpl<Long>{
 
@@ -54,7 +54,7 @@ public class Simcard extends BaseEntityAuditedImpl<Long>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SIMCARD")
-	@SequenceGenerator(name = "SEQ_SIMCARD", schema = "DBARCHETYPE01", sequenceName = "SEQ_SIMCARD", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_SIMCARD", schema = "CADASTRO", sequenceName = "SEQ_SIMCARD", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_SIMCARD")
 	public Long getId() {
 		return super.getId();

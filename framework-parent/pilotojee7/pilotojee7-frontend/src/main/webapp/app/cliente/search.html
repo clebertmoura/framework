@@ -47,10 +47,10 @@
 					<div class="col-md-12">
 			    		<div class="form-group">
 				    		<label for="pessoa">Pessoa</label>					        
-				            <ui-select id="pessoa" name="pessoa" ng-model="vm.searchData.pessoa" theme="bootstrap">
+				            <ui-select id="pessoa" name="pessoa" ng-model="vmCliente.searchData.pessoa" theme="bootstrap">
 								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
-							    <ui-select-choices repeat="pessoa in vm.pessoaList track by pessoa.id"
-							    	refresh="vm.listarPessoa($select.search)" refresh-delay="300">
+							    <ui-select-choices repeat="pessoa in vmCliente.pessoaList track by pessoa.id"
+							    	refresh="vmCliente.listarPessoa($select.search)" refresh-delay="300">
 							        <div ng-bind-html="pessoa.id | highlight: $select.search"></div>
 							    </ui-select-choices>
 							</ui-select>
@@ -62,7 +62,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-				            <a id="Search" name="Search" class="btn btn-primary" ng-click="vm.search()"><span class="glyphicon glyphicon-search"></span> Buscar</a>
+				            <a id="Search" name="Search" class="btn btn-primary" ng-click="vmCliente.search()"><span class="glyphicon glyphicon-search"></span> Buscar</a>
 				        </div>
 					</div>
 				</div>		        
@@ -92,11 +92,11 @@
 							</tr>
 						</thead>
 						<tbody id="search-results-body">
-							<tr ng-repeat="result in vm.filteredResults | limitTo:pageSize">
-								<td><a href="" ng-click="vm.view(result)">{{result.id}}</a></td>
+							<tr ng-repeat="result in vmCliente.filteredResults | limitTo: vmCliente.pageSize">
+								<td><a href="" ng-click="vmCliente.view(result)">{{result.id}}</a></td>
 								<td align="center">
-									<button type="button" class="btn btn-warning" ng-click="vm.edit(result)"><i class="fa fa-edit"></i><span class="hidden-xs"> Editar</span></button>
-									<button type="button" class="btn btn-danger" ng-click="vm.remove(result)"><i class="fa fa-trash"></i><span class="hidden-xs"> Remover</span></button>
+									<button type="button" class="btn btn-warning" ng-click="vmCliente.edit(result)"><i class="fa fa-edit"></i><span class="hidden-xs"> Editar</span></button>
+									<button type="button" class="btn btn-danger" ng-click="vmCliente.remove(result)"><i class="fa fa-trash"></i><span class="hidden-xs"> Remover</span></button>
 								</td>
 							</tr>
 						</tbody>
@@ -104,10 +104,10 @@
 				</div>
 
 				<ul class="pagination pagination-centered">
-					<li ng-class="{disabled:vm.currentPage == 0}"><a id="prev" href ng-click="vm.previous()">«</a></li>
-					<li ng-repeat="n in vm.pageRange" ng-class="{active:vm.currentPage == n}" ng-click="vm.setPage(n)"><a href ng-bind="n + 1">1</a></li>
-					<li ng-class="{disabled: currentPage == (numberOfPages - 1)}">
-						<a id="next" href ng-click="vm.next()">»</a>
+					<li ng-class="{disabled:vmCliente.currentPage == 0}"><a id="prev" href ng-click="vmCliente.previous()">«</a></li>
+					<li ng-repeat="n in vmCliente.pageRange" ng-class="{active:vmCliente.currentPage == n}" ng-click="vmCliente.setPage(n)"><a href ng-bind="n + 1">1</a></li>
+					<li ng-class="{disabled: vmCliente.currentPage == (vmCliente.numberOfPages - 1)}">
+						<a id="next" href ng-click="vmCliente.next()">»</a>
 					</li>
 				</ul>
 			</div>

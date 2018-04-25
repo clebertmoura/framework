@@ -21,7 +21,7 @@
 		<!-- Frameworks -->
 		<version.framework>${project.parent.version}</version.framework>
 
-		<!-- Vers?es de depend?ncias gerais -->
+		<!-- Versões de dependências gerais -->
 		<version.solrj>4.10.4</version.solrj>
 		<version.commons-logging>1.2</version.commons-logging>
 		<version.commons-lang3>3.4</version.commons-lang3>
@@ -33,15 +33,17 @@
 		<version.gson>2.7</version.gson>
 		<version.hibernate-envers>5.0.1.Final</version.hibernate-envers>
 		<version.caelum-stella>2.1.2</version.caelum-stella>
-		<version.keycloak>2.0.0.Final</version.keycloak>
+		<version.keycloak>3.0.0.Final</version.keycloak>
 
-		<jackson.version>2.2.4</jackson.version>
-		<resteasy.version>2.3.7.Final</resteasy.version>
+		<jackson.version>2.7.4</jackson.version>
+		<resteasy.version>3.0.19.Final</resteasy.version>
 
 		<!-- Aplication Properties -->
 		<dataSource.jndiName>java:jboss/datasources/pilotojee7DataSource</dataSource.jndiName>
 		<jpaProvider.class>org.hibernate.jpa.HibernatePersistenceProvider</jpaProvider.class>
-		<jpaProvider.dialect>org.hibernate.dialect.H2Dialect</jpaProvider.dialect>
+		<!-- <jpaProvider.dialect>org.hibernate.dialect.H2Dialect</jpaProvider.dialect> -->
+		<jpaProvider.dialect>org.hibernate.dialect.PostgreSQL94Dialect</jpaProvider.dialect>
+		<!-- <jpaProvider.dialect>org.hibernate.dialect.Oracle12cDialect</jpaProvider.dialect> -->
 		<jtaPlatform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</jtaPlatform>
 		<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
 
@@ -94,7 +96,7 @@
 			<properties>
 				<!-- JBoss dependency versions -->
 				<org.jboss.spec.javaee7.bom>1.0.3.Final</org.jboss.spec.javaee7.bom>
-				<version.wildfly.maven.plugin>1.1.0.Alpha7</version.wildfly.maven.plugin>
+				<version.wildfly.maven.plugin>1.2.0.Alpha5</version.wildfly.maven.plugin>
 				<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
 			</properties>
 			<build>
@@ -224,37 +226,82 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<keycloak.realm>master</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.clientId.backend>e5723589-704a-4880-bab8-3d40077d1bc8</keycloak.clientId.backend>
+				<keycloak.clientId.frontend>9192c33e-7269-4a38-bbb6-e9e4a41a774b</keycloak.clientId.frontend>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.username>trinity.auth</keycloak.username>
+				<keycloak.password>trinity@dm1n</keycloak.password>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlIDYoxV4rW3gqenMnyEOoZfj/ERYe9gdKx3WtDL+bJblu9aZ8hqSYH+GSuxpJR/j1oBEpQn+u2FGed153usp8NFytZ8S+CJ2TCmFlIZayETh7GsLjJobNmH8C0jjFIilfW8ccvOO8K/orlDjL+v4uR8df4gYGt7PKfy5hV5rr/7kgVFuey9Nxiyoaz3duT586zAGlwbL8w/pdQPqaTvMUB8/bGDx/GDZORwvdyXNH4/yCgv4KMdT9EeHfwC1Acij5br2mMfxr2mcuuIZAyVj4NFqvJb+A201h5rwcHU3QeH0Nw7HfVm86tZvk8ferAPdAp9TBJC10Xi7eHDHGfw0fwIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>http://localhost:8080/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>http://localhost:8080</keycloak.rootUrl>
+				<pushServer.serverUrl>https://aerogear-rodrigolourenco.rhcloud.com/ag-push/</pushServer.serverUrl>
+				<pushServer.applicationId>a20f56ec-6fe4-43c0-9588-f9c20b4afe2e</pushServer.applicationId>
+				<pushserver.masterSecret>4d837715-0977-4872-a0b5-14f234d2e874</pushserver.masterSecret>
+				<pushserver.defaultTtl>172800</pushserver.defaultTtl> <!-- Tempo em segundos -->
+				<pushserver.defaultSound>default</pushserver.defaultSound>
+				<pushserver.defaultBadge>1</pushserver.defaultBadge>
+				<app.system.basePath>C:/Users/clebe/pilotojee7-basedir</app.system.basePath>
 			</properties>
 		</profile>
 		<profile>
 			<id>testes</id>
 			<properties>
-				<keycloak.realm>master</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>http://localhost:8080/auth</keycloak.auth-server-url>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.clientId.backend>informar o clientId de testes</keycloak.clientId.backend>
+				<keycloak.clientId.frontend>informar o clientId de testes</keycloak.clientId.frontend>
+				<keycloak.username>pilotojee7.auth</keycloak.username>
+				<keycloak.password>pilotojee7@dm1n</keycloak.password>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlIDYoxV4rW3gqenMnyEOoZfj/ERYe9gdKx3WtDL+bJblu9aZ8hqSYH+GSuxpJR/j1oBEpQn+u2FGed153usp8NFytZ8S+CJ2TCmFlIZayETh7GsLjJobNmH8C0jjFIilfW8ccvOO8K/orlDjL+v4uR8df4gYGt7PKfy5hV5rr/7kgVFuey9Nxiyoaz3duT586zAGlwbL8w/pdQPqaTvMUB8/bGDx/GDZORwvdyXNH4/yCgv4KMdT9EeHfwC1Acij5br2mMfxr2mcuuIZAyVj4NFqvJb+A201h5rwcHU3QeH0Nw7HfVm86tZvk8ferAPdAp9TBJC10Xi7eHDHGfw0fwIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>http://[host:port]/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>http://localhost:8080</keycloak.rootUrl>
+				<pushServer.serverUrl>https://[host:port]/ag-push/</pushServer.serverUrl>
+				<pushServer.applicationId>a20f56ec-6fe4-43c0-9588-f9c20b4afe2e</pushServer.applicationId>
+				<pushserver.masterSecret>4d837715-0977-4872-a0b5-14f234d2e874</pushserver.masterSecret>
+				<pushserver.defaultTtl>172800</pushserver.defaultTtl> <!-- Tempo em segundos -->
+				<pushserver.defaultSound>default</pushserver.defaultSound>
+				<pushserver.defaultBadge>1</pushserver.defaultBadge>
+				<app.system.basePath>/home/wildfly/pilotojee7-basedir</app.system.basePath>
 			</properties>
 		</profile>
 		<profile>
 			<id>homologacao</id>
 			<properties>
-				<keycloak.realm>master</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>http://localhost:8080/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>http://localhost:8080</keycloak.rootUrl>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.clientId.backend>informar o clientId de homologacao</keycloak.clientId.backend>
+				<keycloak.clientId.frontend>informar o clientId de homologacao</keycloak.clientId.frontend>
+				<keycloak.username>pilotojee7.auth</keycloak.username>
+				<keycloak.password>pilotojee7@dm1n</keycloak.password>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqySFKhPR1rP3g9S2wkYdQangEMAUhjZMl6Couf8fYFgzI+wCHUv0FRWicBj0ckZeBrdpX0GCCxA2i0Q5gFG0S6YB0E9sMgFELO6CFss4VUw/Vx5+RZl1WIBph4OOpf8ARzt6fAFSvDTGK8oGYJ4InhYdiyj5v5b+Dy5Md24+D+gA0UqVxVutAvi+B3p3nWElgckFt9o5rsuEF/RJMkG80buQe9acKqJYwvTUSllrRBuReDhfX4c+3qql+SKwDwnrBKSDu0urJvIm6graumFNwXA+7kQQRt6PxEWMdQ+J9OiJgto2CqnJzjSGiIQ+hXUrhfrqzZi/PuoCetbQx2AzeQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://[host:port]/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://[host:port]</keycloak.rootUrl>
+				<pushServer.serverUrl>https://[host:port]/ag-push/</pushServer.serverUrl>
+				<pushServer.applicationId>6d486e42-3d3e-4a39-80ca-6ddd43d5577d</pushServer.applicationId>
+				<pushserver.masterSecret>4839e0b2-290c-45a4-b841-9185fb1b95b1</pushserver.masterSecret>
+				<pushserver.defaultTtl>172800</pushserver.defaultTtl> <!-- Tempo em segundos -->
+				<pushserver.defaultSound>default</pushserver.defaultSound>
+				<pushserver.defaultBadge>1</pushserver.defaultBadge>
+				<app.system.basePath>/home/wildfly/pilotojee7-basedir</app.system.basePath>
 			</properties>
 		</profile>
 		<profile>
 			<id>producao</id>
 			<properties>
-				<keycloak.realm>master</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>http://localhost:8080/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>http://localhost:8080</keycloak.rootUrl>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.clientId.backend>informar o clientId de producao</keycloak.clientId.backend>
+				<keycloak.clientId.frontend>informar o clientId de producao</keycloak.clientId.frontend>
+				<keycloak.username>pilotojee7.auth</keycloak.username>
+				<keycloak.password>pilotojee7@dm1n</keycloak.password>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqySFKhPR1rP3g9S2wkYdQangEMAUhjZMl6Couf8fYFgzI+wCHUv0FRWicBj0ckZeBrdpX0GCCxA2i0Q5gFG0S6YB0E9sMgFELO6CFss4VUw/Vx5+RZl1WIBph4OOpf8ARzt6fAFSvDTGK8oGYJ4InhYdiyj5v5b+Dy5Md24+D+gA0UqVxVutAvi+B3p3nWElgckFt9o5rsuEF/RJMkG80buQe9acKqJYwvTUSllrRBuReDhfX4c+3qql+SKwDwnrBKSDu0urJvIm6graumFNwXA+7kQQRt6PxEWMdQ+J9OiJgto2CqnJzjSGiIQ+hXUrhfrqzZi/PuoCetbQx2AzeQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://[host:port]/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://[host:port]</keycloak.rootUrl>
+				<pushServer.serverUrl>https://[host:port]/ag-push/</pushServer.serverUrl>
+				<pushServer.applicationId>6d486e42-3d3e-4a39-80ca-6ddd43d5577d</pushServer.applicationId>
+				<pushserver.masterSecret>2c714f8b-d22e-45f2-a517-faebffcc35e0</pushserver.masterSecret>
+				<pushserver.defaultTtl>172800</pushserver.defaultTtl> <!-- Tempo em segundos -->
+				<pushserver.defaultSound>default</pushserver.defaultSound>
+				<pushserver.defaultBadge>1</pushserver.defaultBadge>
+				<app.system.basePath>/home/wildfly/pilotojee7-basedir</app.system.basePath>
 			</properties>
 		</profile>
 	</profiles>
@@ -278,6 +325,6 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>2.3.0</version>
+		<version>2.3.3</version>
 	</parent>
 </project>

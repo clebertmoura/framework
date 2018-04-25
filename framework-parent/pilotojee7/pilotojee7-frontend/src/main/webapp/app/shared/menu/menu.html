@@ -1,0 +1,126 @@
+<!-- sidebar menu: : style can be found in sidebar.less -->
+
+<ul class="sidebar-menu sidemenu-bar" ng-controller="MenuController as vm">
+	<li access="Cadastros.view" class="treeview">
+		<a href="">
+			<i class="fa fa-edit"></i><span>Cadastros</span><i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu">
+			<li>
+				<a href="#/Pais"> <i class="fa fa-dashboard"></i>
+					<span>Pa&iacute;s</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Uf"> <i class="fa fa-dashboard"></i>
+					<span>UF</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Cidade"> <i class="fa fa-dashboard"></i>
+					<span>Cidade</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Bairro"> <i class="fa fa-dashboard"></i>
+					<span>Bairro</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Empresa"> <i class="fa fa-dashboard"></i>
+					<span>Empresa</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Filial"> <i class="fa fa-dashboard"></i>
+					<span>Filial</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/TipoFuncionario"> <i class="fa fa-dashboard"></i>
+					<span>Tipo de Funcion&aacute;rio</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Funcionario"> <i class="fa fa-dashboard"></i>
+					<span>Funcion&aacute;rio</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Cliente"> <i class="fa fa-dashboard"></i>
+					<span>Cliente</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Operadora"> <i class="fa fa-dashboard"></i>
+					<span>Operadora</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Simcard"> <i class="fa fa-dashboard"></i>
+					<span>Simcard</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Fabricante"> <i class="fa fa-dashboard"></i>
+					<span>Fabricante</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/ModeloCelular"> <i class="fa fa-dashboard"></i>
+					<span>Modelo de Celular</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/Celular"> <i class="fa fa-dashboard"></i>
+					<span>Celular</span>
+				</a>
+			</li>
+		</ul>
+	</li>
+
+	<li access="Relatorios.view" class="treeview">
+		<a href="">
+			<i class="fa fa-cog"></i><span>Relat&oacute;rios</span><i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu">
+			<li access="Categoria.list,Categoria.view">
+				<a href="#/Categoria"><i class="fa fa-circle-o"></i>
+					<span>Categoria</span>
+				</a>
+			</li>	
+			<li access="Filtro.list,Filtro.view">
+				<a href="#/Filtro"><i class="fa fa-circle-o"></i>
+					<span>Filtro</span>
+				</a>
+			</li>	
+			<li access="Relatorio.list,Relatorio.view">
+				<a href="#/Relatorio"><i class="fa fa-circle-o"></i>
+					<span>Relat&oacute;rio</span>
+				</a>
+			</li>
+			<li access="Relatorios.executar">
+				<a href="#/ExecutarRelatorios"><i class="fa fa-circle-o"></i>
+					<span>Executar</span>
+				</a>
+			</li>
+		</ul>
+	</li>
+	
+	<li access="Configuracoes.view" class="treeview">
+		<a href="">
+			<i class="fa fa-cog"></i><span>Configurações</span><i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu">
+			<li access="ParametroSistema.list,ParametroSistema.view">
+				<a href="#/ParametroSistema"><i class="fa fa-circle-o"></i>Par&acirc;metro do Sistema</a>
+			</li>
+			<li access="KeycloakGrupo.list,KeycloakGrupo.view">
+				<a href="#/KeycloakGrupo"><i class="fa fa-circle-o"></i>Grupo de Usu&aacute;rio</a>
+			</li>
+			<li access="KeycloakUsuario.list,KeycloakUsuario.view">
+				<a href="#/KeycloakUsuario"><i class="fa fa-circle-o"></i>Usu&aacute;rio</a>
+			</li>
+		</ul>
+	</li>
+</ul>

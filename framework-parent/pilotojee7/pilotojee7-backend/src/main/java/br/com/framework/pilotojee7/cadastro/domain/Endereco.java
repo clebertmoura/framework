@@ -25,7 +25,7 @@ import br.com.framework.pilotojee7.core.domain.BaseEntityImpl;
  *
  */
 @Entity
-@Table(name = "ENDERECO", schema = "DBARCHETYPE01")
+@Table(name = "ENDERECO", schema = "CADASTRO")
 @Audited(targetAuditMode=RelationTargetAuditMode.NOT_AUDITED)
 public class Endereco extends BaseEntityImpl<Long>{
 
@@ -49,7 +49,7 @@ public class Endereco extends BaseEntityImpl<Long>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ENDERECO")
-	@SequenceGenerator(name = "SEQ_ENDERECO", schema = "DBARCHETYPE01", sequenceName = "SEQ_ENDERECO", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_ENDERECO", schema = "CADASTRO", sequenceName = "SEQ_ENDERECO", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_ENDERECO")
 	public Long getId() {
 		return super.getId();

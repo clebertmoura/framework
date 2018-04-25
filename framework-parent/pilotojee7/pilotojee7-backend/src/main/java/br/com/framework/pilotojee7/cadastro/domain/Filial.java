@@ -28,7 +28,7 @@ import br.com.framework.search.indexer.annotations.Indexed;
  *
  */
 @Entity
-@Table(name="FILIAL", schema = "DBARCHETYPE01")
+@Table(name="FILIAL", schema = "CADASTRO")
 @Indexed
 @Audited
 public class Filial extends BaseEntityAuditedImpl<Long> {
@@ -43,7 +43,7 @@ public class Filial extends BaseEntityAuditedImpl<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FILIAL")
-	@SequenceGenerator(name = "SEQ_FILIAL", schema = "DBARCHETYPE01", sequenceName = "SEQ_FILIAL", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_FILIAL", schema = "CADASTRO", sequenceName = "SEQ_FILIAL", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_FILIAL")
 	@DocumentId
 	public Long getId() {

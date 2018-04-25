@@ -34,7 +34,7 @@ import br.com.framework.search.indexer.annotations.DocumentId;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TIPO_PESSOA")
-@Table(name="PESSOA", schema = "DBARCHETYPE01")
+@Table(name="PESSOA", schema = "CADASTRO")
 @Audited
 public abstract class Pessoa extends IndexedBaseEntityImpl<Long> {
 	
@@ -49,7 +49,7 @@ public abstract class Pessoa extends IndexedBaseEntityImpl<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PESSOA")
-	@SequenceGenerator(name = "SEQ_PESSOA", schema = "DBARCHETYPE01", sequenceName = "SEQ_PESSOA", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_PESSOA", schema = "CADASTRO", sequenceName = "SEQ_PESSOA", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_PESSOA")
 	@DocumentId
 	public Long getId() {

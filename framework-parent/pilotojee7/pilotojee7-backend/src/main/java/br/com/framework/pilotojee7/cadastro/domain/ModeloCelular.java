@@ -22,7 +22,7 @@ import br.com.framework.pilotojee7.core.domain.BaseEntityImpl;
  *
  */
 @Entity
-@Table(name = "MODELO_CELULAR", schema = "DBARCHETYPE01")
+@Table(name = "MODELO_CELULAR", schema = "CADASTRO")
 @Audited
 public class ModeloCelular extends BaseEntityImpl<Long>{
 
@@ -33,7 +33,7 @@ public class ModeloCelular extends BaseEntityImpl<Long>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_MODELO_CEL")
-	@SequenceGenerator(name = "SEQ_MODELO_CEL", schema = "DBARCHETYPE01", sequenceName = "SEQ_MODELO_CEL", allocationSize = 1, initialValue = 1)
+	@SequenceGenerator(name = "SEQ_MODELO_CEL", schema = "CADASTRO", sequenceName = "SEQ_MODELO_CEL", allocationSize = 1, initialValue = 1)
 	@Column(name = "ID_MODELO_CEL")
 	public Long getId() {
 		return super.getId();

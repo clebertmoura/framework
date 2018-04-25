@@ -8,12 +8,12 @@ import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Dependent;
 import javax.interceptor.Interceptor;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.keycloak.KeycloakSecurityContext;
@@ -31,7 +31,7 @@ import br.com.framework.pilotojee7.backend.monitor.MonitorEndpoint;
 @Dependent
 @Interceptor
 @Provider
-@ServerInterceptor
+@PreMatching
 public class KeycloakRolesAllowedFilter implements javax.ws.rs.container.ContainerRequestFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KeycloakRolesAllowedFilter.class);
@@ -46,11 +46,24 @@ public class KeycloakRolesAllowedFilter implements javax.ws.rs.container.Contain
 	public void filter(ContainerRequestContext requestContext) {
 		Boolean hasClassAccess = null;
 		Boolean hasMethodAccess = null;
+		Boolean isAllowedEndpointWithoutToken = Boolean.FALSE;
+
+		// Checa se o endpoint a ser chamado pode ser acionado sem token
+		if (requestContext.getUriInfo() != null) {
+			if (requestContext.getUriInfo().getPath() != null) {
+				if (requestContext.getUriInfo().getPath().contains("/imagem/downloadAuthGET")) {
+					isAllowedEndpointWithoutToken = true;
+				}
+			}
+		}
 
 		// Recupera as informações do usuário autenticado pelo Keycloak.
-		KeycloakSecurityContext securityContext = (KeycloakSecurityContext) httpRequest.getAttribute(KeycloakSecurityContext.class.getName());
+		KeycloakSecurityContext securityContext = (KeycloakSecurityContext) httpRequest
+				.getAttribute(KeycloakSecurityContext.class.getName());
 		Boolean hasNoAuthToken = (securityContext == null || securityContext.getTokenString() == null ? true : false);
-		// System.out.println(String.format("[UsuarioEndpoint]: Usuario:'%s' token: '%s'", accessToken.getPreferredUsername(), securityContext.getTokenString()));
+		// System.out.println(String.format("[UsuarioEndpoint]: Usuario:'%s'
+		// token: '%s'", accessToken.getPreferredUsername(),
+		// securityContext.getTokenString()));
 
 		// Verifica se existem permissões configuradas para a classe chamada.
 		Class<?> resourceClass = resourceInfo.getResourceClass();
@@ -65,18 +78,19 @@ public class KeycloakRolesAllowedFilter implements javax.ws.rs.container.Contain
 					}
 				}
 			}
-		} else if(resourceClass.isAnnotationPresent(PermitAll.class)) {
+		} else if (resourceClass.isAnnotationPresent(PermitAll.class)) {
 			hasClassAccess = true;
-		} else if(resourceClass.isAnnotationPresent(DenyAll.class)) {
+		} else if (resourceClass.isAnnotationPresent(DenyAll.class)) {
 			hasClassAccess = false;
 		}
-		
+
 		// bypass para o endpoint de monitoramento
 		if (resourceClass.equals(MonitorEndpoint.class)) {
 			return;
 		}
-		
-		// Verifica se existem permissões configuradas para o método da classe chamada.
+
+		// Verifica se existem permissões configuradas para o método da classe
+		// chamada.
 		Method resourceMethod = resourceInfo.getResourceMethod();
 		if (resourceMethod.isAnnotationPresent(RolesAllowed.class)) {
 			String[] rolesAllowed = resourceMethod.getAnnotation(RolesAllowed.class).value();
@@ -89,13 +103,14 @@ public class KeycloakRolesAllowedFilter implements javax.ws.rs.container.Contain
 					}
 				}
 			}
-		} else if(resourceMethod.isAnnotationPresent(PermitAll.class)) {
+		} else if (resourceMethod.isAnnotationPresent(PermitAll.class)) {
 			hasMethodAccess = true;
-		} else if(resourceMethod.isAnnotationPresent(DenyAll.class)) {
+		} else if (resourceMethod.isAnnotationPresent(DenyAll.class)) {
 			hasMethodAccess = false;
 		}
 
-		if ((hasClassAccess != null && !hasClassAccess && hasMethodAccess == null) || (hasMethodAccess != null && !hasMethodAccess) || hasNoAuthToken) {
+		if ((hasClassAccess != null && !hasClassAccess && hasMethodAccess == null)
+				|| (hasMethodAccess != null && !hasMethodAccess) || hasNoAuthToken && !isAllowedEndpointWithoutToken) {
 			final ServerResponse serverResponse = new ServerResponse();
 			serverResponse.setStatus(Response.Status.UNAUTHORIZED.getStatusCode());
 			LOGGER.warn(serverResponse.toString());

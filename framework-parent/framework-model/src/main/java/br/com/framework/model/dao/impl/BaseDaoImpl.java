@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.Entity;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
@@ -58,7 +60,7 @@ import br.com.framework.util.reflection.ReflectionUtils;
  * @param <E> Entidade de domínio.
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<PK>> extends SearchImpl<PK, E>
 		implements BaseDao<PK, E> {
 
@@ -109,27 +111,58 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	protected SearchUtil getSearchUtil() {
 		return searchUtil;
 	}
+	
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	
+	public SearchUniqueResult<E> findById(PK id, String entityGraphName) throws SearchException, PersistenceException {
+		long start = System.currentTimeMillis();
+		Map<String, Object> hints = new HashMap<>();
+		if (entityGraphName != null) {
+			try{
+				EntityGraph graph = getEntityManager().getEntityGraph(entityGraphName);
+				hints.put("javax.persistence.fetchgraph", graph);
+			} catch (IllegalArgumentException e) {
+				logger.warn(String.format("EntityGraph %s não encontrado! O resultado será carregado de forma padrão.", entityGraphName), e);
+			}
+		}
+		E result = getEntityManager().find(getEntityClass(), id, hints);
+		return getSearchUtil().searchUniqueResult(getEntityClass(), result, System.currentTimeMillis() - start);
+	}
 
 	@Override
 	public SearchUniqueResult<E> findById(PK id) throws SearchException {
-		long start = System.currentTimeMillis();
-		E result = getEntityManager().find(getEntityClass(), id);
-		return getSearchUtil().searchUniqueResult(getEntityClass(), result, System.currentTimeMillis() - start);
+		return findById(id, null);
 	}
+	
 
 	@Override
 	public SearchResult<E> findByRestrictions(
 			List<Restriction> restrictions, int first, int max,
 			Ordering... orderings) throws SearchException {
+		return findByRestrictions(restrictions, first, max, null, orderings);
+	}
+	
+	@Override
+	@SuppressWarnings("rawtypes")
+	public SearchResult<E> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr, int first, int max,
+			String entityGraphName, Ordering... orderings) throws SearchException, PersistenceException {
 		long start = System.currentTimeMillis();
 		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<E> criteriaQuery = cBuilder.createQuery(getEntityClass());
+		criteriaQuery.distinct(true);
 		Root<E> from = criteriaQuery.from(getEntityClass());
 		Map<String, Path<?>> mapFieldPaths = new HashMap<String, Path<?>>();
 		addDefaultRestrictionFieldStatus(restrictions);
 		List<Predicate> predicates = createQueryRestrictionsPredicates(restrictions, cBuilder, criteriaQuery, from, mapFieldPaths);
 		if (!predicates.isEmpty()) {
-			criteriaQuery.where(predicates.toArray(new Predicate[0]));
+			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
+			if (useOperatorOr) {
+				criteriaQuery.where(cBuilder.or(predicatesArray));
+			} else {
+				criteriaQuery.where(predicatesArray);
+			}
 		}
 		if (orderings != null && orderings.length > 0) {
 			List<javax.persistence.criteria.Order> orders = new ArrayList<javax.persistence.criteria.Order>();
@@ -173,12 +206,29 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			}
 		}
 		TypedQuery<E> query = getEntityManager().createQuery(criteriaQuery);
+		if (entityGraphName != null) {
+			try{
+				EntityGraph graph = getEntityManager().getEntityGraph(entityGraphName);
+				query.setHint("javax.persistence.fetchgraph", graph);
+			} catch (IllegalArgumentException e) {
+				logger.warn(String.format("EntityGraph %s não encontrado! O resultado será carregado de forma padrão.", entityGraphName), e);
+			}
+		}
 		if (first > -1 && max > 0) {
 			query.setFirstResult(first);
 			query.setMaxResults(max);
 		}
 		List<E> resultList = query.getResultList();
 		return getSearchUtil().searchResult(getEntityClass(), resultList, System.currentTimeMillis() - start);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.framework.model.dao.api.BaseDao#findByRestrictions(java.util.List, int, int, java.lang.String, br.com.framework.search.impl.Ordering[])
+	 */
+	public SearchResult<E> findByRestrictions(
+			List<Restriction> restrictions, int first, int max, String entityGraphName,
+			Ordering... orderings) throws SearchException, PersistenceException {
+		return this.findByRestrictions(restrictions, false, first, max, entityGraphName, orderings);
 	}
 	
 	/**
@@ -204,42 +254,38 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	@Override
 	public SearchUniqueResult<Long> getCountFindByRestrictions(
 			List<Restriction> restrictions) throws SearchException {
-		long start = System.currentTimeMillis();
-		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = cBuilder.createQuery(Long.class);
-		Root<E> from = criteriaQuery.from(getEntityClass());
-		criteriaQuery.select(cBuilder.count(from));
-		addDefaultRestrictionFieldStatus(restrictions);
-		List<Predicate> predicates = createQueryRestrictionsPredicates(restrictions, cBuilder, criteriaQuery, from, new HashMap<String, Path<?>>());
-		if (!predicates.isEmpty()) {
-			criteriaQuery.where(predicates.toArray(new Predicate[0]));
-		}
-		TypedQuery<Long> query = getEntityManager().createQuery(criteriaQuery);
-		Long result = query.getSingleResult();
-		return getSearchUtil().searchUniqueResult(Long.class, result, System.currentTimeMillis() - start);
+		return this.getCountFindByRestrictions(restrictions, false);
+	}
+	
+
+	@Override
+	public SearchResult<E> findByExample(E e, boolean isLike, boolean isCaseSensitive, int first,
+			int max, String entityGraphName, Ordering... orderings)
+			throws SearchException, PersistenceException {
+		List<Restriction> restrictions = createFiltersMapByExample(e, isLike, isCaseSensitive);
+		return findByRestrictions(restrictions, first, max, entityGraphName, orderings);
 	}
 
 	@Override
-	public SearchResult<E> findByExample(E exemplo, boolean isLike,
+	public SearchResult<E> findByExample(E e, boolean isLike,
 			boolean isCaseSensitive, int first, int max,
 			Ordering... orderings) throws SearchException, PersistenceException {
-		List<Restriction> restrictions = createFiltersMapByExample(exemplo, isLike, isCaseSensitive);
-		return findByRestrictions(restrictions, first, max, orderings);
+		return findByExample(e, isLike, isCaseSensitive, first, max, null, orderings);
 	}
 
 	@Override
-	public SearchUniqueResult<Long> getCountFindByExample(E exemplo,
+	public SearchUniqueResult<Long> getCountFindByExample(E e,
 			boolean isLike, boolean isCaseSensitive)
 			throws SearchException, PersistenceException {
-		List<Restriction> restrictions = createFiltersMapByExample(exemplo, isLike, isCaseSensitive);
+		List<Restriction> restrictions = createFiltersMapByExample(e, isLike, isCaseSensitive);
 		return getCountFindByRestrictions(restrictions);
 	}
+	
 
 	@Override
-	public SearchUniqueResult<E> findUniqueByExample(E e,
-			boolean isLike, boolean isCaseSensitive)
-			throws SearchException, PersistenceException, NonUniqueResultException {
-		SearchResult<E> searchResult = findByExample(e, isLike, isCaseSensitive, -1, -1);
+	public SearchUniqueResult<E> findUniqueByExample(E e, boolean isLike, boolean isCaseSensitive,
+			String entityGraphName) throws SearchException, PersistenceException, NonUniqueResultException {
+		SearchResult<E> searchResult = findByExample(e, isLike, isCaseSensitive, -1, -1, entityGraphName);
 		if (!searchResult.getResults().isEmpty()) {
 			if (searchResult.getResults().size() > 1) {
 				throw new NonUniqueResultException();
@@ -252,11 +298,53 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 
 	@Override
-	public SearchUniqueResult<E> findUniqueByExample(E e)
+	public SearchUniqueResult<E> findUniqueByExample(E e,
+			boolean isLike, boolean isCaseSensitive)
 			throws SearchException, PersistenceException, NonUniqueResultException {
-		return findUniqueByExample(e, false, true);
+		return findUniqueByExample(e, isLike, isCaseSensitive, null);
 	}
 	
+
+	@Override
+	public SearchUniqueResult<E> findUniqueByExample(E e, String entityGraphName)
+			throws SearchException, PersistenceException, NonUniqueResultException {
+		return findUniqueByExample(e, false, true, entityGraphName);
+	}
+
+	@Override
+	public SearchUniqueResult<E> findUniqueByExample(E e)
+			throws SearchException, PersistenceException, NonUniqueResultException {
+		return findUniqueByExample(e, null);
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.framework.model.dao.api.BaseDao#findUniqueByRestrictions(java.util.List, java.lang.String)
+	 */
+	@Override
+	public SearchUniqueResult<E> findUniqueByRestrictions(
+			List<Restriction> restrictions, String entityGraphName) throws SearchException,
+			NonUniqueResultException {
+		return findUniqueByRestrictions(restrictions, false, entityGraphName);
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.framework.model.dao.api.BaseDao#findUniqueByRestrictions(java.util.List, boolean, java.lang.String)
+	 */
+	@Override
+	public SearchUniqueResult<E> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr,
+			String entityGraphName) throws SearchException, NonUniqueResultException {
+		SearchResult<E> searchResult = findByRestrictions(restrictions, useOperatorOr, -1, -1, entityGraphName);
+		if (!searchResult.getResults().isEmpty()) {
+			if (searchResult.getResults().size() > 1) {
+				throw new NonUniqueResultException();
+			} else {
+				return searchUtil.searchUniqueResult(getDocumentClass(), searchResult.getResults().get(0), searchResult.getExecutionTime());
+			}
+		} else {
+			return searchUtil.searchUniqueResult(getDocumentClass(), null, searchResult.getExecutionTime());
+		}
+	}
+
 	/**
 	 * Verifica se o tipo é equivalente da tipos de Data. 
 	 * 
@@ -474,6 +562,40 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 							logger.error(String.format("Erro ao criar predicado. Field %s, classe %s", leaf, path.getParentPath().getJavaType().getSimpleName()), e);
 						}
 						break;
+					case NI:
+						try {
+							if (Enum.class.isAssignableFrom(fieldClass)) {
+								List<Enum> itensIn = new ArrayList<Enum>();
+								Enum[] enumConstants = (Enum[])fieldClass.getEnumConstants();
+								if (value instanceof Collection) {
+									Iterator<Serializable> iterator = ((Collection) value).iterator();
+									while(iterator.hasNext()) {
+										Object item = iterator.next();
+										Enum enumValue = getEnumValue(item, enumConstants, false, false);
+										if (enumValue != null) {
+											itensIn.add(enumValue);
+										}
+									}
+								}
+								
+								if (!itensIn.isEmpty()) {
+									predicate = path.in(itensIn).not();
+								}
+							} else if (BaseEntity.class.isAssignableFrom(fieldClass)) {
+								List<Long> itensIn = new ArrayList<Long>();
+								Iterator<Serializable> iterator = ((Collection) value).iterator();
+								while(iterator.hasNext()) {
+									Serializable itemId = iterator.next();
+									itensIn.add(Long.parseLong(itemId.toString()));
+								}
+								predicate = from.join(leaf).get("id").in(itensIn).not();
+							} else {
+								predicate = path.in((Collection) value).not();
+							}
+						} catch (Exception e) {
+							logger.error(String.format("Erro ao criar predicado. Field %s, classe %s", leaf, path.getParentPath().getJavaType().getSimpleName()), e);
+						}
+						break;
 					case LK:
 						if (Enum.class.isAssignableFrom(fieldClass)) {
 							Enum[] enumConstants = (Enum[]) fieldClass.getEnumConstants();
@@ -524,6 +646,8 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		String value = "";
 		if (Enum.class.isAssignableFrom(fieldValue.getClass())) {
 			value = ((Enum)fieldValue).name();
+		} else {
+			value = fieldValue.toString();
 		}
 		for (Enum enum1 : enumConstants) {
 			boolean match = false;
@@ -674,4 +798,58 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	public void detach(E entity) {
 		getEntityManager().detach(entity);
 	}
+
+	@Override
+	public SearchResult<E> findByRestriction(Restriction restriction, int first, int max, String entityGraphName,
+			Ordering... orderings) throws SearchException {
+		return findByRestrictions(Arrays.asList(restriction), first, max, entityGraphName, orderings);
+	}
+
+	@Override
+	public SearchResult<E> findByRestriction(Restriction restriction, String entityGraphName, Ordering... orderings)
+			throws SearchException {
+		return findByRestriction(restriction, -1, -1, entityGraphName, orderings);
+	}
+
+	@Override
+	public SearchUniqueResult<E> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr)
+			throws SearchException, NonUniqueResultException {
+		return findUniqueByRestrictions(restrictions, useOperatorOr, null);
+	}
+
+	@Override
+	public SearchResult<E> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr,
+			Ordering... orderings) throws SearchException {
+		return findByRestrictions(restrictions, useOperatorOr, -1, -1, orderings);
+	}
+
+	@Override
+	public SearchResult<E> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr, int first, int max,
+			Ordering... orderings) throws SearchException {
+		return findByRestrictions(restrictions, useOperatorOr, first, max, null, orderings);
+	}
+
+	@Override
+	public SearchUniqueResult<Long> getCountFindByRestrictions(List<Restriction> restrictions, boolean useOperatorOr)
+			throws SearchException {
+		long start = System.currentTimeMillis();
+		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = cBuilder.createQuery(Long.class);
+		Root<E> from = criteriaQuery.from(getEntityClass());
+		criteriaQuery.select(cBuilder.count(from));
+		addDefaultRestrictionFieldStatus(restrictions);
+		List<Predicate> predicates = createQueryRestrictionsPredicates(restrictions, cBuilder, criteriaQuery, from, new HashMap<String, Path<?>>());
+		if (!predicates.isEmpty()) {
+			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
+			if (useOperatorOr) {
+				criteriaQuery.where(cBuilder.or(predicatesArray));
+			} else {
+				criteriaQuery.where(predicatesArray);
+			}
+		}
+		TypedQuery<Long> query = getEntityManager().createQuery(criteriaQuery);
+		Long result = query.getSingleResult();
+		return getSearchUtil().searchUniqueResult(Long.class, result, System.currentTimeMillis() - start);
+	}
+
 }

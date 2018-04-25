@@ -162,6 +162,17 @@ public interface Search<DocId extends Serializable, Doc extends Serializable> ex
 	 */
 	public SearchUniqueResult<Doc> findUniqueByRestrictions(List<Restriction> restrictions) throws SearchException, NonUniqueResultException;
 	
+	/**
+	 * Pesquisa um registro único de acordo com as restrições informadas.
+	 *  
+	 * @param restrictions
+	 * @param useOperatorOr - Habilita a utilização do operador OR nas {@link Restriction}.
+	 * @return
+	 * @throws SearchException
+	 * @throws NonUniqueResultException
+	 */
+	public SearchUniqueResult<Doc> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr) throws SearchException, NonUniqueResultException;
+	
 	
 	/**
 	 * Pesquisa registros de acordo com as restrições informadas, com suporte a orenação.
@@ -172,6 +183,18 @@ public interface Search<DocId extends Serializable, Doc extends Serializable> ex
 	 * @throws SearchException
 	 */
 	public SearchResult<Doc> findByRestrictions(List<Restriction> restrictions, Ordering... orderings)
+			throws SearchException;
+	
+	/**
+	 * Pesquisa registros de acordo com as restrições informadas, com suporte a orenação.
+	 *  
+	 * @param restrictions
+	 * @param useOperatorOr - Habilita a utilização do operador OR nas {@link Restriction}.
+	 * @param orderings
+	 * @return
+	 * @throws SearchException
+	 */
+	public SearchResult<Doc> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr, Ordering... orderings)
 			throws SearchException;
 	
 	/**
@@ -188,6 +211,20 @@ public interface Search<DocId extends Serializable, Doc extends Serializable> ex
 			throws SearchException;
 	
 	/**
+	 * Pesquisa registros de acordo com as restrições informadas, com suporte a orenação e paginação.
+	 * 
+	 * @param restrictions
+	 * @param useOperatorOr - Habilita a utilização do operador OR nas {@link Restriction}.
+	 * @param first
+	 * @param max
+	 * @param orderings
+	 * @return
+	 * @throws SearchException
+	 */
+	public SearchResult<Doc> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr, int first, int max, Ordering... orderings)
+			throws SearchException;
+	
+	/**
 	 * Retorna a quantidade de registros encontrados de acordo com as restrições informadas.
 	 * 
 	 * @param restrictions
@@ -195,5 +232,15 @@ public interface Search<DocId extends Serializable, Doc extends Serializable> ex
 	 * @throws SearchException
 	 */
 	public SearchUniqueResult<Long> getCountFindByRestrictions(List<Restriction> restrictions) throws SearchException;
+	
+	/**
+	 * Retorna a quantidade de registros encontrados de acordo com as restrições informadas.
+	 * 
+	 * @param restrictions
+	 * @param useOperatorOr - Habilita a utilização do operador OR nas {@link Restriction}.
+	 * @return
+	 * @throws SearchException
+	 */
+	public SearchUniqueResult<Long> getCountFindByRestrictions(List<Restriction> restrictions, boolean useOperatorOr) throws SearchException;
 
 }

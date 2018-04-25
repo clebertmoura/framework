@@ -219,8 +219,26 @@ public class EntityPropertyMetamodel {
 	 * 
 	 * @return
 	 */
+	public boolean isListOrSetAttribute() {
+		return isListAttribute() || isSetAttribute();
+	}
+	
+	/**
+	 * Indica se o campo é uma lista
+	 * 
+	 * @return
+	 */
 	public boolean isListAttribute() {
 		return getTypeClassNameNoArgument().equals("java.util.List") || getTypeClassNameNoArgument().equals("java.util.ArrayList");
+	}
+	
+	/**
+	 * Indica se o campo é um conjunto
+	 * 
+	 * @return
+	 */
+	public boolean isSetAttribute() {
+		return getTypeClassNameNoArgument().equals("java.util.Set") || getTypeClassNameNoArgument().equals("java.util.HashSet");
 	}
 	
 	/**
@@ -463,7 +481,7 @@ public class EntityPropertyMetamodel {
 		
 		TypeMirror returnType = getGetter().getReturnType();
 		if (returnType.getKind().equals(TypeKind.DECLARED)) {
-			if (isListAttribute()) {
+			if (isListOrSetAttribute()) {
 				List<? extends TypeMirror> typeArguments = ((DeclaredType)returnType).getTypeArguments();
 				if (typeArguments.size() > 0) {
 					element = (TypeElement)((DeclaredType)typeArguments.get(0)).asElement();

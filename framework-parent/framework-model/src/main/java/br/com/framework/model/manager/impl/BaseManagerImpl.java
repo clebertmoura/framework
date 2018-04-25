@@ -1,7 +1,10 @@
 package br.com.framework.model.manager.impl;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -26,9 +29,16 @@ import br.com.framework.domain.api.BaseEntityAudited;
 import br.com.framework.domain.enums.Status;
 import br.com.framework.model.exception.ModelException;
 import br.com.framework.model.manager.api.BaseManager;
+import br.com.framework.model.manager.sync.EntitySyncRequest;
+import br.com.framework.model.manager.sync.EntitySyncResponse;
+import br.com.framework.model.manager.sync.SyncPageResponse;
 import br.com.framework.model.util.Constants;
 import br.com.framework.search.api.Search;
 import br.com.framework.search.api.SearchUniqueResult;
+import br.com.framework.search.impl.Operator;
+import br.com.framework.search.impl.Ordering;
+import br.com.framework.search.impl.Restriction;
+import br.com.framework.search.util.SearchUtil;
 import br.com.framework.util.Config;
 
 /**
@@ -295,6 +305,134 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	 */
 	protected Class<E> getEntityClass() {
 		return entityClass;
+	}
+	
+	/**
+	 * Método utilizado na sincronização responsável por consultar a lista de entidades inseridas.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	protected SyncPageResponse<E> getInserted(EntitySyncRequest request) {
+		Ordering[] orderings = request.getOrderings().toArray(new Ordering[request.getOrderings().size()]);
+		List<Restriction> restrictions = request.getRestrictions();
+		
+		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
+			if (request.getLastSync() != null) {
+				restrictions.add(SearchUtil.instance().restriction("createDate", Operator.GE, request.getLastSync()));
+			}
+			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.ACTIVE));
+		}
+		
+		Long count = getSearch().getCountFindByRestrictions(restrictions).getUniqueResult();
+		List<E> registers = getSearch().findByRestrictions(restrictions, request.getFirst(), request.getMax(), orderings).getResults();
+		
+		return new SyncPageResponse<E>(count, registers);
+	}
+	
+	/**
+	 * Método utilizado na sincronização responsável por consultar a lista de entidades atualizadas.
+	 * Este método pode ser especialidado na implementação concreta.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	protected SyncPageResponse<E> getUpdated(EntitySyncRequest request) {
+		Ordering[] orderings = request.getOrderings().toArray(new Ordering[request.getOrderings().size()]);
+		
+		List<Restriction> restrictions = request.getRestrictions();
+		
+		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
+			if (request.getLastSync() != null) {
+				restrictions.add(SearchUtil.instance().restriction("lastModifiedDate", Operator.GE, request.getLastSync()));
+			}
+			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.ACTIVE));
+		}
+		
+		Long count = getSearch().getCountFindByRestrictions(restrictions).getUniqueResult();
+		List<E> registers = getSearch().findByRestrictions(restrictions, request.getFirst(), request.getMax(), orderings).getResults();
+		
+		return new SyncPageResponse<E>(count, registers);
+	}
+	
+	/**
+	 * Método utilizado na sincronização responsável por consultar a lista de entidades deletadas.
+	 * Este método pode ser especialidado na implementação concreta.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	protected SyncPageResponse<PK> getDeleted(EntitySyncRequest request) {
+		Ordering[] orderings = request.getOrderings().toArray(new Ordering[request.getOrderings().size()]);
+		
+		List<Restriction> restrictions = request.getRestrictions();
+		
+		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
+			if (request.getLastSync() != null) {
+				restrictions.add(SearchUtil.instance().restriction("lastModifiedDate", Operator.GE, request.getLastSync()));
+			}
+			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.INACTIVE));
+		}
+		
+		Long count = getSearch().getCountFindByRestrictions(restrictions).getUniqueResult();
+		List<E> registers = getSearch().findByRestrictions(restrictions, request.getFirst(), request.getMax(), orderings).getResults();
+		
+		List<PK> registersIds = new ArrayList<>();
+		for (E e : registers) {
+			registersIds.add(e.getId());
+		}
+		
+		return new SyncPageResponse<PK>(count, registersIds);
+	}
+	
+	/**
+	 * Método utilizado na sincronização responsável por consultar a lista de entidades expiradas.
+	 * Este método pode ser especialidado na implementação concreta.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	protected SyncPageResponse<PK> getExpired(EntitySyncRequest request) {
+		Ordering[] orderings = request.getOrderings().toArray(new Ordering[request.getOrderings().size()]);
+		
+		List<Restriction> restrictions = request.getRestrictions();
+		
+		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
+			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.ACTIVE));
+		}
+		
+		Long count = getSearch().getCountFindByRestrictions(restrictions).getUniqueResult();
+		List<E> registers = getSearch().findByRestrictions(restrictions, request.getFirst(), request.getMax(), orderings).getResults();
+		
+		List<PK> registersIds = new ArrayList<>();
+		for (E e : registers) {
+			registersIds.add(e.getId());
+		}
+		
+		return new SyncPageResponse<PK>(count, registersIds);
+	}
+	
+	/**
+	 * Método utilizado para sincronização de registros da entidade.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public EntitySyncResponse<PK, E> synchronize(EntitySyncRequest request) {
+		LocalDateTime now = LocalDateTime.now();
+		EntitySyncResponse<PK, E> response = new EntitySyncResponse<>();
+		// inserted
+		response.setInserted(getInserted(request));
+		// expiredIds
+		response.setExpired(getExpired(request));
+		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
+			// updated
+			response.setUpdated(getUpdated(request));
+			// removedIds
+			response.setDeleted(getDeleted(request));
+		}
+		response.setLastSync(now);
+		return response;
 	}
 
 }

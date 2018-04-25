@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>2.3.0</version>
+		<version>2.3.3</version>
 	</parent>
 	<description>Archetype de projeto JEE7 + Angular, para o Framework 2.x</description>
 	<build>

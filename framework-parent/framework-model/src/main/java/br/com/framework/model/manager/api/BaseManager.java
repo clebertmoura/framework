@@ -8,6 +8,8 @@ import javax.validation.ConstraintViolationException;
 import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.domain.api.BaseEntityAudited;
 import br.com.framework.model.exception.ModelException;
+import br.com.framework.model.manager.sync.EntitySyncRequest;
+import br.com.framework.model.manager.sync.EntitySyncResponse;
 import br.com.framework.search.api.Search;
 
 /**
@@ -110,5 +112,13 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	 * @return
 	 *//*
 	public List<Object> findRevisionLogsById(E entidade) throws ModelException;*/
+	
+	/**
+	 * Método utilizado para sincronização de registros.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public EntitySyncResponse<PK, E> synchronize(EntitySyncRequest request);
 	
 }
