@@ -20,7 +20,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 	
 		<!-- Frameworks -->
-		<version.framework>2.3.0</version.framework>
+		<version.framework>2.4.0</version.framework>
 		
 		<!-- Versões de dependências gerais -->
 		<version.solrj>4.10.4</version.solrj>
