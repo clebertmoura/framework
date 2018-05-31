@@ -95,6 +95,13 @@ public class ${entityName}Resource extends <#if entityMetamodel.baseEntityAudite
 		</#if>
 	</#list>
 	}
+	
+	public ${entityMetamodel.propertyId.typeClassSimpleName} get${entityMetamodel.propertyId.propertyName}() {
+		return this.${entityMetamodel.propertyId.propertyNameCamelCase};
+	}
+	public void set${entityMetamodel.propertyId.propertyName}(${entityMetamodel.propertyId.typeClassSimpleName} ${entityMetamodel.propertyId.propertyNameCamelCase}) {
+		this.${entityMetamodel.propertyId.propertyNameCamelCase} = ${entityMetamodel.propertyId.propertyNameCamelCase};
+	}
 
 	<#list entityProperties as entityProperty>
 		<#if !entityProperty.transient && entityProperty.simpleAttribute>

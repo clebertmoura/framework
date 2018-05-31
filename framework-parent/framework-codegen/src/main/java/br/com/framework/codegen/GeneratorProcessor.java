@@ -356,6 +356,7 @@ public class GeneratorProcessor extends AbstractProcessor {
 					}
 					if (propertyName.equalsIgnoreCase("Id")) {
 						entityPropertyId = entityProperty;
+						entityMetamodel.setPropertyId(entityPropertyId);
 					}
 					if (entityMetamodel.getPropertyLabel() == null &&
 							entityProperty.isStringAttribute() && (propertyName.equals("Nome") || propertyName.equals("Descricao"))) {

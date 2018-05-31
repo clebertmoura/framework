@@ -5,8 +5,10 @@ package br.com.framework.service.impl;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.service.api.BaseEntityResource;
@@ -21,6 +23,7 @@ import br.com.framework.service.api.BaseResource;
  * @param <E> Tipo da entidade.
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public abstract class BaseEntityResourceImpl<PK extends Serializable, E extends BaseEntity<PK>> extends BaseResourceImpl implements BaseEntityResource<PK, E> {
 
 	/**
@@ -85,7 +88,7 @@ public abstract class BaseEntityResourceImpl<PK extends Serializable, E extends 
 	 * @see br.com.framework.service.domain.api.RecursoBase#getId()
 	 */
 	@Override
-	@XmlID
+	@XmlTransient
 	public PK getId() {
 		return id;
 	}
