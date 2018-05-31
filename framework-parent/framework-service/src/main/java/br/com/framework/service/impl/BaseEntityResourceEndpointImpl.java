@@ -359,7 +359,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 
 	@Override
 	@PUT
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response update(@PathParam("id") PK id, R resource) {
 		if (resource == null) {
@@ -409,7 +409,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 
 	@Override
 	@DELETE
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response remove(@PathParam("id") PK id) {
 		if (id == null) {
@@ -458,7 +458,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 
 	@Override
 	@GET
-	@Path("/{id:[0-9][0-9]*}")
+	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response findById(@PathParam("id") PK id) {
 		if (id == null) {

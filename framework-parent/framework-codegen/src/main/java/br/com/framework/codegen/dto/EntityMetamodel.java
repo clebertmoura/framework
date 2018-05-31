@@ -28,6 +28,7 @@ public class EntityMetamodel {
 	private List<EntityPropertyMetamodel> propertiesDaos;
 	private List<EntityPropertyMetamodel> propertiesEnums;
 	private Set<String> importSet = new HashSet<String>();
+	private EntityPropertyMetamodel propertyId;
 	private EntityPropertyMetamodel propertyLabel;
 	private LinkedHashSet<String> enumModules;
 
@@ -237,6 +238,14 @@ public class EntityMetamodel {
 
 	public void setPropertyLabel(EntityPropertyMetamodel propertyLabel) {
 		this.propertyLabel = propertyLabel;
+	}
+
+	public EntityPropertyMetamodel getPropertyId() {
+		return propertyId;
+	}
+
+	public void setPropertyId(EntityPropertyMetamodel propertyId) {
+		this.propertyId = propertyId;
 	}
 	
 }
