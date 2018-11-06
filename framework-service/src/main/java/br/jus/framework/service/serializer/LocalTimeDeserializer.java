@@ -1,0 +1,34 @@
+package br.jus.framework.service.serializer;
+
+import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+
+/**
+ * Classe responsável por converter uma {@link String} para {@link LocalTime}.
+ * 
+ * @author Unidade de Arquitetura de Software <setic.disis.uas@tjpe.jus.br>
+ *
+ */
+public class LocalTimeDeserializer extends StdDeserializer<LocalTime> {
+
+	private static final long serialVersionUID = 1L;
+	
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalTimeSerializer.LOCAL_TIME_PATTERN);
+
+	public LocalTimeDeserializer() {
+		super(LocalTime.class);
+	}
+
+	@Override
+	public LocalTime deserialize(JsonParser jp, DeserializationContext ctxt)
+			throws IOException, JsonProcessingException {
+		return LocalTime.parse(jp.readValueAs(String.class), formatter);
+	}
+
+}

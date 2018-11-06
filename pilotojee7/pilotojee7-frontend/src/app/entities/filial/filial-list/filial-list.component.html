@@ -1,0 +1,158 @@
+<div class="content-wrapper-form">
+
+    <!-- Main content -->
+    <section class="content">
+        <button mat-raised-button color="primary" (click)="onClickNew()"><mat-icon>add</mat-icon>Adicionar</button>
+        <p></p>
+
+        <mat-card *ngIf="!sub" class="mat-card-search">
+            <mat-card-header>
+                <mat-card-title>Filtros de Pesquisa</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="form-fields">
+
+
+
+
+				<mat-form-field>
+	                <input matInput type="number" [(ngModel)]="filters['versaoEntidade'].value" name="versaoEntidade" id="versaoEntidade" #versaoEntidade="ngModel"
+	                	placeholder="Versao Entidade"/>
+				</mat-form-field>
+
+ 
+				<mat-form-field>
+                    <input matInput [(ngModel)]="filters['dhCriacao'].value" name="dhCriacao" id="dhCriacao" #dhCriacao="ngModel"
+                    	[owlDateTime]="dhCriacao" [owlDateTimeTrigger]="dhCriacao" placeholder="Dh Criacao" />
+                    <owl-date-time #dhCriacao></owl-date-time>
+                </mat-form-field>
+
+ 
+				<mat-form-field>
+                    <input matInput [(ngModel)]="filters['dhModificacao'].value" name="dhModificacao" id="dhModificacao" #dhModificacao="ngModel"
+                    	[owlDateTime]="dhModificacao" [owlDateTimeTrigger]="dhModificacao" placeholder="Dh Modificacao" />
+                    <owl-date-time #dhModificacao></owl-date-time>
+                </mat-form-field>
+
+ 
+				<mat-form-field>
+	                <input matInput type="number" [(ngModel)]="filters['flHabilitado'].value" name="flHabilitado" id="flHabilitado" #flHabilitado="ngModel"
+	                	placeholder="Fl Habilitado"/>
+				</mat-form-field>
+
+ 
+                <mat-form-field>
+	                <textarea matInput [(ngModel)]="filters['nmLogin'].value" autoResize="true" name="nmLogin" id="nmLogin" #nmLogin="ngModel"
+	                	placeholder="Nm Login"></textarea>
+				</mat-form-field>
+
+ 
+                <mat-form-field>
+	                <textarea matInput [(ngModel)]="filters['codigo'].value" autoResize="true" name="codigo" id="codigo" #codigo="ngModel"
+	                	placeholder="Codigo"></textarea>
+				</mat-form-field>
+
+ 
+                <mat-form-field>
+	                <textarea matInput [(ngModel)]="filters['nomeFantasia'].value" autoResize="true" name="nomeFantasia" id="nomeFantasia" #nomeFantasia="ngModel"
+	                	placeholder="Nome Fantasia"></textarea>
+				</mat-form-field>
+
+ 
+                <mat-form-field>
+	                <textarea matInput [(ngModel)]="filters['razaoSocial'].value" autoResize="true" name="razaoSocial" id="razaoSocial" #razaoSocial="ngModel"
+	                	placeholder="Razao Social"></textarea>
+				</mat-form-field>
+
+ 			<div class="form-group">
+				<app-empresa-autocomplete [(ngModel)]="filters['idEmpresa.id'].value" id="idEmpresa" name="idEmpresa" 
+        			label="Id Empresa" displayfield="codigonomeFantasiarazaoSocial"></app-empresa-autocomplete>
+            </div>
+ 
+                <mat-form-field>
+	                <textarea matInput [(ngModel)]="filters['nmLoginAlteracao'].value" autoResize="true" name="nmLoginAlteracao" id="nmLoginAlteracao" #nmLoginAlteracao="ngModel"
+	                	placeholder="Nm Login Alteracao"></textarea>
+				</mat-form-field>
+
+              
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="basic" (click)="onClickSearch()"><mat-icon>search</mat-icon>Pesquisar</button>
+            </mat-card-actions>
+        </mat-card>
+
+        <p></p>
+        <mat-divider></mat-divider>
+
+        <div class="search-results">
+        	<!--
+            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                <mat-spinner></mat-spinner>
+            </div>
+            -->
+
+            <div class="mat-elevation-z8">
+
+                <mat-form-field class="globalFilter">
+                    <input matInput placeholder="Filtrar" #searchInput>
+                </mat-form-field>
+
+                <mat-table [dataSource]="dataSource" matSort matSortActive="nome" matSortDirection="asc" matSortDisableClear>
+
+																							<ng-container matColumnDef="versaoEntidade">
+			            <mat-header-cell *matHeaderCellDef mat-sort-header>VERSAO ENTIDADE</mat-header-cell>
+			            <mat-cell *matCellDef="let entity">{{entity.versaoEntidade}}</mat-cell>
+			        </ng-container>
+																											    	<ng-container matColumnDef="dhCriacao">
+			            <mat-header-cell *matHeaderCellDef mat-sort-header>DH CRIACAO</mat-header-cell>
+			            <mat-cell *matCellDef="let entity">{{entity.dhCriacao | date:"dd-MM-yyyy hh:mm" }}</mat-cell>
+			        </ng-container>
+																											    	<ng-container matColumnDef="dhModificacao">
+			            <mat-header-cell *matHeaderCellDef mat-sort-header>DH MODIFICACAO</mat-header-cell>
+			            <mat-cell *matCellDef="let entity">{{entity.dhModificacao | date:"dd-MM-yyyy hh:mm" }}</mat-cell>
+			        </ng-container>
+																													<ng-container matColumnDef="flHabilitado">
+			            <mat-header-cell *matHeaderCellDef mat-sort-header>FL HABILITADO</mat-header-cell>
+			            <mat-cell *matCellDef="let entity">{{entity.flHabilitado}}</mat-cell>
+			        </ng-container>
+																													<ng-container matColumnDef="nmLogin">
+			            <mat-header-cell *matHeaderCellDef mat-sort-header>NM LOGIN</mat-header-cell>
+			            <mat-cell *matCellDef="let entity">{{entity.nmLogin}}</mat-cell>
+			        </ng-container>
+																													<ng-container matColumnDef="codigo">
+			            <mat-header-cell *matHeaderCellDef mat-sort-header>CODIGO</mat-header-cell>
+			            <mat-cell *matCellDef="let entity">{{entity.codigo}}</mat-cell>
+			        </ng-container>
+						
+                    <ng-container matColumnDef="actions" class="col-actions">
+                        <mat-header-cell *matHeaderCellDef>AÇÕES</mat-header-cell>
+                        <mat-cell *matCellDef="let entity">
+                            <button mat-raised-button color="primary" matTooltip="Ver o registro" (click)="onClickView(entity)">
+                                <i class="material-icons">pageview</i>
+                                <span class="d-none d-md-inline"> Ver</span>
+                            </button>
+                            &nbsp;
+                            <button mat-raised-button (click)="onClickEdit(entity)">
+                                <i class="material-icons">edit</i>
+                                <span class="d-none d-md-inline"> Editar</span>
+                            </button>
+                            &nbsp;
+                            <button mat-raised-button (click)="onClickRemove(entity)" color="warn">
+                                <i class="material-icons">delete</i>
+                                <span class="d-none d-md-inline"> Remover</span>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                </mat-table>
+
+                <mat-paginator [length]="dataSource.itemsCount$ | async" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+
+</div>

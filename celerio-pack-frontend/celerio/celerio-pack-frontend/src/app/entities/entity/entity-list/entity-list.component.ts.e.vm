@@ -1,0 +1,97 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-list/${entity.model.type.toLowerCase()}-list.component.ts")##
+import { Component, Input } from '@angular/core';
+import { EntityListComponent } from '../../../framework/components/entity-list.component';
+import { Router } from '@angular/router';
+import { MessageService } from '../../../util/message.service';
+import { MatDialog } from '@angular/material';
+import { FilterMetadata } from '../../../framework/service/paging/filtermetadata';
+import { Operator } from '../../../framework/service/paging/operator';
+import { $entity.model.type } from '../${entity.model.type.toLowerCase()}';
+import { $entity.service.type } from '../${entity.model.type.toLowerCase()}.service';
+import { ${entity.model.type}DataSource } from '../${entity.model.type.toLowerCase()}.datasource';
+#set($imports = [])
+#foreach ($relation in $entity.xToOne.list)
+#if(!$imports.contains($relation.to.type))
+#if(!$relation.to.type.equals($entity.model.type))
+import { $relation.to.type } from '../../$relation.toEntity.model.type.toLowerCase()/$relation.toEntity.model.type.toLowerCase()';
+#end
+#set($temp = $imports.add($relation.to.type))
+#end
+#end
+
+@Component({
+  selector: 'app-${entity.model.type.toLowerCase()}-list',
+  templateUrl: './${entity.model.type.toLowerCase()}-list.component.html',
+  styleUrls: ['./${entity.model.type.toLowerCase()}-list.component.scss']
+})
+export class ${entity.model.type}ListComponent extends EntityListComponent<${entity.model.type}, ${entity.service.type}> {
+
+## --------------- Many to One
+#foreach ($relation in $entity.forwardXToOne.list)
+#if ($velocityCount == 1)
+    // X to one: input param is used to filter the list when displayed
+    // as a one-to-many list by the other side.
+#end
+    private _${relation.to.var}: $relation.to.type;
+#end
+
+    constructor(protected router: Router,
+        protected messageService: MessageService,
+        protected confirmDeleteDialog: MatDialog,
+        protected entityService: $entity.service.type) {
+        super(router, messageService, confirmDeleteDialog, entityService, '${entity.model.type}');
+        // inicialização do dataSource
+        this.dataSource = new ${entity.model.type}DataSource(this.paginator, this.sort, this.entityService);
+        // configura as colunas exibidas no datatable.
+        this.displayedColumns = [
+## --- Result attributes
+#foreach ($attr in $entity.searchResultAttributes.flatUp.list)
+#if(!$attr.isInPk() && !$attr.isFile())
+#if ($attr.hasXToOneRelation())
+            '${attr.xToOneRelation.to.var}',
+#else
+            '${attr.var}',
+#end
+#end
+#end
+            'actions'
+        ];
+        // configura os campos de filtro
+## --- Search attributes
+#foreach($attribute in $entity.searchAttributes.flatUp.list)
+#if(!$attribute.isInPk() && !$attribute.isFile())
+#if($attribute.isString())
+        this.filters['${attribute.var}'] = new FilterMetadata(null, Operator.LI);
+#elseif($attribute.hasXToOneRelation())
+        this.filters['${attribute.var}.id'] = new FilterMetadata(null, Operator.EQ);
+#else
+        this.filters['${attribute.var}'] = new FilterMetadata(null, Operator.EQ);
+#end		
+#end
+#end
+    }
+
+## --------------- X to One
+#foreach ($relation in $entity.forwardXToOne.list)
+
+#if ($velocityCount == 1)
+    // X to one: input param is used to filter the list when displayed
+    // as a one-to-many list by the other side.
+#end
+    @Input()
+    set ${relation.to.var}(${relation.to.var}: $relation.to.type) {
+        if ($relation.to.var == null) {
+            return;
+        }
+        this._$relation.to.var = $relation.to.var;
+        this.filters['${relation.to.var}'].value = this._${relation.to.var}.${identifiableProperty.var};
+    }
+#end
+#if($entity.hasCompositePk())
+
+	protected getEntityId(entity: $entity.model.type): any
+		const id = #foreach($a in $primaryKey.attributes)entity.${identifiableProperty.var}.${a.var}#{if}($a.isDate()).toISOString().substring(0,19)#{end}#{if}($velocityHasNext) + '_' + #{else};#{end}#{end}
+        return id;
+    }
+#end
+}

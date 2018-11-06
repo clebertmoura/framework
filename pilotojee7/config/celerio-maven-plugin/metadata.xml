@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.jaxio.com/schema/celerio">
+  <jdbcConnectivity driver="org.postgresql.Driver" url="jdbc:postgresql://192.168.25.127:5434/dbroadcard" user="postgres" password="trinity123" schemaName="" oracleRetrieveRemarks="false" oracleRetrieveSynonyms="true" reverseIndexes="true" reverseOnlyUniqueIndexes="true" catalog="">
+    <tableNamePatterns/>
+    <tableTypes>
+      <tableType>TABLE</tableType>
+    </tableTypes>
+  </jdbcConnectivity>
+  <databaseInfo databaseMajorVersion="9" databaseMinorVersion="6" databaseProductName="PostgreSQL" databaseProductVersion="9.6.6" driverMajorVersion="42" driverMinorVersion="2" driverName="PostgreSQL JDBC Driver" driverVersion="42.2.5" extraInfo=""/>
+  <tables>
+    <table name="empresa" type="TABLE" schemaName="cadastros">
+      <columns>
+        <column name="id_empresa" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="1" size="19" type="BIGINT"/>
+        <column name="versao_entidade" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="19" type="BIGINT"/>
+        <column name="dh_criacao" decimalDigits="6" autoIncrement="false" nullable="false" ordinalPosition="3" size="29" type="TIMESTAMP"/>
+        <column name="dh_modificacao" decimalDigits="6" autoIncrement="false" nullable="false" ordinalPosition="4" size="29" type="TIMESTAMP"/>
+        <column name="fl_habilitado" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="5" size="10" type="INTEGER"/>
+        <column name="nm_login" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="codigo" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="7" size="255" type="VARCHAR"/>
+        <column name="nome_fantasia" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="8" size="255" type="VARCHAR"/>
+        <column name="razao_social" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="9" size="255" type="VARCHAR"/>
+        <column name="nm_login_alteracao" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="10" size="255" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="id_empresa" indexName="empresa_pkey" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>id_empresa</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="filial" type="TABLE" schemaName="cadastros">
+      <columns>
+        <column name="id_filial" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="1" size="19" type="BIGINT"/>
+        <column name="versao_entidade" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="19" type="BIGINT"/>
+        <column name="dh_criacao" decimalDigits="6" autoIncrement="false" nullable="false" ordinalPosition="3" size="29" type="TIMESTAMP"/>
+        <column name="dh_modificacao" decimalDigits="6" autoIncrement="false" nullable="false" ordinalPosition="4" size="29" type="TIMESTAMP"/>
+        <column name="fl_habilitado" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="5" size="10" type="INTEGER"/>
+        <column name="nm_login" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="codigo" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="7" size="255" type="VARCHAR"/>
+        <column name="nome_fantasia" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="8" size="255" type="VARCHAR"/>
+        <column name="razao_social" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="9" size="255" type="VARCHAR"/>
+        <column name="id_empresa" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="10" size="19" type="BIGINT"/>
+        <column name="nm_login_alteracao" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="11" size="255" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="id_filial" indexName="filial_pkey" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="id_empresa" fkName="fk_filial_id_empresa" pkColumnName="id_empresa" pkTableName="empresa" pkTableSchema="cadastros"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>id_filial</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="usuario" type="TABLE" schemaName="cadastros">
+      <columns>
+        <column name="id_usuario" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="1" size="19" type="BIGINT"/>
+        <column name="login" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="255" type="VARCHAR"/>
+        <column name="password" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="255" type="VARCHAR"/>
+        <column name="email" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="4" size="255" type="VARCHAR"/>
+        <column name="nome" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="5" size="255" type="VARCHAR"/>
+        <column name="version" columnDef="0" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="6" size="19" type="BIGINT"/>
+        <column name="creation_date" decimalDigits="6" autoIncrement="false" nullable="false" ordinalPosition="7" size="29" type="TIMESTAMP"/>
+        <column name="last_modification_date" decimalDigits="6" autoIncrement="false" nullable="false" ordinalPosition="8" size="29" type="TIMESTAMP"/>
+        <column name="creation_author" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="9" size="255" type="VARCHAR"/>
+        <column name="last_modification_author" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="10" size="255" type="VARCHAR"/>
+        <column name="habilitado" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="11" size="10" type="INTEGER"/>
+        <column name="foto_binary" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="12" size="2147483647" type="BINARY"/>
+        <column name="foto_file_name" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="13" size="255" type="VARCHAR"/>
+        <column name="foto_content_type" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="14" size="255" type="VARCHAR"/>
+        <column name="foto_size" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="15" size="19" type="BIGINT"/>
+      </columns>
+      <indexes>
+        <indexe columnName="id_usuario" indexName="usuario_pkey" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>id_usuario</primaryKey>
+      </primaryKeys>
+    </table>
+  </tables>
+</metadata>

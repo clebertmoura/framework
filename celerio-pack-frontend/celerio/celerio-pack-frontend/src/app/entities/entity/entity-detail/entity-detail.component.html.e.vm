@@ -1,0 +1,235 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-detail/${entity.model.type.toLowerCase()}-detail.component.html")##
+<div class="content-wrapper-form">
+
+  <!-- Main content -->
+  <section class="content">
+  
+## -- [MACRO]
+#macro(xToOneEdit $relation)
+			<div class="form-group">
+				<div class="row">
+				    <div class="col">
+						<app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [(ngModel)]="entity.${relation.to.var}" id="$relation.to.var" name="$relation.to.var" 
+                			label="${relation.labels.label}" displayfield="#foreach($attr in $entity.printerAttributes.flatUp.list)${attr.var}#end" [disabled]="sub" #{if}($relation.isMandatory()) required="true"#{end}></app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
+				    </div>
+				    <div class="col">
+				    	<button mat-icon-button id="goto${relation.to.varUp}" (click)="goto${relation.to.varUp}()" *ngIf="!sub && entity.${relation.to.var}" label="Edit">
+						    <mat-icon aria-label="Edit">edit</mat-icon>
+						</button>
+				    </div>
+				    <div class="col">
+				    	<button mat-icon-button id="clear${relation.to.varUp}" (click)="clear${relation.to.varUp}()" *ngIf="!sub && entity.${relation.to.var}" label="Clear">
+						    <mat-icon aria-label="Clear">clear</mat-icon>
+						</button>
+				    </div>
+				</div>
+                #if($relation.isMandatory())
+                <mat-error *ngIf="!${relation.to.var}.valid && ${relation.to.var}.dirty && ${relation.to.var}.errors['required']">
+                    $relation.labels.label é obrigatório.
+                </mat-error>
+				#end
+            </div>
+            
+#end
+#macro(required $attribute)
+#if($attribute.isRequired()) required #end
+#end
+#macro(minlength $attribute)
+#if($attribute.columnConfig.hasMin()) minlength="$attribute.columnConfig.min"#end
+#end
+#macro(requiredclass $attribute)
+#if($attribute.isRequired()) class="required"#end
+#end
+#macro(mderror $attribute)
+
+#if($attribute.isRequired())
+                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['required']">
+                        $attribute.labels.label é obrigatório.
+                    </mat-error>
+#end
+#if($attribute.columnConfig.hasMin() && $attribute.isString())
+                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['minlength']">
+                        $attribute.labels.label deve conter no mínimo $attribute.columnConfig.min caracteres.
+                    </mat-error>
+#end
+#if($attribute.isEmail())
+                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['validateEmail']">
+                        $attribute.labels.label valor é inválido para um e-mail.
+                    </mat-error>
+#end
+#if($attribute.isUrl())
+                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['pattern']">
+                        $attribute.labels.label valor é inválido para uma URL.
+                    </mat-error>
+#end
+#end
+## -- [/MACROS]
+  
+    <form ngForm #${entity.model.var}Form="ngForm" *ngIf="entity">
+      <mat-card class="mat-card-detail">
+        <mat-card-header>
+          <mat-card-title>Detalhes de ${entity.labels.label}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="form-fields">
+## ---------------------------------------------------------
+#foreach($attr in $entity.formAttributes.flatUp.list)
+#if ($attr.isSimplePk() && !$attr.jpa.isManuallyAssigned())
+## no need to display it...
+#elseif($attr.isSimpleFk())
+#xToOneEdit($attr.getXToOneRelation())
+#elseif(!$attr.isVersion())
+#if($attr.isInCpk())
+#set( $valuePath = "entity.${identifiableProperty.var}.${attr.var}")##
+#else
+#set( $valuePath = "entity.${attr.var}")##
+#end
+			<div class="row">
+				<div class="col-12">
+#if($attr.isPassword())
+		            <mat-form-field>
+		                <input matInput type="password" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+		                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
+		                #mderror($attr)
+					</mat-form-field>
+#elseif($attr.isHtml())
+                todo html
+#elseif($attr.isTextArea())
+                <mat-form-field>
+	                <textarea matInput [(ngModel)]="$valuePath" #required($attr) #minlength($attr) autoResize="true" name="$attr.var" id="$attr.var" ${p}$attr.var
+	                	[disabled]="viewMode" placeholder="$attr.labels.label"></textarea>
+	                #mderror($attr)
+				</mat-form-field>
+#elseif($attr.isEnum())
+				<mat-form-field>
+                	<mat-select [(ngModel)]="$valuePath" name="$attr.var" ${p}$attr.var [disabled]="viewMode" placeholder="$attr.labels.label">
+	                    <mat-option *ngFor="let ${attr.var}Option of ${attr.var}Values" [value]="${attr.var}Option.key">{{ ${attr.var}Option.label }}</mat-option>
+	                </mat-select>
+	                #mderror($attr)
+				</mat-form-field>
+#elseif($attr.isEmail())
+				<mat-form-field>
+	                <input matInput type="email" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) validateEmail name="$attr.var" id="$attr.var" ${p}$attr.var
+	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
+	                #mderror($attr)
+				</mat-form-field>
+#elseif($attr.isUrl())
+				<mat-form-field>
+	                <input matInput type="url" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" name="$attr.var" id="$attr.var" ${p}$attr.var
+	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
+	                #mderror($attr)
+				</mat-form-field>
+#elseif($attr.isString())
+				<mat-form-field>
+	                <input matInput type="text" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
+	                #mderror($attr)
+				</mat-form-field>
+#elseif($attr.isNumeric())
+				<mat-form-field>
+	                <input matInput type="number" [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
+	                #mderror($attr)
+				</mat-form-field>
+#elseif($attr.isDate() && !$attr.isVersion())
+#if($attr.isJavaUtilOnlyDate() || $attr.isLocalDate())
+				<mat-form-field>
+					<input matInput [matDatepicker]="${attr.var}Picker" [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
+					<mat-datepicker-toggle matSuffix [for]="${attr.var}Picker"></mat-datepicker-toggle>
+					<mat-datepicker touchUi ${p}${attr.var}Picker></mat-datepicker>
+	                #mderror($attr)
+				</mat-form-field>
+#elseif($attr.isLocalDateTime() || $attr.isInstant())
+				<mat-form-field>
+                    <input matInput [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+                    	[owlDateTime]="$attr.var" [owlDateTimeTrigger]="$attr.var" [disabled]="viewMode" placeholder="$attr.labels.label" />
+                    <owl-date-time ${p}$attr.var></owl-date-time>
+                </mat-form-field>
+#else
+                <mat-form-field>
+                    <input matInput [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+                    	[owlDateTime]="$attr.var" [owlDateTimeTrigger]="$attr.var" [disabled]="viewMode" placeholder="$attr.labels.label" />
+                    <owl-date-time ${p}$attr.var></owl-date-time>
+                </mat-form-field>
+#end
+#elseif($attr.isBoolean())
+                <mat-checkbox [(ngModel)]="$valuePath" name="$attr.var" ${p}$attr.var [disabled]="viewMode" >${attr.labels.label}</mat-checkbox>
+#elseif($attr.isFile() && $attr.filename)
+                <ul *ngIf="entity.${attr.filename.var}">
+                    <li><a href="{{ getApiUrl() + '/' + entity.${identifiableProperty.var} + '/${attr.var}/download' }}">Download {{entity.${attr.filename.var}}}</a></li>
+                    <li>Content-Type: {{entity.${attr.fileContentType.var}}}</li>
+                    <li>Tamanho em bytes: {{entity.${attr.fileSize.var}}}</li>
+                </ul>
+
+                <p-fileUpload *ngIf="entity.${identifiableProperty.var}" name="${attr.var}" url="{{ getApiUrl() + '/' + entity.${identifiableProperty.var} + '/${attr.var}/upload' }}" (onUpload)="on${attr.varUp}Upload(${d}event)" >
+                </p-fileUpload>
+                <p *ngIf="!entity.${identifiableProperty.var}">
+                	O registro deve ser salvo para que o upload seja habilitado
+                </p>
+#else
+				<mat-form-field>
+	                <input matInput type="text" [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
+	                #mderror($attr)
+				</mat-form-field>
+#end
+				</div>
+			</div>
+#end ##---------- [/NON VERSION]
+#end ## foreach(....
+## ---------------------------------------------------------
+        </mat-card-content>
+		<mat-card-actions>
+          <button mat-raised-button *ngIf="sub" (click)="onClickCancel()">
+            <mat-icon>cancel</mat-icon>
+            <span class="d-none d-lg-block">Cancelar</span>
+          </button>
+          <button mat-raised-button (click)="onClickSave()" [disabled]="!${entity.model.var}Form.form.valid && viewMode">
+            <mat-icon>save</mat-icon>
+            <span class="d-none d-lg-block">Salvar</span>
+          </button>
+          <button mat-raised-button *ngIf="!sub" (click)="onClickBack()">
+            <mat-icon>cancel</mat-icon>
+            <span class="d-none d-lg-block">Voltar</span>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+##
+## TABS FOR RELATIONS
+##
+#if($entity.inverseOneToOne.flatUp.size > 0 || $entity.oneToMany.flatUp.size > 0 || $entity.manyToMany.flatUp.size > 0)
+    <mat-card *ngIf="entity && entity.$identifiableProperty.var">
+    	<mat-card-subtitle>$entity.model.type relacionamentos</mat-card-subtitle>
+    	<mat-card-content>
+    		<mat-tab-group>
+#end
+#foreach ($relation in $entity.inverseOneToOne.flatUp.list)
+		        <mat-tab label="$relation.to.varsUp">
+		            <app-${relation.toEntity.model.type.toLowerCase()}-list [$relation.from.var]="entity" sub="true"></app-${relation.toEntity.model.type.toLowerCase()}-list>
+		        </mat-tab>
+#end
+#foreach ($relation in $entity.oneToMany.flatUp.list)
+		        <mat-tab label="$relation.to.varsUp">
+		            <app-${relation.toEntity.model.type.toLowerCase()}-list *ngIf="show$relation.to.varsUp" [$relation.from.var]="entity" sub="true" [header]="'$relation.to.varsUp of this $entity.model.var'" (addNewClicked)="show$relation.to.varsUp = false"></app-${relation.toEntity.model.type.toLowerCase()}-list>
+		            <app-${relation.toEntity.model.type.toLowerCase()}-detail *ngIf="!show$relation.to.varsUp" [$relation.from.var]="entity" sub="true" (saveClicked)="show$relation.to.varsUp = true" (cancelClicked)="show$relation.to.varsUp = true"></app-${relation.toEntity.model.type.toLowerCase()}-detail>
+		        </mat-tab>
+#end
+#foreach ($relation in $entity.manyToMany.flatUp.list)
+		        <mat-tab label="$relation.to.varsUp">
+		            <p-pickList [source]="source$relation.to.varsUp" [target]="entity.$relation.to.vars" sourceHeader="Disponíveis" targetHeader="Selecionados" [responsive]="true">
+		                <ng-template let-$relation.to.var pTemplate="item">
+#foreach($attr in $relation.toEntity.printerAttributes.flatUp.list){{ ${relation.to.var}.${attr.var} }} #end
+		                </ng-template>
+		            </p-pickList>
+		        </mat-tab>
+#end
+
+#if($entity.inverseOneToOne.flatUp.size > 0 || $entity.oneToMany.flatUp.size > 0 || $entity.manyToMany.flatUp.size > 0)
+    		</mat-tab-group>
+    	</mat-card-content>
+    </mat-card>
+#end
+  </section>
+  <!-- /.content -->
+</div>

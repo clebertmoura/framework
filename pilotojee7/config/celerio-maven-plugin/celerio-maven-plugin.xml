@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<celerio xmlns="http://www.jaxio.com/schema/celerio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.jaxio.com/schema/celerio ./celerio.xsd">
+    <configuration rootPackage="br.jus.framework.piloto" applicationName="pilotojee7" jpaUseCatalog="FALSE" jpaUseSchema="TRUE">
+        <!-- Which tables are used for generation -->
+        <tables>
+            <!-- <table include="true" pattern="*"/> -->
+            <table include="true" pattern="*"/>
+        </tables>
+        
+        <!-- default global sequence mapping (optional). initialValue can be set and defaults to 1 when is not set. -->
+        <sequences>
+            <sequence tableNamePattern="*" sequenceName="*" allocationSize="1" schema="cadastros" />
+        </sequences>
+
+        <!-- global number mapping (optional) -->
+        <numberMappings>
+            <numberMapping mappedType="M_BOOLEAN" columnSizeMin="1" columnSizeMax="2" columnDecimalDigitsMin="0" columnDecimalDigitsMax="0"/>
+        </numberMappings>
+
+        <!-- global date mapping (optional) -->
+        <dateMappings>
+            <!-- <dateMapping columnNameRegExp="VERSION" mappedType="M_UTILDATE"/> -->
+            <dateMapping columnJdbcType="TIMESTAMP" mappedType="M_LOCALDATETIME"/>
+            <dateMapping columnJdbcType="DATE" mappedType="M_LOCALDATE"/>
+        </dateMappings>
+
+        <!-- default configuration for fetch type / cascades / 2d level cache -->
+        <defaultEntityCacheConfig usage="NONE"/>
+
+        <defaultManyToOneConfig fetch="LAZY">
+            <cascades>
+                <cascade type="NONE"/>
+            </cascades>
+            <cacheConfig usage="NONE"/>
+            <associationAction create="true" edit="true" view="true" select="true" autoComplete="true" remove="false"/>
+        </defaultManyToOneConfig>
+
+        <defaultOneToManyConfig orphanRemoval="true">
+            <cascades>
+                <cascade type="ALL"/>
+            </cascades>
+            <cacheConfig usage="NONE"/>
+            <associationAction create="true" edit="true" view="true" select="true" autoComplete="true" remove="true"/>
+        </defaultOneToManyConfig>
+
+        <defaultOneToOneConfig fetch="LAZY">
+            <cascades>
+                <cascade type="NONE"/>
+            </cascades>
+            <cacheConfig usage="NONE"/>
+            <associationAction create="true" edit="true" view="true" select="false" autoComplete="true" remove="false"/>
+        </defaultOneToOneConfig>
+
+        <defaultInverseOneToOneConfig fetch="LAZY">
+            <cascades>
+                <cascade type="ALL"/>
+            </cascades>
+            <cacheConfig usage="NONE"/>
+            <associationAction create="false" edit="false" view="true" select="false" autoComplete="false"
+                               remove="false"/>
+        </defaultInverseOneToOneConfig>
+
+        <defaultManyToManyConfig>
+            <cascades>
+                <cascade type="ALL"/>
+            </cascades>
+            <cacheConfig usage="NONE"/>
+            <associationAction create="true" edit="true" view="true" select="true" autoComplete="false" remove="true"/>
+        </defaultManyToManyConfig>
+
+        <defaultInverseManyToManyConfig>
+            <cascades>
+                <cascade type="ALL"/>
+            </cascades>
+            <cacheConfig usage="NONE"/>
+            <associationAction create="false" edit="true" view="true" select="false" autoComplete="false" remove="false"/>
+        </defaultInverseManyToManyConfig>
+
+        <conventions identifiableProperty="id"></conventions>
+    </configuration>
+    
+    <!-- CHANGE IT OR COMMENT IT IF YOU USE YOUR OWN DATABASE -->
+
+    <entityConfigs>
+
+        <entityConfig tableName="usuario" entityName="Usuario" sequenceName="seq_usuario" schema="dbpiloto01">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_usuario" formField="false" fieldName="id" />
+	            <columnConfig columnName="nome" fieldName="nome" searchField="true" searchResult="true" displayOrder="1"/>
+                <columnConfig columnName="login" fieldName="login" min="2" searchField="true" searchResult="true" displayOrder="2"/>
+                <columnConfig columnName="password" fieldName="password" searchField="false" searchResult="false" displayOrder="3"/>
+                <columnConfig columnName="email" fieldName="email" searchField="true" searchResult="true" displayOrder="4"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+				
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="habilitado" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+    </entityConfigs>
+    
+    <!-- CHANGE IT OR COMMENT IT IF YOU USE YOUR OWN DATABASE -->
+    <!-- Generate enums used by the entities above -->
+    <sharedEnumConfigs>
+    	<sharedEnumConfig name="Status" type="ORDINAL">
+            <enumValues>
+                <enumValue value="INACTIVE" label="Inativo" />
+                <enumValue value="ACTIVE" label="Ativo" />
+            </enumValues>
+        </sharedEnumConfig>
+    </sharedEnumConfigs>
+
+</celerio>

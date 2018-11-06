@@ -1,0 +1,13 @@
+<div class="ui-autocomplete-container">
+  <span class="ui-float-label">
+    <p-autoComplete [id]="id" [(ngModel)]="isMultiple() ? values : value" [field]="displayfield" [disabled]="disabled" [required]="required"
+      [placeholder]="placeholder" [dropdown]="dropdown" [autoHighlight]="true" [suggestions]="suggestions" [multiple]="multiple"
+      (completeMethod)="complete($event)" (onSelect)="select($event)">
+      <ng-template let-entity pTemplate="item">
+        <app-usuario-line [entity]="entity"></app-usuario-line>
+      </ng-template>
+    </p-autoComplete>
+    <label [for]="id">{{label}}</label>
+  </span>
+  <div class="ui-autocomplete-field-underline"><span class="ui-autocomplete-field-ripple"></span></div>
+</div>

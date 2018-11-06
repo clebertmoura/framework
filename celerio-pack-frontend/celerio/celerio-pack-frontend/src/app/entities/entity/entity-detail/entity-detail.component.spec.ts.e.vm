@@ -1,0 +1,26 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-detail/${entity.model.type.toLowerCase()}-detail.component.spec.ts")##
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ${entity.model.type}DetailComponent } from './${entity.model.type.toLowerCase()}-detail.component';
+
+describe('${entity.model.type}DetailComponent', () => {
+  let component: ${entity.model.type}DetailComponent;
+  let fixture: ComponentFixture<${entity.model.type}DetailComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ ${entity.model.type}DetailComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(${entity.model.type}DetailComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -1,0 +1,26 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-list/${entity.model.type.toLowerCase()}-list.component.spec.ts")##
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ${entity.model.type}ListComponent } from './${entity.model.type.toLowerCase()}-list.component';
+
+describe('${entity.model.type}ListComponent', () => {
+  let component: ${entity.model.type}ListComponent;
+  let fixture: ComponentFixture<${entity.model.type}ListComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ ${entity.model.type}ListComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(${entity.model.type}ListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

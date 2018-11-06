@@ -1,0 +1,1 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-line/${entity.model.type.toLowerCase()}-line.component.scss")##

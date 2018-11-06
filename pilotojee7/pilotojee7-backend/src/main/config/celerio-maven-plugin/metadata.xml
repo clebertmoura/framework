@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.jaxio.com/schema/celerio">
+  <jdbcConnectivity driver="oracle.jdbc.OracleDriver" url="jdbc:oracle:thin:@sddboracle01.tjpe.gov.br:1521:orades" user="DBAJUELETR" password="DBAJUELETR" schemaName="DBAJUELETR01" oracleRetrieveRemarks="false" oracleRetrieveSynonyms="true" reverseIndexes="true" reverseOnlyUniqueIndexes="true" catalog="">
+    <tableNamePatterns/>
+    <tableTypes>
+      <tableType>TABLE</tableType>
+    </tableTypes>
+  </jdbcConnectivity>
+  <databaseInfo databaseMajorVersion="11" databaseMinorVersion="2" databaseProductName="Oracle" databaseProductVersion="Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Automatic Storage Management, OLAP, Data Mining
+and Real Application Testing options" driverMajorVersion="11" driverMinorVersion="2" driverName="Oracle JDBC driver" driverVersion="11.2.0.3.0" extraInfo=""/>
+  <tables>
+    <table name="ACAO" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="ACAO_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="ACAO_TX_CONTEUDO" decimalDigits="0" nullable="false" ordinalPosition="7" size="4000" type="CLOB"/>
+        <column name="ACAO_NU_NPU" decimalDigits="0" nullable="true" ordinalPosition="8" size="255" type="VARCHAR"/>
+        <column name="ACAO_NU_PROTOCOLO" decimalDigits="0" nullable="false" ordinalPosition="9" size="255" type="VARCHAR"/>
+        <column name="ACAO_DS_SITUACAO" decimalDigits="0" nullable="false" ordinalPosition="10" size="255" type="VARCHAR"/>
+        <column name="ACAO_TX_MENSAGEM" decimalDigits="0" nullable="true" ordinalPosition="11" size="1000" type="VARCHAR"/>
+        <column name="LOTE_LOTE_ID" decimalDigits="0" nullable="true" ordinalPosition="12" size="19" type="DECIMAL"/>
+        <column name="ACAO_NU_MONTANTE" decimalDigits="2" nullable="true" ordinalPosition="13" size="12" type="DECIMAL"/>
+        <column name="ACAO_NM_HASH" decimalDigits="0" nullable="true" ordinalPosition="14" size="256" type="VARCHAR"/>
+        <column name="ORGJUL_ID" decimalDigits="-127" nullable="true" ordinalPosition="15" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ACAO_ID" indexName="SYS_C00155218" nonUnique="false"/>
+        <indexe columnName="ACAO_NU_PROTOCOLO" indexName="UK_5EVH1MJL0QSU0HBS9D2ARNKNQ" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="LOTE_LOTE_ID" fkName="FK_GWQOTHFLLTQJ5IK3O6GFOSJMH" pkColumnName="LOTE_ID" pkTableName="LOTE" pkTableSchema="DBAJUELETR01"/>
+        <importedKey fkColumnName="ORGJUL_ID" fkName="FK_ACAO_ORGJUL" pkColumnName="ORGJUL_ID" pkTableName="ORGAO_JULGADOR" pkTableSchema="DBAJUELETR01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>ACAO_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="ASSUNTO" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="ASSUNTO_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="ASSUNTO_ID_PJE" decimalDigits="0" nullable="false" ordinalPosition="7" size="19" type="DECIMAL"/>
+        <column name="ASSUNTO_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="8" size="100" type="VARCHAR"/>
+        <column name="CLASSEPROCESSUAL_CLASSE_ID" decimalDigits="0" nullable="true" ordinalPosition="9" size="19" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ASSUNTO_ID" indexName="SYS_C00155226" nonUnique="false"/>
+        <indexe columnName="ASSUNTO_ID_PJE" indexName="UK_QNW0ICL2LX2H47BKTLUQ31P3H" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="CLASSEPROCESSUAL_CLASSE_ID" fkName="FK_CLD7YIKB3G8GICJDAX77Y5KPX" pkColumnName="CLASSE_ID" pkTableName="CLASSE" pkTableSchema="DBAJUELETR01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>ASSUNTO_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="CLASSE" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="CLASSE_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="CLASSE_ID_PJE" decimalDigits="0" nullable="false" ordinalPosition="7" size="19" type="DECIMAL"/>
+        <column name="CLASSE_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="8" size="100" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="CLASSE_ID" indexName="SYS_C00155242" nonUnique="false"/>
+        <indexe columnName="CLASSE_ID_PJE" indexName="UK_HQQ6YYYOEBVC8NR9WITLIQCCW" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>CLASSE_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="COMPETENCIA" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="COMPET_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="COMPET_ID_PJE" decimalDigits="0" nullable="false" ordinalPosition="7" size="19" type="DECIMAL"/>
+        <column name="COMPET_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="8" size="100" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="COMPET_ID" indexName="SYS_C00155250" nonUnique="false"/>
+        <indexe columnName="COMPET_NM_NOME" indexName="UK_DQ6GCWBA5EQLQHTYYX1X6ECX7" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>COMPET_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="LOCALIDADE" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="LOCAL_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="LOCAL_ID_PJE" decimalDigits="0" nullable="false" ordinalPosition="7" size="19" type="DECIMAL"/>
+        <column name="LOCAL_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="8" size="100" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="LOCAL_ID" indexName="SYS_C00155267" nonUnique="false"/>
+        <indexe columnName="LOCAL_NM_NOME" indexName="UK_6YW9GENVLW553HHAKR2YWHP5B" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>LOCAL_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="LOTE" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="LOTE_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="LOTE_TX_CONTEUDO" decimalDigits="0" nullable="true" ordinalPosition="7" size="4000" type="CLOB"/>
+        <column name="LOTE_DS_HASH" decimalDigits="0" nullable="false" ordinalPosition="8" size="255" type="VARCHAR"/>
+        <column name="LOTE_ID_CLASSE" decimalDigits="0" nullable="false" ordinalPosition="9" size="19" type="DECIMAL"/>
+        <column name="LOTE_ID_COMPET" decimalDigits="0" nullable="false" ordinalPosition="10" size="19" type="DECIMAL"/>
+        <column name="LOTE_ID_LOCAL" decimalDigits="0" nullable="false" ordinalPosition="11" size="19" type="DECIMAL"/>
+        <column name="LOTE_ID_SOLIC" decimalDigits="0" nullable="false" ordinalPosition="12" size="100" type="VARCHAR"/>
+        <column name="LOTE_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="13" size="100" type="VARCHAR"/>
+        <column name="LOTE_DS_ORIGEM" decimalDigits="0" nullable="false" ordinalPosition="14" size="15" type="VARCHAR"/>
+        <column name="LOTE_NU_PROTOCOLO" decimalDigits="0" nullable="false" ordinalPosition="15" size="255" type="VARCHAR"/>
+        <column name="LOTE_TX_SENHA_SOLIC" decimalDigits="0" nullable="true" ordinalPosition="16" size="4000" type="CLOB"/>
+        <column name="LOTE_DS_SITUACAO" decimalDigits="0" nullable="false" ordinalPosition="17" size="255" type="VARCHAR"/>
+        <column name="LOTE_TX_MENSAGEM" decimalDigits="0" nullable="true" ordinalPosition="18" size="1000" type="VARCHAR"/>
+        <column name="POLATV_ID" decimalDigits="-127" nullable="true" ordinalPosition="19" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="LOTE_ID" indexName="SYS_C00155282" nonUnique="false"/>
+        <indexe columnName="LOTE_NM_NOME" indexName="UK_D56BXR5NFQA966PAWGOC8NUI7" nonUnique="false"/>
+        <indexe columnName="LOTE_NU_PROTOCOLO" indexName="UK_OAOSHOA8QIQTMB6N1BIT2768A" nonUnique="false"/>
+        <indexe columnName="LOTE_DS_HASH" indexName="UK_9L1CMF6CWG7O4EEQPKTSPTCHA" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="POLATV_ID" fkName="FK_LOTE_002" pkColumnName="POLATV_ID" pkTableName="POLOS_ATIVOS" pkTableSchema="DBAJUELETR01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>LOTE_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="ORGAO_JULGADOR" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="ORGJUL_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="ORGJUL_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="2" size="250" type="VARCHAR"/>
+        <column name="ORGJUL_ID_PJE" decimalDigits="0" nullable="false" ordinalPosition="3" size="22" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="true" ordinalPosition="4" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="true" ordinalPosition="5" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="true" ordinalPosition="6" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="true" ordinalPosition="7" size="1" type="VARCHAR"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="8" size="255" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ORGJUL_ID" indexName="PK_ORGJUL" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>ORGJUL_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="PARAMETRO" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="PARAM_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="100" type="VARCHAR"/>
+        <column name="PARAM_VL_VALORPARAMETRO" decimalDigits="0" nullable="true" ordinalPosition="2" size="4000" type="VARCHAR"/>
+        <column name="PARAM_DS_DESCRICAOPARAMETRO" decimalDigits="0" nullable="true" ordinalPosition="3" size="4000" type="VARCHAR"/>
+        <column name="PARAM_TP_TIPOPARAMETRO" decimalDigits="0" nullable="true" ordinalPosition="4" size="2" type="VARCHAR"/>
+        <column name="PARAM_DH_DATAALTERACAO" decimalDigits="6" nullable="true" ordinalPosition="5" size="11" type="TIMESTAMP"/>
+        <column name="PARAM_NU_VERSAO_ENTIDADE" decimalDigits="0" nullable="true" ordinalPosition="6" size="19" type="DECIMAL"/>
+      </columns>
+      <indexes/>
+      <importedKeys/>
+      <primaryKeys/>
+    </table>
+    <table name="POLOS_ATIVOS" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="POLATV_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="POLATV_NM_NOME" decimalDigits="0" nullable="true" ordinalPosition="2" size="250" type="VARCHAR"/>
+        <column name="POLATV_NM_APELIDO" decimalDigits="0" nullable="true" ordinalPosition="3" size="250" type="VARCHAR"/>
+        <column name="POLATV_NM_NUM_DOCUMENTO" decimalDigits="0" nullable="true" ordinalPosition="4" size="30" type="VARCHAR"/>
+        <column name="POLATV_NM_TP_PESSOA" decimalDigits="0" nullable="true" ordinalPosition="5" size="20" type="VARCHAR"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="true" ordinalPosition="6" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="true" ordinalPosition="7" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="true" ordinalPosition="8" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="true" ordinalPosition="9" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="10" size="255" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="POLATV_ID" indexName="PK_POLATV" nonUnique="false"/>
+        <indexe columnName="POLATV_NM_NUM_DOCUMENTO" indexName="UK_POLOS_ATIVOS_001" nonUnique="false"/>
+        <indexe columnName="POLATV_NM_APELIDO" indexName="UK_POLOS_ATIVOS_002" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>POLATV_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="SITACAO" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="SITACAO_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="SITACAO_TX_MENSAGEM" decimalDigits="0" nullable="true" ordinalPosition="7" size="1000" type="VARCHAR"/>
+        <column name="SITACAO_DS_SITUACAO" decimalDigits="0" nullable="false" ordinalPosition="8" size="25" type="VARCHAR"/>
+        <column name="ACAO_ACAO_ID" decimalDigits="0" nullable="true" ordinalPosition="9" size="19" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="SITACAO_ID" indexName="SYS_C00155302" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="ACAO_ACAO_ID" fkName="FK_RBMP3P02KE0X8LS628H43KY1R" pkColumnName="ACAO_ID" pkTableName="ACAO" pkTableSchema="DBAJUELETR01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>SITACAO_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="SITLOTE" type="TABLE" schemaName="DBAJUELETR01">
+      <columns>
+        <column name="SITLOTE_ID" decimalDigits="0" nullable="false" ordinalPosition="1" size="19" type="DECIMAL"/>
+        <column name="VERSAO_ENTIDADE" decimalDigits="0" nullable="false" ordinalPosition="2" size="19" type="DECIMAL"/>
+        <column name="DATAHORA_CADASTRO" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="DATAHORA_MODIFICACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="HABILITADO" decimalDigits="0" nullable="false" ordinalPosition="5" size="10" type="DECIMAL"/>
+        <column name="LOGIN_USUARIO" decimalDigits="0" nullable="true" ordinalPosition="6" size="255" type="VARCHAR"/>
+        <column name="SITLOTE_TX_MENSAGEM" decimalDigits="0" nullable="true" ordinalPosition="7" size="1000" type="VARCHAR"/>
+        <column name="SITLOTE_DS_SITUACAO" decimalDigits="0" nullable="true" ordinalPosition="8" size="25" type="VARCHAR"/>
+        <column name="LOTE_ID" decimalDigits="0" nullable="false" ordinalPosition="9" size="19" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="SITLOTE_ID" indexName="SYS_C00155309" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="LOTE_ID" fkName="FK_758KY7ADCIFOEN1I2WQPH5BWR" pkColumnName="LOTE_ID" pkTableName="LOTE" pkTableSchema="DBAJUELETR01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>SITLOTE_ID</primaryKey>
+      </primaryKeys>
+    </table>
+  </tables>
+</metadata>

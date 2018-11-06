@@ -1,0 +1,118 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-detail/${entity.model.type.toLowerCase()}-detail.component.ts")##
+import { Component, Input } from '@angular/core';
+import { EntityDetailComponent } from '../../../framework/components/entity-detail.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { MessageService } from '../../../util/message.service';
+import { EnumeratorsService } from '../../enumerators.service';
+
+import { ${entity.model.type} } from '../${entity.model.type.toLowerCase()}';
+import { ${entity.service.type} } from '../${entity.model.type.toLowerCase()}.service';
+#set($imports = [])
+#foreach ($relation in $entity.xToOne.list)
+#if(!$relation.to.type.equals($entity.model.type) && !$imports.contains($relation.to.type))
+import { ${relation.to.type} } from '../../$relation.toEntity.model.type.toLowerCase()/${relation.toEntity.model.type.toLowerCase()}';
+#set($temp = $imports.add($relation.to.type))
+#end
+#end
+
+@Component({
+  selector: 'app-${entity.model.type.toLowerCase()}-detail',
+  templateUrl: './${entity.model.type.toLowerCase()}-detail.component.html',
+  styleUrls: ['./${entity.model.type.toLowerCase()}-detail.component.scss']
+})
+export class ${entity.model.type}DetailComponent extends EntityDetailComponent<${entity.model.type}, ${entity.service.type}> {
+
+#foreach ($relation in $entity.oneToMany.flatUp.list)
+    show${relation.to.varsUp} = true;
+#end
+#foreach ($relation in $entity.manyToMany.list)
+    source${relation.to.varsUp}: ${relation.toEntity.model.type}[] = [];
+#end
+
+#foreach ($relation in $entity.forwardXToOne.list)
+    @Input() // used to pass the parent when creating a new $entity.model.type
+    set ${relation.to.var}(${relation.to.var}: $relation.to.type) {
+        this.entity = this.entityService.newEntity();
+        this.entity.$relation.to.var = $relation.to.var;
+#if($relation.fromAttribute.isInCpk())
+        // special hack for composite key with x-to-one relation...
+        this.entity.id.${relation.fromAttribute.var} = ${relation.to.var}.${identifiableProperty.var};
+#end
+    }
+
+#end
+
+#foreach($attr in $entity.enumAttributes.list)
+    ${attr.var}Values: any[];
+#end
+
+    constructor(protected route: ActivatedRoute, protected router: Router, protected messageService: MessageService,
+        protected location: Location,
+        protected enumeratorsService: EnumeratorsService,
+        protected entityService: ${entity.service.type}#foreach ($relation in $entity.manyToMany.list), protected ${relation.toEntity.service.var}: ${relation.toEntity.service.type}#end) {
+        super(route, router, messageService, location, enumeratorsService, entityService, '${entity.model.type}');
+    }
+
+    protected loadEnumValues(): void {
+#foreach($attr in $entity.enumAttributes.list)
+        this.${attr.var}Values = [];
+        this.enumeratorsService.get${attr.enumModel.type}Values().subscribe(
+            enumItems => this.${attr.var}Values = enumItems,
+            error => this.messageService.error('Não foi possível carregar os valores do campo ${attr.name}', error)
+        );
+
+#end
+    }
+
+    protected loadEntityRelations(): void {
+#foreach ($relation in $entity.manyToMany.list)
+        ${relation.toEntity.service.var}.complete(null).
+            subscribe(
+                $relation.to.vars => this.source$relation.to.varsUp = $relation.to.vars,
+                error =>  this.messageService.error('Erro ao carregar ${relation.to.vars}', error));
+#end
+    }
+
+#foreach ($relation in $entity.forwardXToOne.list)
+    public goto${relation.to.varUp}(): void {
+        this.gotoEntity('${relation.toEntity.model.var}', this.entity.${relation.to.var}.${identifiableProperty.var});
+    }
+    public clear${relation.to.varUp}() {
+        this.entity.${relation.to.var} = null;
+#if($relation.fromAttribute.isInCpk())
+        // special hack for composite key with x-to-one relation...
+        this.entity.id.${relation.fromAttribute.var} = null;
+#end
+    }
+
+#end
+
+#if($entity.hasCompositePk())
+	protected loadCompositeId(): void {
+		// special hack for composite key with x-to-one relation...
+	#foreach ($attribute in $primaryKey.attributes)
+		#if($attribute.hasForwardXToOneRelation())
+		this.entity.id.${attribute.var} = this.entity.${attribute.xToOneRelation.to.var}.${identifiableProperty.var};
+		#end
+	#end
+    }
+#end
+
+#foreach($attr in $entity.fileAttributes.list)
+    /**
+     * Refresh the form to display the download link.
+     * TODO: sthg smarter.
+     */
+    on${attr.varUp}Upload(event: any) {
+        this.entityService.getEntity(this.entity.id)
+            .subscribe(
+                entity => this.entity = entity,
+                error =>  this.messageService.error('on${attr.varUp}Upload error', error)
+            );
+    }
+
+#end
+}
+
+
