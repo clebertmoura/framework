@@ -14,8 +14,8 @@ import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.jus.framework.model.exception.ModelException;
-import br.jus.framework.search.impl.Operator;
+import br.com.framework.model.exception.ModelException;
+import br.com.framework.search.impl.Operator;
 
 /**
  * Implementação Manager da entidade: {@link $entity.model.type} 

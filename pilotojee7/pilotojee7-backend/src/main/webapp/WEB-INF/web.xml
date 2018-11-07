@@ -19,7 +19,7 @@
 	    </init-param>
 	    <init-param>
 	        <param-name>sampling-included-packages</param-name>
-	        <param-value>br.jus.framework,br.jus.pje.ajuizamentoeletronico</param-value>
+	        <param-value>br.com.framework,br.jus.pje.ajuizamentoeletronico</param-value>
 	    </init-param>
 	    <init-param>
 	        <param-name>authorized-users</param-name>

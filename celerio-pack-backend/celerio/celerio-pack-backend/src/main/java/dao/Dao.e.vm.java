@@ -15,8 +15,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import br.jus.framework.search.impl.Operator;
-import br.jus.framework.search.impl.PageRequest;
+import br.com.framework.search.impl.Operator;
+import br.com.framework.search.impl.PageRequest;
 
 /**
  * Implementação de DAO da entidade: {@link $entity.model.type} 

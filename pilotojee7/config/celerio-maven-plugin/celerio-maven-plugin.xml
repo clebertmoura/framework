@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <celerio xmlns="http://www.jaxio.com/schema/celerio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://www.jaxio.com/schema/celerio ./celerio.xsd">
-    <configuration rootPackage="br.jus.framework.piloto" applicationName="pilotojee7" jpaUseCatalog="FALSE" jpaUseSchema="TRUE">
+    <configuration rootPackage="br.com.framework.piloto" applicationName="pilotojee7" jpaUseCatalog="FALSE" jpaUseSchema="TRUE">
         <!-- Which tables are used for generation -->
         <tables>
             <!-- <table include="true" pattern="*"/> -->

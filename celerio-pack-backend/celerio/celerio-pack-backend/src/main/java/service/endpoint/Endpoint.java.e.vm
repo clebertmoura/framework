@@ -13,9 +13,9 @@ $output.require($entity.manager)##
 $output.require($entity.dao)##
 
 #if ($entity.isEntityAudited()) 
-$output.require("br.jus.framework.service.impl.BaseEntityAuditedResourceEndpointImpl")##
+$output.require("br.com.framework.service.impl.BaseEntityAuditedResourceEndpointImpl")##
 #else
-$output.require("br.jus.framework.service.impl.BaseEntityResourceEndpointImpl")##
+$output.require("br.com.framework.service.impl.BaseEntityResourceEndpointImpl")##
 #end
 
 

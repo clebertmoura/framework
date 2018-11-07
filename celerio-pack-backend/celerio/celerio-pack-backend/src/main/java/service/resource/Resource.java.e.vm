@@ -4,9 +4,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 $output.require($entity.model)##
 #if ($entity.isEntityAudited()) 
-$output.require("br.jus.framework.service.impl.BaseEntityAuditedResourceImpl")##
+$output.require("br.com.framework.service.impl.BaseEntityAuditedResourceImpl")##
 #else
-$output.require("br.jus.framework.service.impl.BaseEntityResourceImpl")##
+$output.require("br.com.framework.service.impl.BaseEntityResourceImpl")##
 #end
 
 

@@ -18,7 +18,7 @@
 	<name>pilotojee7-backend</name>
 	
 	<parent>
-		<groupId>br.jus.framework</groupId>
+		<groupId>br.com.framework</groupId>
 		<artifactId>pilotojee7</artifactId>
 		<version>3.0.1-SNAPSHOT</version>
 	</parent>
@@ -74,27 +74,27 @@
 	<dependencies>
 		<!-- Frameworks -->
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>framework-util</artifactId>
 			<version>${version.framework}</version>
 		</dependency>
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>framework-domain</artifactId>
 			<version>${version.framework}</version>
 		</dependency>
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>framework-search</artifactId>
 			<version>${version.framework}</version>
 		</dependency>
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>framework-model</artifactId>
 			<version>${version.framework}</version>
 		</dependency>
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>framework-service</artifactId>
 			<version>${version.framework}</version>
 		</dependency>
@@ -264,7 +264,7 @@
 			<version>0.9.10</version>
 		</dependency>
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>celerio-pack-backend</artifactId>
 			<version>${version.framework}</version>
 		</dependency>
@@ -586,7 +586,7 @@
 						</executions>
 						<dependencies>
 							<dependency>
-								<groupId>br.jus.framework</groupId>
+								<groupId>br.com.framework</groupId>
 								<artifactId>celerio-pack-backend</artifactId>
 								<version>${version.framework}</version>
 							</dependency>

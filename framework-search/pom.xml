@@ -12,13 +12,13 @@
 	<dependencies>
 		<!-- Dependencias dos Frameworks-TJPE -->
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>framework-util</artifactId>
 			<version>${project.parent.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>br.jus.framework</groupId>
+			<groupId>br.com.framework</groupId>
 			<artifactId>framework-domain</artifactId>
 			<version>${project.parent.version}</version>
 			<scope>provided</scope>
@@ -53,8 +53,8 @@
 	</dependencies>
 	
 	<parent>
-		<groupId>br.jus.framework</groupId>
-		<artifactId>framework-tjpe-parent</artifactId>
+		<groupId>br.com.framework</groupId>
+		<artifactId>framework-parent</artifactId>
 		<version>3.0.1-SNAPSHOT</version>
 	</parent>
 </project>

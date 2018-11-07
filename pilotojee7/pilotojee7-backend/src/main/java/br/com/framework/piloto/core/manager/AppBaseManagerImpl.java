@@ -1,0 +1,49 @@
+/**
+ * 
+ */
+package br.com.framework.piloto.core.manager;
+
+import java.io.Serializable;
+
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import br.com.framework.search.api.Search;
+import br.com.framework.domain.api.BaseEntity;
+import br.com.framework.model.manager.impl.BaseManagerImpl;
+
+/**
+ * Implementação base para os componentes de negócio.
+ * 
+ * @author Cleber Moura <cleber.t.moura@gmail.com>
+ *
+ * @param <PK> Tipo da chave primária
+ * @param <E> Tipo da entidade
+ * @param <B> Componente de search
+ */
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public abstract class AppBaseManagerImpl<PK extends Serializable, E extends BaseEntity<PK>, B extends Search<PK, E>>
+		extends BaseManagerImpl<PK, E, B> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public static final String BUNDLE_MESSAGES = "Mensagens";
+	
+	/**
+	 * @param entityClass
+	 */
+	public AppBaseManagerImpl(Class<E> entityClass) {
+		super(entityClass);
+	}
+	
+	@PersistenceContext(unitName = "primary")
+	protected void setEntityManager(EntityManager entityManager) {
+		super.setEntityManager(entityManager);
+	}
+
+}

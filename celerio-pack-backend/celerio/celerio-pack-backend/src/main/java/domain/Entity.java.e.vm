@@ -2,7 +2,7 @@ $output.java($entity.model)##
 
 #if ($entity.isEntityAudited()) 
 $output.require("${Root.packageName}.core.domain.BaseEntityAuditedImpl")##
-$output.require("br.jus.framework.domain.enums.Status")##
+$output.require("br.com.framework.domain.enums.Status")##
 #else
 $output.require("${Root.packageName}.core.domain.BaseEntityImpl")##
 #end

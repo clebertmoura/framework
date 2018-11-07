@@ -51,7 +51,7 @@
 		<jpaProvider.class>org.eclipse.persistence.jpa.PersistenceProvider</jpaProvider.class>
 		<jpaProvider.dialect>org.hibernate.dialect.PostgreSQL94Dialect</jpaProvider.dialect>
 		<jtaPlatform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</jtaPlatform>
-		<componentLookup.class>br.jus.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
+		<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
 		
 		<!-- JDBC Settings -->
 		<!--  Oracle -->
@@ -113,7 +113,7 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>br.jus.framework</groupId>
+				<groupId>br.com.framework</groupId>
 				<artifactId>pilotojee7-backend</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -130,7 +130,7 @@
 				<!-- JBoss dependency versions -->
 				<org.jboss.spec.javaee7.bom>1.0.3.Final</org.jboss.spec.javaee7.bom>
 				<version.wildfly.maven.plugin>1.1.0.Alpha7</version.wildfly.maven.plugin>
-				<componentLookup.class>br.jus.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
+				<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
 			</properties>
 			<build>
 				<pluginManagement>
@@ -164,7 +164,7 @@
 				<version.jboss.maven.plugin>7.4.Final</version.jboss.maven.plugin>
 				<version.org.jboss.spec.bom>3.0.2.Final-redhat-13</version.org.jboss.spec.bom>
 				<version.org.jboss.bom.as>1.0.7.Final</version.org.jboss.bom.as>
-				<componentLookup.class>br.jus.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
+				<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
 			</properties>
 			<build>
 				<pluginManagement>
@@ -225,7 +225,7 @@
 				<dataSource.jndiName>jdbc/pilotojee7DataSource</dataSource.jndiName>
 				<jtaPlatform>org.hibernate.service.jta.platform.internal.WeblogicJtaPlatform</jtaPlatform>
 				<hibernate.version>4.1.12.Final</hibernate.version>
-				<componentLookup.class>br.jus.framework.util.lookup.Weblogic12ComponentLookup</componentLookup.class>
+				<componentLookup.class>br.com.framework.util.lookup.Weblogic12ComponentLookup</componentLookup.class>
 			</properties>
 			<dependencyManagement>
 				<dependencies>
@@ -334,8 +334,8 @@
 		<module>pilotojee7-frontend</module>
 	</modules>
 	<parent>
-		<groupId>br.jus.framework</groupId>
-		<artifactId>framework-tjpe-parent</artifactId>
+		<groupId>br.com.framework</groupId>
+		<artifactId>framework-parent</artifactId>
 		<version>3.0.1-SNAPSHOT</version>
 	</parent>
 </project>
