@@ -10,3 +10,6 @@
 **/e2e/
 **/.externalToolBuilders/
 **/.celerio/
+**/pilotojee7-backend/src/main/generated-java
+**/framework/pilotojee7/pilotojee7-backend/src/main/resources/Mensagens_pt_BR.properties
+**/framework/pilotojee7/pilotojee7-backend/src/main/resources/ValidationMessages.properties
