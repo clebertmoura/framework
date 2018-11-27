@@ -9,7 +9,7 @@ import { ${entity.model.type} } from './${entity.model.type.toLowerCase()}';
 @Injectable()
 export class ${entity.service.type} extends EntityService<${entity.model.type}> {
 
-  constructor(protected http: HttpClient,protected messageService: MessageService) {
+  constructor(protected http: HttpClient, protected messageService: MessageService) {
     super(http, messageService, '${entity.model.type}');
   }
 
@@ -34,5 +34,5 @@ export class ${entity.service.type} extends EntityService<${entity.model.type}> 
   protected mapEntityRelations(entity: ${entity.model.type}, response: any): ${entity.model.type} {
     return entity;
   }
-  
+
 }

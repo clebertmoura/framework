@@ -12,6 +12,14 @@ import { ${entity.service.type} } from '../${entity.model.type.toLowerCase()}.se
 #foreach ($relation in $entity.xToOne.list)
 #if(!$relation.to.type.equals($entity.model.type) && !$imports.contains($relation.to.type))
 import { ${relation.to.type} } from '../../$relation.toEntity.model.type.toLowerCase()/${relation.toEntity.model.type.toLowerCase()}';
+import { ${relation.to.type}Service } from '../../$relation.toEntity.model.type.toLowerCase()/${relation.toEntity.model.type.toLowerCase()}.service';
+#set($temp = $imports.add($relation.to.type))
+#end
+#end
+#foreach ($relation in $entity.manyToMany.list)
+#if(!$relation.to.type.equals($entity.model.type) && !$imports.contains($relation.to.type))
+import { ${relation.to.type} } from '../../$relation.toEntity.model.type.toLowerCase()/${relation.toEntity.model.type.toLowerCase()}';
+import { ${relation.to.type}Service } from '../../$relation.toEntity.model.type.toLowerCase()/${relation.toEntity.model.type.toLowerCase()}.service';
 #set($temp = $imports.add($relation.to.type))
 #end
 #end
@@ -67,7 +75,7 @@ export class ${entity.model.type}DetailComponent extends EntityDetailComponent<$
 
     protected loadEntityRelations(): void {
 #foreach ($relation in $entity.manyToMany.list)
-        ${relation.toEntity.service.var}.complete(null).
+        this.${relation.toEntity.service.var}.complete(null).
             subscribe(
                 $relation.to.vars => this.source$relation.to.varsUp = $relation.to.vars,
                 error =>  this.messageService.error('Erro ao carregar ${relation.to.vars}', error));

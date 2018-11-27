@@ -6,6 +6,7 @@ package br.com.framework.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,8 +79,12 @@ public abstract class BaseResourceEndpointImpl<R extends BaseResource> implement
 	 */
 	protected MessageResource getMessageResource() {
 		if (messageResource == null) {
-			messageResource = MessageResourceFactory.createMessageResource(bundleMessagesName, 
-					request.getLocale(), getClass().getClassLoader());
+			try {
+				messageResource = MessageResourceFactory.createMessageResource(bundleMessagesName, 
+						request.getLocale(), getClass().getClassLoader());
+			}catch (MissingResourceException e) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 		return messageResource;
 	}
@@ -128,8 +133,10 @@ public abstract class BaseResourceEndpointImpl<R extends BaseResource> implement
 	protected <En extends Enum<En>> List<EnumResource> createEnumResourceList(Class<En> enumType) {
 		List<EnumResource> resources = new ArrayList<EnumResource>();
 		for (En item : enumType.getEnumConstants()) {
-			EnumResource enumResource = UtilBuilder.buildEnumResource(item.name(), getMessageResource().get(
-					String.format("%s.%s", item.getClass().getSimpleName(), item.name())));
+			MessageResource messageResource = getMessageResource();
+			String labelEnum = String.format("%s.%s", item.getClass().getSimpleName(), item.name());
+			labelEnum = messageResource != null ? messageResource.get(labelEnum) : labelEnum;
+			EnumResource enumResource = UtilBuilder.buildEnumResource(item.name(), labelEnum);
 			resources.add(enumResource);
 		}
 		return resources;

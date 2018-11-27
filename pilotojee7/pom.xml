@@ -66,11 +66,11 @@
 		<jdbc.artifactId>postgresql</jdbc.artifactId>
 		<jdbc.version>42.2.5</jdbc.version>
 		<jdbc.driver>org.postgresql.Driver</jdbc.driver>
-		<jdbc.url>jdbc:postgresql://192.168.25.127:5434/dbroadcard</jdbc.url>
+		<jdbc.url>jdbc:postgresql://207.180.198.112:5432/igrejariodb</jdbc.url>
 		
 		
-		<jdbc.user>postgres</jdbc.user>
-		<jdbc.password>trinity123</jdbc.password>
+		<jdbc.user>igrejario</jdbc.user>
+		<jdbc.password>Igreja1234</jdbc.password>
 		<jdbc.schema></jdbc.schema>
 		<jdbc.catalog></jdbc.catalog>
 		
