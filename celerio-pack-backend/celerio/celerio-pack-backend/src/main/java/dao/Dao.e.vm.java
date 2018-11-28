@@ -39,7 +39,7 @@ public class $output.currentClass extends AppBaseDaoImpl<${entity.root.primaryKe
     	String globalFilter = pageRequest.getGlobalFilter();
     	List<Predicate> globalFilterPredicates = new ArrayList<>();
 ## --- Search attributes
-#foreach($attribute in $entity.searchAttributes.flatUp.list)
+#foreach($attribute in $entity.searchResultAttributes.flatUp.list)
 #if(!$attribute.isInPk() && !$attribute.isFile())
 #if($attribute.isString())
 		globalFilterPredicates.add(this.createFieldPredicate("${attribute.var}", Operator.LI, globalFilter, mapFieldPaths, from, cBuilder));

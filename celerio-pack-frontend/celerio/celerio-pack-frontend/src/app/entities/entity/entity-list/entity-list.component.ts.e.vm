@@ -58,14 +58,14 @@ export class ${entity.model.type}ListComponent extends EntityListComponent<${ent
         ];
         // configura os campos de filtro
 ## --- Search attributes
-#foreach($attribute in $entity.searchAttributes.flatUp.list)
-#if(!$attribute.isInPk() && !$attribute.isFile())
-#if($attribute.isString())
-        this.filters['${attribute.var}'] = new FilterMetadata(null, Operator.LI);
-#elseif($attribute.hasXToOneRelation())
-        this.filters['${attribute.var}.id'] = new FilterMetadata(null, Operator.EQ);
+#foreach($attr in $entity.searchAttributes.flatUp.list)
+#if(!$attr.isInPk() && !$attr.isFile())
+#if($attr.isString())
+        this.filters['${attr.var}'] = new FilterMetadata(null, Operator.LI);
+#elseif($attr.hasXToOneRelation())
+        this.filters['${attr.xToOneRelation.to.var}.id'] = new FilterMetadata(null, Operator.EQ);
 #else
-        this.filters['${attribute.var}'] = new FilterMetadata(null, Operator.EQ);
+        this.filters['${attr.var}'] = new FilterMetadata(null, Operator.EQ);
 #end		
 #end
 #end
