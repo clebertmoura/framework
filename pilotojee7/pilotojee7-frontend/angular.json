@@ -31,7 +31,7 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/tjpe-app-theme.scss",
+              "src/pilotojee7-app-theme.scss",
               "src/styles.scss"              
             ],
             "scripts": []
@@ -85,7 +85,7 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "src/styles.scss",
-              "src/tjpe-theme.scss"
+              "src/pilotojee7-app-theme.scss"
             ],
             "scripts": [],
             "assets": [

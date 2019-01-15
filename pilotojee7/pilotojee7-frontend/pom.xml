@@ -71,21 +71,21 @@
 			<id>teste</id>
 			<properties>
 				<keycloak.credentials.secret>aa337708-0677-4c32-8d0b-d7eaee5f375c</keycloak.credentials.secret>
-				<backendUrl>https://teste.tjpe.gov.br/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>https://localhost:8443/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>homologacao</id>
 			<properties>
 				<keycloak.credentials.secret>aa337708-0677-4c32-8d0b-d7eaee5f375c</keycloak.credentials.secret>
-				<backendUrl>https://homologacao.tjpe.jus.br/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>https://localhost:8443/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>producao</id>
 			<properties>
 				<keycloak.credentials.secret>aa337708-0677-4c32-8d0b-d7eaee5f375c</keycloak.credentials.secret>
-				<backendUrl>https://www.tjpe.jus.br/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>https://localhost:8443/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		

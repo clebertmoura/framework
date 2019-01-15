@@ -259,37 +259,37 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<keycloak.realm>tjpeconnect</keycloak.realm>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://homologacao.tjpe.gov.br/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://homologacao.tjpe.gov.br</keycloak.rootUrl>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>teste</id>
 			<properties>
-				<keycloak.realm>tjpeconnect</keycloak.realm>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://teste.tjpe.gov.br/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://teste.tjpe.gov.br</keycloak.rootUrl>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>homologacao</id>
 			<properties>
-				<keycloak.realm>tjpeconnect</keycloak.realm>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://homologacao.tjpe.gov.br/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://homologacao.tjpe.gov.br</keycloak.rootUrl>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>producao</id>
 			<properties>
-				<keycloak.realm>tjpeconnect</keycloak.realm>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://www.tjpe.gov.br/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://www.tjpe.gov.br</keycloak.rootUrl>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
 			</properties>
 		</profile>
 		

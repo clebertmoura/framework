@@ -57,7 +57,7 @@
 	
 	<login-config>
 		<auth-method>KEYCLOAK</auth-method>
-		<realm-name>tjpeconnect</realm-name>
+		<realm-name>pilotojee7-realm</realm-name>
 	</login-config>
 
 	<!-- specify all the roles defined for this web app -->

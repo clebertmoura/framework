@@ -7,22 +7,22 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$tjpe-app-primary: mat-palette($mat-indigo, 800, 300, 900);
-$tjpe-app-accent: mat-palette($mat-teal, 800, 300, 900);
+$pilotojee7-app-primary: mat-palette($mat-indigo, 800, 300, 900);
+$pilotojee7-app-accent: mat-palette($mat-teal, 800, 300, 900);
 // The warn palette is optional (defaults to red).
-$tjpe-app-warn : mat-palette($mat-red, 800, 300, 900);
+$pilotojee7-app-warn : mat-palette($mat-red, 800, 300, 900);
 // Create the theme object (a Sass map containing all of the palettes).
-$tjpe-app-theme: mat-light-theme($tjpe-app-primary, $tjpe-app-accent, $tjpe-app-warn);
+$pilotojee7-app-theme: mat-light-theme($pilotojee7-app-primary, $pilotojee7-app-accent, $pilotojee7-app-warn);
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($tjpe-app-theme);
+@include angular-material-theme($pilotojee7-app-theme);
 // Extract the palettes you need from the theme definition.
-$primary: map-get($tjpe-app-theme, primary);
+$primary: map-get($pilotojee7-app-theme, primary);
 
-$accent: map-get($tjpe-app-theme, accent);
+$accent: map-get($pilotojee7-app-theme, accent);
 
-$warn: map-get($tjpe-app-theme, warn);
+$warn: map-get($pilotojee7-app-theme, warn);
 
 .ui-autocomplete-container {
   padding-top: 1em;

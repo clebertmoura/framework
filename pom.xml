@@ -97,14 +97,15 @@
 	
 	<distributionManagement>
 		<repository>
-			<id>artifactory-tjpe</id>
-			<name>artifactory-tjpe-releases</name>
-			<url>http://www.tjpe.jus.br/artifactory/libs-releases-local</url>
+			<id>maven-releases</id>
+			<name>maven-releases</name>
+			<url>http://nexus.trinitysolucoes.com.br:8081/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>artifactory-tjpe</id>
-			<name>artifactory-tjpe-snapshots</name>
-			<url>http://www.tjpe.jus.br/artifactory/libs-snapshots-local</url>
+			<id>maven-snapshots</id>
+			<name>maven-snapshots</name>
+			<url>http://nexus.trinitysolucoes.com.br:8081/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
+	
 </project>
