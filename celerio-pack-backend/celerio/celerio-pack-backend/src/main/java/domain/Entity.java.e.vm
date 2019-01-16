@@ -7,8 +7,6 @@ $output.require("br.com.framework.domain.enums.Status")##
 $output.require("${Root.packageName}.core.domain.BaseEntityImpl")##
 #end
 
-$output.require("org.slf4j.Logger")##
-$output.require("org.slf4j.LoggerFactory")##
 $output.require("com.google.common.base.MoreObjects")##
 
 #if($entity.hasComment())
@@ -41,14 +39,23 @@ $annotation
 #end
 
 ## --------------- Override attributes
+#set($hasAttributeOverrides = false)
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 #if($attribute.isVersion() || $attribute.isAuditEntityAttribute() || $attribute.getColumnConfig().getFieldName().equals("status"))
+#if ($hasAttributeOverrides == false)
+$output.require("javax.persistence.AttributeOverrides")##
+#set($hasAttributeOverrides = true)
+@AttributeOverrides({
+#end
 #if(!$attribute.getColumnConfig().getFieldName().equals("status"))
 $output.require($attribute)##
 #end
 $output.require("javax.persistence.AttributeOverride")##
-@AttributeOverride(name="$attribute.getColumnConfig().getFieldName()", column=@Column(name="$attribute.getColumnConfig().getColumnName()"))
+@AttributeOverride(name="$attribute.getColumnConfig().getFieldName()", column=@Column(name="$attribute.getColumnConfig().getColumnName()")),
 #end
+#end
+#if ($hasAttributeOverrides == true)
+})
 #end
 
 /**
@@ -62,7 +69,6 @@ $output.require($entity.parent.model)##
 public#if ($output.isAbstract()) abstract#{end} class $output.currentClass extends $entity.parent.model.type {
 #end
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(${output.currentClass}.class);
 
 ## --------------- Raw attributes (exception the one involved in XtoOneRelation)
 #foreach ($attribute in $entity.nonCpkAttributes.list)
@@ -264,7 +270,6 @@ $output.require("$entity.collectionType.implementationFullType")##
             roleNames.add("ROLE_ADMIN");
         }
 
-        log.warn("Returning hard coded role names. TODO: get the real role names");
         return roleNames;
     }
 #end
@@ -645,21 +650,6 @@ $output.require("$entity.collectionType.implementationFullType")##
         return ${relation.to.getters}() != null && ${relation.to.getters}().contains($relation.to.var);
     }
 #end
-
-    /**
-     * Apply the default values.
-     */
-    public ${output.currentRootClass} withDefaults() {
-#if ($entity.hasParent())
-        super.withDefaults();
-#end
-#foreach ($attribute in $entity.pertinentDefaultValueAttributes.list)
-#if(!$attribute.getColumnConfig().getFieldName().equals("status"))
-        ${attribute.setter}($attribute.javaDefaultValue);
-#end
-#end
-        return ${output.currentRootCast}this;
-    }
 
 #foreach ($bundle in $entity.attributeBundles)
 #if ($velocityCount == 1)
