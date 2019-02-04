@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
@@ -19,7 +18,7 @@ public class LocalTimeDeserializer extends StdDeserializer<LocalTime> {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalTimeSerializer.LOCAL_TIME_PATTERN);
+	private transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalTimeSerializer.LOCAL_TIME_PATTERN);
 
 	public LocalTimeDeserializer() {
 		super(LocalTime.class);
@@ -27,7 +26,7 @@ public class LocalTimeDeserializer extends StdDeserializer<LocalTime> {
 
 	@Override
 	public LocalTime deserialize(JsonParser jp, DeserializationContext ctxt)
-			throws IOException, JsonProcessingException {
+			throws IOException{
 		return LocalTime.parse(jp.readValueAs(String.class), formatter);
 	}
 

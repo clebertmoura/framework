@@ -23,8 +23,6 @@ import java.util.Properties;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-import org.apache.commons.io.IOUtils;
-
 /**
  * <ul>
  * <li>handles properties files encoded in UTF-8</li>
@@ -62,19 +60,18 @@ public class CustomResourceBundleControl extends ResourceBundle.Control {
     }
 
     public ResourceBundle newBundleInXml(String baseName, Locale locale, ClassLoader loader, boolean reload)
-            throws IllegalAccessException, InstantiationException, IOException {
+            throws IOException {
         String bundleName = toBundleName(baseName, locale);
         String resourceName = toResourceName(bundleName, BUNDLE_EXTENSION);
         InputStream stream = loadResourceAsStream(loader, reload, resourceName);
         if (stream == null) {
             return null;
         }
-        BufferedInputStream bis = null;
-        try {
-            bis = new BufferedInputStream(stream);
+        try (
+        		BufferedInputStream bis = new BufferedInputStream(stream);
+        	)
+        {
             return new XmlResourceBundle(bis);
-        } finally {
-            IOUtils.closeQuietly(bis);
         }
     }
 
@@ -96,19 +93,18 @@ public class CustomResourceBundleControl extends ResourceBundle.Control {
     }
 
     public ResourceBundle newBundleInProperties(String baseName, Locale locale, ClassLoader loader, boolean reload)
-            throws IllegalAccessException, InstantiationException, IOException {
+            throws IOException {
         String bundleName = toBundleName(baseName, locale);
         final String resourceName = toResourceName(bundleName, "properties");
         final ClassLoader classLoader = loader;
         final boolean reloadFlag = reload;
-        InputStream stream = loadResourceAsStream(classLoader, reloadFlag, resourceName);
-        if (stream == null) {
-            return null;
-        }
-        try {
+        
+        try (
+        	InputStream stream = loadResourceAsStream(classLoader, reloadFlag, resourceName);
+        ){
             return new PropertyResourceBundle(new InputStreamReader(stream, ENCODING));
-        } finally {
-            IOUtils.closeQuietly(stream);
+        }catch (Exception e) {
+        	return null;
         }
     }
 

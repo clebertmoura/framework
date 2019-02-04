@@ -96,8 +96,8 @@ public class ResourcesUtil {
     }
 
     private MessageSource createMessageSource() {
-        MessageSource messageSource = new DefaultMessageSource();
-        messageSource.setBasenames( //
+        MessageSource msgSource = new DefaultMessageSource();
+        msgSource.setBasenames( //
                 // global
                 "localization/messages", //
                 "localization/application", //
@@ -124,6 +124,6 @@ public class ResourcesUtil {
                 "ValidationMessages", //
                 "javax/faces/Messages", //
                 "org/hibernate/validator/ValidationMessages");
-        return messageSource;
+        return msgSource;
     }
 }

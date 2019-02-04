@@ -13,7 +13,6 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
@@ -26,7 +25,7 @@ import br.com.framework.domain.api.BaseEntityAudited;
 import br.com.framework.domain.enums.Status;
 import br.com.framework.model.exception.ModelException;
 import br.com.framework.model.manager.api.BaseManager;
-import br.com.framework.model.util.Constants;
+import br.com.framework.model.util.Constantes;
 import br.com.framework.search.api.Search;
 import br.com.framework.search.api.SearchUniqueResult;
 import br.com.framework.util.Config;
@@ -49,21 +48,21 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected Logger logger = LoggerFactory.getLogger(getClass());
+	protected transient Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Inject
     protected Validator validator;
 	
 	protected Class<E> entityClass;
 	
-	protected EntityManager entityManager;
+	protected transient EntityManager entityManager;
 	
-	protected B search;
+	protected transient B search;
 	
 	protected Config config;
 	
 	@Resource
-	protected SessionContext sessionContext;
+	protected transient SessionContext sessionContext;
 	
 	/**
 	 * @param entityClass
@@ -71,7 +70,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	public BaseManagerImpl(Class<E> entityClass) {
 		super();
 		this.entityClass = entityClass;
-		this.config = new Config(entityClass.getClassLoader(), Constants.CONFIG_FILENAME);
+		this.config = new Config(entityClass.getClassLoader(), Constantes.CONFIG_FILENAME);
 	}
 	
 	/**
@@ -111,7 +110,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.impl.BaseNegocio#insert(E)
 	 */
-	public E insert(E entity) throws PersistenceException, ConstraintViolationException, ModelException {
+	public E insert(E entity) throws ModelException {
 		if (logger.isDebugEnabled()) {
 			logger.debug(String.format("Inserindo entidade %s.", getEntityClassSimpleName()));
 		}
@@ -128,7 +127,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	 * @throws ConstraintViolationException
 	 * @throws ModelException
 	 */
-	public void validateEntityFields(E entity, boolean isInsert) throws ConstraintViolationException, ModelException {}
+	public void validateEntityFields(E entity, boolean isInsert) throws ModelException {}
 	
 	/**
 	 * Este método deve ser sobrescrito caso haja necessidade de implementar validações antes de remover a entidade. 
@@ -140,7 +139,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.impl.BaseNegocio#update(E)
 	 */
-	public E update(E entity) throws PersistenceException, ConstraintViolationException, ModelException {
+	public E update(E entity) throws ModelException {
 		if (entity != null && entity.getId() != null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Alterando entidade %s, Id = %s.", 
@@ -159,7 +158,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.impl.BaseNegocio#remove(E)
 	 */
-	public E remove(E entity) throws PersistenceException, ConstraintViolationException, ModelException {
+	public E remove(E entity) throws ModelException {
 		if (entity != null && entity.getId() != null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Removendo entidade %s, Id = %s.", 
@@ -186,7 +185,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	 * @see br.com.framework.model.manager.api.BaseManager#remover(java.io.Serializable)
 	 */
 	@Override
-	public E remove(PK id) throws PersistenceException, ConstraintViolationException, ModelException {
+	public E remove(PK id) throws ModelException {
 		SearchUniqueResult<E> buscaPorId = getSearch().findById(id);
 		if (buscaPorId.getUniqueResult() != null) {
 			return remove(buscaPorId.getUniqueResult());
@@ -195,7 +194,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 		}
 	}
 	
-	public E removeDefinitely(E entity) throws PersistenceException, ConstraintViolationException, ModelException {
+	public E removeDefinitely(E entity) throws ModelException {
 		if (entity != null && entity.getId() != null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Removendo definitivamente a entidade %s, Id = %s.", 
@@ -214,7 +213,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	}
 
 	@Override
-	public E removeDefinitely(PK id) throws PersistenceException, ConstraintViolationException, ModelException {
+	public E removeDefinitely(PK id) throws ModelException {
 		SearchUniqueResult<E> buscaPorId = getSearch().findById(id);
 		if (buscaPorId.getUniqueResult() != null) {
 			return removeDefinitely(buscaPorId.getUniqueResult());
@@ -226,7 +225,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.impl.BaseNegocio#refresh(E)
 	 */
-	public E refresh(E entity) throws PersistenceException {
+	public E refresh(E entity){
 		if (entity != null && entity.getId() != null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Recarregando entidade %s, Id = %s.", 
@@ -248,7 +247,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	 * @param entidade
 	 * @throws ConstraintViolationException
 	 */
-	protected void checkBeanValidation(E entidade) throws ConstraintViolationException {
+	protected void checkBeanValidation(E entidade){
         // Create a bean validator and check for issues.
         Set<ConstraintViolation<E>> violations = validator.validate(entidade);
         if (!violations.isEmpty()) {
@@ -259,7 +258,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.impl.BaseNegocio#detach(E)
 	 */
-	public void detach(E entity) throws PersistenceException {
+	public void detach(E entity){
 		if (entity != null && entity.getId() != null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Desvinculando entidade %s, Id = %s.", 

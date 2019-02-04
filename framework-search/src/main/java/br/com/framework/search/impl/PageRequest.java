@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import br.com.framework.search.impl.Ordering.Order;
 
 /**
@@ -16,6 +18,7 @@ import br.com.framework.search.impl.Ordering.Order;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
+@XmlRootElement
 public class PageRequest {
 	/**
      * First row offset.

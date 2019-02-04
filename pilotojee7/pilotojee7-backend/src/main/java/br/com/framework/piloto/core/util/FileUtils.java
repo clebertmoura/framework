@@ -14,10 +14,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
-	public FileUtils() {
-		// TODO Auto-generated constructor stub
-	}
-
 	/**
 	 * Mover um arquivo.
 	 * 
@@ -73,19 +69,20 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * @param uploadedFileLocation
 	 */
 	public static void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
-		try {
-			OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+		try(
+				OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+			) 
+		{
 			int read = 0;
 			byte[] bytes = new byte[1024];
 
-			out = new FileOutputStream(new File(uploadedFileLocation));
 			while ((read = uploadedInputStream.read(bytes)) != -1) {
 				out.write(bytes, 0, read);
 			}
 			out.flush();
-			out.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(String.format("Não foi possível escrever arquivo para o destino: %s ",
+					uploadedFileLocation));
 		}
 
 	}

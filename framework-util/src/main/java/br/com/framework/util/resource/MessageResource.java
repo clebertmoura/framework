@@ -26,16 +26,8 @@ public class MessageResource implements Serializable {
     private static final Locale DEFAULT_LOCALE = new Locale("pt", "BR");
 
     /** ResourceBundle para controlar os recursos. */
-    private ResourceBundle resourceBundle;
+    private transient ResourceBundle resourceBundle;
 
-    /** O classloader. */
-    /*private ClassLoader classLoader;*/
-    
-    /**
-     * A localização (I18N) das mensagens
-     */
-    /*private Locale locale;*/
-    
     
 	/**
 	 * Constroi um {@link MessageResource}
@@ -53,11 +45,9 @@ public class MessageResource implements Serializable {
 		if (cLoader == null) {
 			cLoader = getClass().getClassLoader();
 		}
-		/*this.classLoader = cLoader;*/
 		if (locale == null) {
 			locale = DEFAULT_LOCALE;
 		} 
-		/*this.locale = locale;*/
 		
 		// inicializa o resource bundle.
 		this.resourceBundle = ResourceBundle.getBundle(bundle, locale, cLoader);
@@ -97,9 +87,8 @@ public class MessageResource implements Serializable {
      */
     public String get(String key, Object... params) {
         try {
-        	String message = MessageFormat.format(
+        	return MessageFormat.format(
         			this.resourceBundle.getString(key), params);
-            return message;
         } catch (MissingResourceException e) {
             return key;
         }

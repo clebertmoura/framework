@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.ejb.ApplicationException;
 
+import br.com.framework.model.log.impl.ErrorDefault;
+
 
 /**
  * Classe de exceções de negocio.
@@ -20,9 +22,17 @@ public class ModelException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Map<String, Object[]> mensagensMap = new HashMap<String, Object[]>();
+	private Map<String, Object[]>  mensagensMap = new HashMap<>();
+	
+	private ErrorDefault errorDefault = null;
+	
 
 	public ModelException() {
+	}
+
+	public ModelException(ErrorDefault errorDefault) {
+		super(errorDefault.getCause());
+		this.errorDefault = errorDefault;
 	}
 	
 	/**
@@ -102,7 +112,11 @@ public class ModelException extends Exception {
 	 * @return
 	 */
 	public static Map<String, Object[]> createMessagesMap() {
-		return new HashMap<String, Object[]>();
+		return new HashMap<>();
+	}
+	
+	public ErrorDefault getErroDefault() {
+		return errorDefault;
 	}
 
 }

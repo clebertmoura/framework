@@ -4,8 +4,10 @@
 package br.com.framework.piloto.core.manager;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.framework.piloto.core.indexer.SolrIndexerService;
 
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
@@ -28,16 +30,11 @@ public class MailManager implements Serializable {
 	 */
 	private static final long serialVersionUID = 8638241699559098987L;
 
-	private static final Logger logger = Logger.getLogger(MailManager.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(MailManager.class);
 
 	@Resource(mappedName = "java:jboss/mail/Default")
-	private Session mailSession;
+	private transient Session mailSession;
 
-	/**
-	 * 
-	 */
-	public MailManager() {
-	}
 
 	/**
 	 * Envia o e-mail.
@@ -51,9 +48,7 @@ public class MailManager implements Serializable {
 	 * @throws MessagingException
 	 */
 	public void sendEmail(String to, String from, String subject, String textContent, String htmlContent) throws MessagingException {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine(String.format("Enviando e-mail, de: %s, para: %s, assunto: %s", from, to, subject));
-		}
+		logger.info(String.format("Enviando e-mail, de: %s, para: %s, assunto: %s", from, to, subject));
 		try {
 			Message message = new MimeMessage(mailSession);
 			message.setFrom(new InternetAddress(from));
@@ -67,11 +62,9 @@ public class MailManager implements Serializable {
 			
 			Transport.send(message);
 
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("E-mail enviado");
-			}
+			logger.info("E-mail enviado");
 		} catch (MessagingException e) {
-			logger.log(Level.SEVERE, "Erro ao enviar e-mail.", e);
+			logger.error("Erro ao enviar e-mail.", e);
 			throw e;
 		}
 	}

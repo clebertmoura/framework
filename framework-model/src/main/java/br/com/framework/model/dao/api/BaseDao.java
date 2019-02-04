@@ -36,7 +36,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws SearchException
 	* @throws PersistenceException
 	*/
-	public SearchUniqueResult<E> findById(PK id, String entityGraphName) throws SearchException, PersistenceException;
+	public SearchUniqueResult<E> findById(PK id, String entityGraphName);
 	
 	/**
 	* Pesquisa entidades com base na entidade exemplo informada, com ordenação e paginação.
@@ -52,7 +52,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws PersistenceException
 	*/
 	public SearchResult<E> findByExample(E e, boolean isLike,
-		boolean isCaseSensitive, int primeiroResultado, int maxResultados, Ordering... ordenacoes) throws SearchException, PersistenceException;
+		boolean isCaseSensitive, int primeiroResultado, int maxResultados, Ordering... ordenacoes);
 	
 	/**
 	* Pesquisa entidades com base na entidade exemplo informada, com ordenação e paginação.
@@ -69,7 +69,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws PersistenceException
 	*/
 	public SearchResult<E> findByExample(E e, boolean isLike,
-		boolean isCaseSensitive, int primeiroResultado, int maxResultados, String entityGraphName, Ordering... ordenacoes) throws SearchException, PersistenceException;
+		boolean isCaseSensitive, int primeiroResultado, int maxResultados, String entityGraphName, Ordering... ordenacoes);
 	
 	/**
 	* Retorna a quantidade de registros com base na entidade exemplo informada.
@@ -82,7 +82,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws PersistenceException
 	*/
 	public SearchUniqueResult<Long> getCountFindByExample(E e,
-		boolean isLike, boolean isCaseSensitive) throws SearchException, PersistenceException;
+		boolean isLike, boolean isCaseSensitive);
 	
 	/**
 	* Pesquisa um registro único utilizando uma entidade exemplo.
@@ -97,7 +97,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws NonUniqueResultException
 	*/
 	public SearchUniqueResult<E> findUniqueByExample(E e, boolean isLike,
-		boolean isCaseSensitive, String entityGraphName) throws SearchException, PersistenceException, NonUniqueResultException;
+		boolean isCaseSensitive, String entityGraphName);
 	
 	/**
 	* Pesquisa um registro único utilizando uma entidade exemplo.
@@ -111,7 +111,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws NonUniqueResultException
 	*/
 	public SearchUniqueResult<E> findUniqueByExample(E e, boolean isLike,
-		boolean isCaseSensitive) throws SearchException, PersistenceException, NonUniqueResultException;
+		boolean isCaseSensitive) ;
 	
 	/**
 	* Pesquisa um registro único utilizando uma entidade exemplo.
@@ -123,7 +123,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws PersistenceException
 	* @throws NonUniqueResultException
 	*/
-	public SearchUniqueResult<E> findUniqueByExample(E e, String entityGraphName) throws SearchException, PersistenceException, NonUniqueResultException;
+	public SearchUniqueResult<E> findUniqueByExample(E e, String entityGraphName) ;
 	
 	/**
 	* Pesquisa um registro único utilizando uma entidade exemplo.
@@ -134,7 +134,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws PersistenceException
 	* @throws NonUniqueResultException
 	*/
-	public SearchUniqueResult<E> findUniqueByExample(E e) throws SearchException, PersistenceException, NonUniqueResultException;
+	public SearchUniqueResult<E> findUniqueByExample(E e) ;
 	
 	/**
 	* Desvincula o objeto do contexto atual.
@@ -159,7 +159,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	*/
 	public SearchResult<E> findByRestrictions(
 		List<Restriction> restrictions, int first, int max, String entityGraphName,
-		Ordering... orderings) throws SearchException, PersistenceException;
+		Ordering... orderings);
 	
 	/**
 	* Pesquisa registros de acordo com as restrições informadas, com suporte a orenação e paginação.
@@ -177,7 +177,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	*/
 	public SearchResult<E> findByRestrictions(
 		List<Restriction> restrictions, boolean useOperatorOr, int first, int max, String entityGraphName,
-		Ordering... orderings) throws SearchException, PersistenceException;
+		Ordering... orderings);
 	
 	/**
 	* Pesquisa registros de acordo com a restrição informada, com suporte a orenação e paginação.
@@ -217,8 +217,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws NonUniqueResultException
 	*/
 	public SearchUniqueResult<E> findUniqueByRestrictions(
-		List<Restriction> restrictions, String entityGraphName) throws SearchException,
-		NonUniqueResultException;
+		List<Restriction> restrictions, String entityGraphName);
 	
 	/**
 	* Pesquisa um registro único utilizando uma entidade exemplo.
@@ -232,8 +231,7 @@ public interface BaseDao<PK extends Serializable, E extends BaseEntity<PK>>
 	* @throws NonUniqueResultException
 	*/
 	public SearchUniqueResult<E> findUniqueByRestrictions(
-		List<Restriction> restrictions, boolean useOperatorOr, String entityGraphName) throws SearchException,
-		NonUniqueResultException;
+		List<Restriction> restrictions, boolean useOperatorOr, String entityGraphName);
 
 
 	/**

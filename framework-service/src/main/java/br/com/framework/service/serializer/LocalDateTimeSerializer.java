@@ -21,7 +21,7 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 	
 	public static final String LOCAL_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 	
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalDateTimeSerializer.LOCAL_DATETIME_PATTERN);
+	private transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalDateTimeSerializer.LOCAL_DATETIME_PATTERN);
 
 	public LocalDateTimeSerializer() {
 		super(LocalDateTime.class);
@@ -29,7 +29,7 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
 	@Override
 	public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider sp)
-			throws IOException, JsonProcessingException {
+			throws IOException{
 		gen.writeString(value.format(formatter));
 	}
 }

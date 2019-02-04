@@ -27,10 +27,9 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	 * @param entidade
 	 * @return
 	 * @throws PersistenceException
-	 * @throws ConstraintViolationException
 	 * @throws ModelException
 	 */
-	public abstract E insert(E entidade) throws PersistenceException, ConstraintViolationException, ModelException;
+	public abstract E insert(E entidade) throws ModelException;
 
 	/**
 	 * Altera uma entidade existente.
@@ -38,32 +37,29 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	 * @param entidade
 	 * @return
 	 * @throws PersistenceException
-	 * @throws ConstraintViolationException
 	 * @throws ModelException
 	 */
-	public abstract E update(E entidade) throws PersistenceException, ConstraintViolationException, ModelException;
+	public abstract E update(E entidade) throws ModelException;
 
 	/**
-	 * Remove uma entidade existente. Caso a entidade pertença a hierarquia de {@link BaseEntityAudited}, o registro será apenas inativado.
+	 * Remove uma entidade existente. Caso a entidade pertenÃ§a a hierarquia de {@link BaseEntityAudited}, o registro serÃ¡ apenas inativado.
 	 * 
 	 * @param entidade
 	 * @return
 	 * @throws PersistenceException
-	 * @throws ConstraintViolationException
 	 * @throws ModelException
 	 */
-	public abstract E remove(E entidade) throws PersistenceException, ConstraintViolationException, ModelException;
+	public abstract E remove(E entidade) throws ModelException;
 	
 	/**
-	 * Remove uma entidade existente pelo ID. Caso a entidade pertença a hierarquia de {@link BaseEntityAudited}, o registro será apenas inativado.
+	 * Remove uma entidade existente pelo ID. Caso a entidade pertenÃ§a a hierarquia de {@link BaseEntityAudited}, o registro serÃ¡ apenas inativado.
 	 * 
 	 * @param id
 	 * @return
 	 * @throws PersistenceException
-	 * @throws ConstraintViolationException
 	 * @throws ModelException
 	 */
-	public abstract E remove(PK id) throws PersistenceException, ConstraintViolationException, ModelException;
+	public abstract E remove(PK id) throws ModelException;
 	
 	/**
 	 * Remove uma entidade existente de forma definitiva.
@@ -71,10 +67,9 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	 * @param entity
 	 * @return
 	 * @throws PersistenceException
-	 * @throws ConstraintViolationException
 	 * @throws ModelException
 	 */
-	public E removeDefinitely(E entity) throws PersistenceException, ConstraintViolationException, ModelException;
+	public E removeDefinitely(E entity) throws ModelException;
 	
 	/**
 	 * Remove uma entidade existente pelo ID de forma definitiva.
@@ -82,10 +77,9 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	 * @param id
 	 * @return
 	 * @throws PersistenceException
-	 * @throws ConstraintViolationException
 	 * @throws ModelException
 	 */
-	public abstract E removeDefinitely(PK id) throws PersistenceException, ConstraintViolationException, ModelException;
+	public abstract E removeDefinitely(PK id) throws ModelException;
 
 	/**
 	 * Faz um refresh na entidade.
@@ -94,7 +88,7 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	 * @return
 	 * @throws PersistenceException
 	 */
-	public abstract E refresh(E entidade) throws PersistenceException;
+	public abstract E refresh(E entidade);
 
 	/**
 	 * Desvincula a entidade do contexto de persistencia.
@@ -102,7 +96,7 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	 * @param entidade
 	 * @throws PersistenceException
 	 */
-	public abstract void detach(E entidade) throws PersistenceException;
+	public abstract void detach(E entidade);
 /*
 	*//**
 	 * Consulta todas as revisões de uma entidade anotada com @Audited

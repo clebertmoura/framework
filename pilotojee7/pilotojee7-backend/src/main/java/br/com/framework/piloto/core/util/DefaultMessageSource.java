@@ -17,14 +17,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
+
+import br.com.framework.piloto.core.indexer.SolrIndexerService;
 
 public class DefaultMessageSource implements MessageSource {
 
-    protected Logger logger = Logger.getLogger(DefaultMessageSource.class.getName());
+    protected Logger logger = LoggerFactory.getLogger(DefaultMessageSource.class);
 
     protected Map<String, Map<Locale, ResourceBundle>> resourceBundles = newHashMap();
 
@@ -93,6 +94,8 @@ public class DefaultMessageSource implements MessageSource {
             try {
                 messageFormat = resourceBundle.getString(key);
             } catch (MissingResourceException e) {
+            	logger.error("No message format from key " + basename, e);
+                throw e;
             }
             if (messageFormat != null) {
                 break;
@@ -114,7 +117,7 @@ public class DefaultMessageSource implements MessageSource {
             try {
                 resourceBundle = ResourceBundle.getBundle(basename, locale, this.getClass().getClassLoader(), new CustomResourceBundleControl());
             } catch (MissingResourceException e) {
-                logger.log(Level.SEVERE, "No resource bundle file for " + basename, e);
+                logger.error("No resource bundle file for %s", basename, e);
                 throw e;
             }
             resourceBundles.get(basename).put(locale, resourceBundle);

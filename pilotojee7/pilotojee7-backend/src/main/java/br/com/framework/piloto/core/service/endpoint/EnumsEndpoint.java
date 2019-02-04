@@ -1,5 +1,6 @@
 package br.com.framework.piloto.core.service.endpoint;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.ejb.Stateless;
@@ -17,7 +18,7 @@ import br.com.framework.service.impl.BaseResourceImpl;
 
 
 /**
- * Endpoint dos Enums do modulo de cadastro.
+ * Endpoint que publica todos os Enums da aplicação.
  * 
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
@@ -26,10 +27,35 @@ import br.com.framework.service.impl.BaseResourceImpl;
 @Path("/v1/enums")
 public class EnumsEndpoint extends BaseResourceEndpointImpl<BaseResourceImpl>{
 
+	private static final String FRAMEWORK_PACKAGE = "br.com.framework.domain";
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1173742094500363316L;
+	
+	/**
+	 * Pacotes de enum a serem publicados pela API
+	 */
+	private static final String[] enumPackages = {
+		FRAMEWORK_PACKAGE,
+		EnumsEndpoint.class.getPackage().getName().substring(0, 
+			EnumsEndpoint.class.getPackage().getName().indexOf(".core.service.endpoint"))
+	};
+	
+	@SuppressWarnings("rawtypes")
+	private static final Set<Class<? extends Enum>> enumClasses = new HashSet<>();
+	
+	/**
+	 * Carrega as classes de Enum
+	 */
+	static {
+		for (String enumPackage : enumPackages) {
+			Reflections reflections = new Reflections(enumPackage);
+			enumClasses.addAll(reflections.getSubTypesOf(Enum.class));
+		}
+	}
+	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GET
@@ -37,9 +63,7 @@ public class EnumsEndpoint extends BaseResourceEndpointImpl<BaseResourceImpl>{
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getEnumValues(@PathParam("EnumType") String enumType) {
 		Class<? extends Enum> classFound = null;
-		Reflections reflections = new Reflections("br.com.framework.piloto");
-		Set<Class<? extends Enum>> allClasses = reflections.getSubTypesOf(Enum.class);
-		for (Class<? extends Enum> class1 : allClasses) {
+		for (Class<? extends Enum> class1 : enumClasses) {
 			if(class1.getSimpleName().equals(enumType)) {
 				classFound = class1;
 				break;
@@ -47,7 +71,7 @@ public class EnumsEndpoint extends BaseResourceEndpointImpl<BaseResourceImpl>{
 		}
 		return Response.ok(createEnumResourceList(classFound)).build();
 	}
-	
+
 	
 }
 

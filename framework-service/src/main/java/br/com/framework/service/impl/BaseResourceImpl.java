@@ -20,4 +20,5 @@ public abstract class BaseResourceImpl implements BaseResource {
 	 */
 	private static final long serialVersionUID = 2726905230439291277L;
 	
+	
 }

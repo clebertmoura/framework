@@ -37,6 +37,9 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #macro(minlength $attribute)
 #if($attribute.columnConfig.hasMin()) minlength="$attribute.columnConfig.min"#end
 #end
+#macro(maxlength $attribute)
+#if($attribute.columnConfig.getSize() > 0) maxlength="$attribute.columnConfig.size"#end
+#end
 #macro(requiredclass $attribute)
 #if($attribute.isRequired()) class="required"#end
 #end
@@ -49,7 +52,12 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #end
 #if($attribute.columnConfig.hasMin() && $attribute.isString())
                     <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['minlength']">
-                        $attribute.labels.label deve conter no mínimo $attribute.columnConfig.min caracteres.
+                        $attribute.labels.label deve conter no mínimo $attribute.columnConfig.min caractere(s).
+                    </mat-error>
+#end
+#if($attribute.isString() && $attribute.columnConfig.getSize() > 0)
+                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['maxlength']">
+                        $attribute.labels.label deve conter no máximo $attribute.columnConfig.size caractere(s).
                     </mat-error>
 #end
 #if($attribute.isEmail())
@@ -87,15 +95,15 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 				<div class="col-12">
 #if($attr.isPassword())
 		            <mat-form-field>
-		                <input matInput type="password" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+		                <input matInput type="password" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
 		                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
 		                #mderror($attr)
 					</mat-form-field>
 #elseif($attr.isHtml())
                 todo html
-#elseif($attr.isTextArea())
+#elseif($attr.isTextArea() && $attr.getSize() > 255)
                 <mat-form-field>
-	                <textarea matInput [(ngModel)]="$valuePath" #required($attr) #minlength($attr) autoResize="true" name="$attr.var" id="$attr.var" ${p}$attr.var
+	                <textarea matInput [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) autoResize="true" name="$attr.var" id="$attr.var" ${p}$attr.var
 	                	[disabled]="viewMode" placeholder="$attr.labels.label"></textarea>
 	                #mderror($attr)
 				</mat-form-field>
@@ -108,19 +116,19 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 				</mat-form-field>
 #elseif($attr.isEmail())
 				<mat-form-field>
-	                <input matInput type="email" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) validateEmail name="$attr.var" id="$attr.var" ${p}$attr.var
+	                <input matInput type="email" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) validateEmail name="$attr.var" id="$attr.var" ${p}$attr.var
 	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
 	                #mderror($attr)
 				</mat-form-field>
 #elseif($attr.isUrl())
 				<mat-form-field>
-	                <input matInput type="url" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" name="$attr.var" id="$attr.var" ${p}$attr.var
+	                <input matInput type="url" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" name="$attr.var" id="$attr.var" ${p}$attr.var
 	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
 	                #mderror($attr)
 				</mat-form-field>
 #elseif($attr.isString())
 				<mat-form-field>
-	                <input matInput type="text" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
+	                <input matInput type="text" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
 	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
 	                #mderror($attr)
 				</mat-form-field>
@@ -179,19 +187,23 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #end ## foreach(....
 ## ---------------------------------------------------------
         </mat-card-content>
-		<mat-card-actions>
-          <button mat-raised-button *ngIf="sub" (click)="onClickCancel()">
-            <mat-icon>cancel</mat-icon>
-            <span class="d-none d-lg-block">Cancelar</span>
-          </button>
-          <button mat-raised-button (click)="onClickSave()" [disabled]="!${entity.model.var}Form.form.valid && viewMode">
-            <mat-icon>save</mat-icon>
-            <span class="d-none d-lg-block">Salvar</span>
-          </button>
-          <button mat-raised-button *ngIf="!sub" (click)="onClickBack()">
-            <mat-icon>cancel</mat-icon>
-            <span class="d-none d-lg-block">Voltar</span>
-          </button>
+        <mat-card-actions class="container">
+            <div class="row">
+                <div class="col align-self-start">
+                    <button mat-raised-button *ngIf="sub" (click)="onClickCancel()">
+                        <i class="material-icons">pageview</i>
+                        <span class="d-none d-md-inline">Cancelar</span>
+                    </button>
+                    <button mat-raised-button (click)="onClickSave()" [disabled]="!${entity.model.var}Form.form.valid && viewMode">
+                        <mat-icon>save</mat-icon>
+                        <span class="d-none d-md-inline">Salvar</span>
+                    </button>
+                    <button mat-raised-button *ngIf="!sub" (click)="onClickBack()">
+                        <mat-icon>cancel</mat-icon>
+                        <span class="d-none d-md-inline">Voltar</span>
+                    </button>
+                </div>
+            </div>
         </mat-card-actions>
       </mat-card>
     </form>

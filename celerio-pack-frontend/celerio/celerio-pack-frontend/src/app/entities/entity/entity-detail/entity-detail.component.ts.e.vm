@@ -122,5 +122,3 @@ export class ${entity.model.type}DetailComponent extends EntityDetailComponent<$
 
 #end
 }
-
-

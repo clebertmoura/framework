@@ -7,12 +7,14 @@ import java.io.Serializable;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import br.com.framework.search.api.Search;
 import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.model.manager.impl.BaseManagerImpl;
+import br.com.framework.search.api.Search;
+import br.com.framework.service.impl.ExceptionHandlerInterceptorImpl;
 
 /**
  * Implementação base para os componentes de negócio.
@@ -24,6 +26,7 @@ import br.com.framework.model.manager.impl.BaseManagerImpl;
  * @param <B> Componente de search
  */
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors({ExceptionHandlerInterceptorImpl.class})
 public abstract class AppBaseManagerImpl<PK extends Serializable, E extends BaseEntity<PK>, B extends Search<PK, E>>
 		extends BaseManagerImpl<PK, E, B> {
 
@@ -42,6 +45,7 @@ public abstract class AppBaseManagerImpl<PK extends Serializable, E extends Base
 	}
 	
 	@PersistenceContext(unitName = "primary")
+	@Override
 	protected void setEntityManager(EntityManager entityManager) {
 		super.setEntityManager(entityManager);
 	}

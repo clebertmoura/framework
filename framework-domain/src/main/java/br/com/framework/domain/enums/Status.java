@@ -3,9 +3,16 @@ package br.com.framework.domain.enums;
 /**
  * Representa o status de um registro. (Deleção lógica)
  * 
- * 	- ACTIVE: registro está ativo;
- *  - INACTIVE: registro foi inativado;
+ * @author Cleber Moura <cleber.t.moura@gmail.com>
+ *
  */
 public enum Status {
-	INACTIVE, ACTIVE
+	/**
+	 * Indica que o registro está inativado.
+	 */
+	INACTIVE, 
+	/**
+	 * Indica que o registro está ativo.
+	 */
+	ACTIVE
 }

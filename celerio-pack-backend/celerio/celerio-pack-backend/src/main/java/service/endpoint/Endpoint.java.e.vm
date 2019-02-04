@@ -5,6 +5,7 @@ $output.require("javax.ejb.Stateless")##
 $output.require("javax.ws.rs.Path")##
 $output.require("java.util.List")##
 $output.require("java.util.stream.Collectors")##
+$output.require("io.swagger.annotations.Api")##
 $output.require($entity.root.primaryKey)##
 
 $output.require($entity.model)##
@@ -24,6 +25,7 @@ $output.require("br.com.framework.service.impl.BaseEntityResourceEndpointImpl")#
  */
 @Stateless
 @Path("/${entity.model.type}")
+@Api
 public class $output.currentClass extends#if ($entity.isEntityAudited()) BaseEntityAuditedResourceEndpointImpl#else BaseEntityResourceEndpointImpl#end<${entity.root.primaryKey.type}, ${entity.model.type}, ${entity.resource.type}, ${entity.dao.type}, ${entity.manager.type}> { 
 
 	private static final long serialVersionUID = 1L;

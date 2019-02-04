@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import br.com.framework.service.api.Error;
+import br.com.framework.model.log.impl.ErrorDefault;
 import br.com.framework.service.util.UtilBuilder;
 
 /**
@@ -31,7 +31,7 @@ public class ConstraintViolationExceptionResolver implements
 		Response.Status httpStatus = Response.Status.BAD_REQUEST;
 		Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
 		LOGGER.warning("Erro de violação de constraint na requisição.");
-        List<Error> errors = new ArrayList<Error>();
+        List<ErrorDefault> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : violations) {
         	errors.add(UtilBuilder.buildError(violation.getPropertyPath().toString(), violation.getMessage()));
         }

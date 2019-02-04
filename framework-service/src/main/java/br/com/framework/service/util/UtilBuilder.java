@@ -5,12 +5,11 @@ package br.com.framework.service.util;
 
 import java.util.List;
 
+import br.com.framework.model.log.impl.ErrorDefault;
 import br.com.framework.service.api.BaseResponse;
 import br.com.framework.service.api.EnumResource;
-import br.com.framework.service.api.Error;
 import br.com.framework.service.impl.BaseResponseImpl;
 import br.com.framework.service.impl.EnumResourceImpl;
-import br.com.framework.service.impl.ErrorImpl;
 
 
 /**
@@ -32,7 +31,7 @@ public class UtilBuilder {
 	 * @return
 	 */
 	public static <R> BaseResponse<R> buildResponse(R responseValue) {
-		return new BaseResponseImpl<R>(responseValue);
+		return new BaseResponseImpl<>(responseValue);
 	}
 	
 	/**
@@ -43,7 +42,7 @@ public class UtilBuilder {
 	 * @return
 	 */
 	public static <R> BaseResponse<R> buildResponse(R responseValue, List<Error> errors) {
-		return new BaseResponseImpl<R>(responseValue, errors);
+		return new BaseResponseImpl<>(responseValue, errors);
 	}
 	
 	/**
@@ -66,8 +65,8 @@ public class UtilBuilder {
 	 * @param desc
 	 * @return
 	 */
-	public static Error buildError(String code, String desc) {
-		return new ErrorImpl(code, desc);
+	public static ErrorDefault buildError(String code, String desc) {
+		return new ErrorDefault(new Throwable(code), desc);
 	}
 	
 	/**

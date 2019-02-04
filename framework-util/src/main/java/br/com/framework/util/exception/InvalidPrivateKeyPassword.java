@@ -19,13 +19,6 @@ public class InvalidPrivateKeyPassword extends GeneralSecurityException {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
-	 */
-	public InvalidPrivateKeyPassword() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
 	 * @param msg
 	 */
 	public InvalidPrivateKeyPassword(String msg) {

@@ -29,6 +29,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.persistence.criteria.Expression;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -62,12 +63,12 @@ import br.com.framework.search.util.SearchUtil;
 import br.com.framework.util.reflection.ReflectionUtils;
 
 /**
- * Implementação base do {@link BaseDao} das entidades de domínio.
+ * ImplementaÃ§Ã£o base do {@link BaseDao} das entidades de domÃ­nio.
  * 
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
- * @param <PK> Tipo da chave primária.
- * @param <E> Entidade de domínio.
+ * @param <PK> Tipo da chave primÃ¡ria.
+ * @param <E> Entidade de domÃ­nio.
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -82,6 +83,14 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	protected EntityManager entityManager;
 	
 	protected SearchUtil searchUtil = SearchUtil.newInstance();
+	
+	private static final String FETCH_GRAPH = "javax.persistence.fetchgraph";
+	
+	private static final String FETCH_GRAPH_MSG = "EntityGraph %s nÃ£o encontrado! O resultado serÃ¡ carregado de forma padrÃ£o.";
+	
+	private static final String STATUS = "status";
+	
+	private static final String LAST_MODIFIED_DATE = "lastModifiedDate";
 	
 	/**
 	 * @param entityClass
@@ -126,15 +135,15 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	@SuppressWarnings("rawtypes")
 	@Override
 	
-	public SearchUniqueResult<E> findById(PK id, String entityGraphName) throws SearchException, PersistenceException {
+	public SearchUniqueResult<E> findById(PK id, String entityGraphName) {
 		long start = System.currentTimeMillis();
 		Map<String, Object> hints = new HashMap<>();
 		if (entityGraphName != null) {
 			try{
 				EntityGraph graph = getEntityManager().getEntityGraph(entityGraphName);
-				hints.put("javax.persistence.fetchgraph", graph);
+				hints.put(FETCH_GRAPH, graph);
 			} catch (IllegalArgumentException e) {
-				logger.warn(String.format("EntityGraph %s não encontrado! O resultado será carregado de forma padrão.", entityGraphName), e);
+				logger.warn(String.format(FETCH_GRAPH_MSG, entityGraphName), e);
 			}
 		}
 		E result = getEntityManager().find(getEntityClass(), id, hints);
@@ -157,13 +166,13 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	@Override
 	@SuppressWarnings("rawtypes")
 	public SearchResult<E> findByRestrictions(List<Restriction> restrictions, boolean useOperatorOr, int first, int max,
-			String entityGraphName, Ordering... orderings) throws SearchException, PersistenceException {
+			String entityGraphName, Ordering... orderings){
 		long start = System.currentTimeMillis();
 		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<E> criteriaQuery = cBuilder.createQuery(getEntityClass());
 		criteriaQuery.distinct(true);
 		Root<E> from = criteriaQuery.from(getEntityClass());
-		Map<String, Path<?>> mapFieldPaths = new HashMap<String, Path<?>>();
+		Map<String, Path<?>> mapFieldPaths = new HashMap<>();
 		addDefaultRestrictionFieldStatus(restrictions);
 		List<Predicate> predicates = createQueryRestrictionsPredicates(restrictions, cBuilder, criteriaQuery, from, mapFieldPaths);
 		if (!predicates.isEmpty()) {
@@ -175,15 +184,13 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			}
 		}
 		if (orderings != null && orderings.length > 0) {
-			List<javax.persistence.criteria.Order> orders = new ArrayList<javax.persistence.criteria.Order>();
+			List<javax.persistence.criteria.Order> orders = new ArrayList<>();
 			for (Ordering entry : orderings) {
 				if (entry != null) {
 					String field = entry.getField();
 					Path<?> path = null;
-					if (!mapFieldPaths.isEmpty()) {
-						if (mapFieldPaths.containsKey(field)) {
-							path = mapFieldPaths.get(field);
-						}
+					if (!mapFieldPaths.isEmpty()&& mapFieldPaths.containsKey(field)) {
+						path = mapFieldPaths.get(field);
 					}
 					if (path == null) {
 						String[] fieldPathArray = field.split("[.]");
@@ -219,9 +226,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		if (entityGraphName != null) {
 			try{
 				EntityGraph graph = getEntityManager().getEntityGraph(entityGraphName);
-				query.setHint("javax.persistence.fetchgraph", graph);
+				query.setHint(FETCH_GRAPH, graph);
 			} catch (IllegalArgumentException e) {
-				logger.warn(String.format("EntityGraph %s não encontrado! O resultado será carregado de forma padrão.", entityGraphName), e);
+				logger.warn(String.format(FETCH_GRAPH_MSG, entityGraphName), e);
 			}
 		}
 		if (first > -1 && max > 0) {
@@ -237,12 +244,12 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	 */
 	public SearchResult<E> findByRestrictions(
 			List<Restriction> restrictions, int first, int max, String entityGraphName,
-			Ordering... orderings) throws SearchException, PersistenceException {
+			Ordering... orderings){
 		return this.findByRestrictions(restrictions, false, first, max, entityGraphName, orderings);
 	}
 	
 	/**
-	 * Adiciona uma restrição padrão para o campo status das entidades na hierarquia de {@link BaseEntityAudited}
+	 * Adiciona uma restriÃ§Ã£o padrÃ£o para o campo status das entidades na hierarquia de {@link BaseEntityAudited}
 	 * 
 	 * @param restrictions
 	 */
@@ -250,13 +257,13 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass()) && restrictions != null) {
 			boolean isStatusPresent = false;
 			for (Restriction restriction : restrictions) {
-				if (restriction.getField().equals("status")) {
+				if (restriction.getField().equals(STATUS)) {
 					isStatusPresent = true;
 					break;
 				}
 			}
 			if (!isStatusPresent) {
-				restrictions.add(searchUtil.restriction("status", Operator.EQ, Status.ACTIVE));
+				restrictions.add(searchUtil.restriction(STATUS, Operator.EQ, Status.ACTIVE));
 			}
 		}
 	}
@@ -270,8 +277,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 
 	@Override
 	public SearchResult<E> findByExample(E e, boolean isLike, boolean isCaseSensitive, int first,
-			int max, String entityGraphName, Ordering... orderings)
-			throws SearchException, PersistenceException {
+			int max, String entityGraphName, Ordering... orderings){
 		List<Restriction> restrictions = createFiltersMapByExample(e, isLike, isCaseSensitive);
 		return findByRestrictions(restrictions, first, max, entityGraphName, orderings);
 	}
@@ -279,14 +285,13 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	@Override
 	public SearchResult<E> findByExample(E e, boolean isLike,
 			boolean isCaseSensitive, int first, int max,
-			Ordering... orderings) throws SearchException, PersistenceException {
+			Ordering... orderings){
 		return findByExample(e, isLike, isCaseSensitive, first, max, null, orderings);
 	}
 
 	@Override
 	public SearchUniqueResult<Long> getCountFindByExample(E e,
-			boolean isLike, boolean isCaseSensitive)
-			throws SearchException, PersistenceException {
+			boolean isLike, boolean isCaseSensitive){
 		List<Restriction> restrictions = createFiltersMapByExample(e, isLike, isCaseSensitive);
 		return getCountFindByRestrictions(restrictions);
 	}
@@ -294,7 +299,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 
 	@Override
 	public SearchUniqueResult<E> findUniqueByExample(E e, boolean isLike, boolean isCaseSensitive,
-			String entityGraphName) throws SearchException, PersistenceException, NonUniqueResultException {
+			String entityGraphName){
 		SearchResult<E> searchResult = findByExample(e, isLike, isCaseSensitive, -1, -1, entityGraphName);
 		if (!searchResult.getResults().isEmpty()) {
 			if (searchResult.getResults().size() > 1) {
@@ -309,21 +314,18 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 
 	@Override
 	public SearchUniqueResult<E> findUniqueByExample(E e,
-			boolean isLike, boolean isCaseSensitive)
-			throws SearchException, PersistenceException, NonUniqueResultException {
+			boolean isLike, boolean isCaseSensitive){
 		return findUniqueByExample(e, isLike, isCaseSensitive, null);
 	}
 	
 
 	@Override
-	public SearchUniqueResult<E> findUniqueByExample(E e, String entityGraphName)
-			throws SearchException, PersistenceException, NonUniqueResultException {
+	public SearchUniqueResult<E> findUniqueByExample(E e, String entityGraphName){
 		return findUniqueByExample(e, false, true, entityGraphName);
 	}
 
 	@Override
-	public SearchUniqueResult<E> findUniqueByExample(E e)
-			throws SearchException, PersistenceException, NonUniqueResultException {
+	public SearchUniqueResult<E> findUniqueByExample(E e){
 		return findUniqueByExample(e, null);
 	}
 	
@@ -332,8 +334,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	 */
 	@Override
 	public SearchUniqueResult<E> findUniqueByRestrictions(
-			List<Restriction> restrictions, String entityGraphName) throws SearchException,
-			NonUniqueResultException {
+			List<Restriction> restrictions, String entityGraphName){
 		return findUniqueByRestrictions(restrictions, false, entityGraphName);
 	}
 	
@@ -342,7 +343,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	 */
 	@Override
 	public SearchUniqueResult<E> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr,
-			String entityGraphName) throws SearchException, NonUniqueResultException {
+			String entityGraphName){
 		SearchResult<E> searchResult = findByRestrictions(restrictions, useOperatorOr, -1, -1, entityGraphName);
 		if (!searchResult.getResults().isEmpty()) {
 			if (searchResult.getResults().size() > 1) {
@@ -356,7 +357,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 
 	/**
-	 * Verifica se o tipo é equivalente da tipos de Data. 
+	 * Verifica se o tipo Ã© equivalente da tipos de Data. 
 	 * 
 	 * @param clazz
 	 * @return
@@ -381,7 +382,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	protected List<Predicate> createQueryRestrictionsPredicates(
 			List<Restriction> restrictions, CriteriaBuilder cBuilder, CriteriaQuery<?> criteriaQuery,
 			Root<E> from, Map<String, Path<?>> mapFieldPaths) {
-		List<Predicate> predicates = new ArrayList<Predicate>();
+		List<Predicate> predicates = new ArrayList<>();
 		if (restrictions != null && !restrictions.isEmpty()) {
 			for (Restriction entry : restrictions) {
 				Predicate predicate = createFieldPredicate(entry.getField(), entry.getOperator(), entry.getValue(), mapFieldPaths, from, cBuilder);
@@ -421,7 +422,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 				}
 			} else {
 				if (ignoreCase) {
-					match = enum1.name().toUpperCase().equals(value.toUpperCase());
+					match = enum1.name().equalsIgnoreCase(value);
 				} else {
 					match = enum1.name().equals(value);
 				}
@@ -474,7 +475,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 	
 	/**
-	 * Recupera o método get do field informado.
+	 * Recupera o mÃ©todo get do field informado.
 	 *  
 	 * @param path
 	 * @param fieldName
@@ -493,7 +494,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	 * @return
 	 */
 	protected List<Restriction> createFiltersMapByExample(E entityExample, boolean isLike, boolean isCaseSensitive) {
-		List<Restriction> restrictions = new ArrayList<Restriction>();
+		List<Restriction> restrictions = new ArrayList<>();
 		if (entityExample != null) {
 			buildFiltersMap(entityExample, restrictions, isLike, isCaseSensitive, "");
 		}
@@ -501,7 +502,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 
 	/**
-	 * Método recursivo para construção do mapa de filtros.
+	 * MÃ©todo recursivo para construÃ§Ã£o do mapa de filtros.
 	 * 
 	 * @param entityExample
 	 * @param restrictions
@@ -585,8 +586,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 
 	@Override
-	public SearchUniqueResult<E> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr)
-			throws SearchException, NonUniqueResultException {
+	public SearchUniqueResult<E> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr){
 		return findUniqueByRestrictions(restrictions, useOperatorOr, null);
 	}
 
@@ -627,12 +627,12 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 
 	@Override
 	public SearchUniqueResult<Long> getCountInserteds(LocalDateTime referentialDateTime) throws SearchException {
-		List<Restriction> restrictions = new ArrayList<Restriction>();
+		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getDocumentClass())) {
 			if (referentialDateTime != null) {
 				restrictions.add(SearchUtil.instance().restriction("createDate", Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.getCountFindByRestrictions(restrictions);
 	}
@@ -640,24 +640,24 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	@Override
 	public SearchResult<E> getInserteds(LocalDateTime referentialDateTime, int first, int max, Ordering... orderings)
 			throws SearchException {
-		List<Restriction> restrictions = new ArrayList<Restriction>();
+		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getDocumentClass())) {
 			if (referentialDateTime != null) {
 				restrictions.add(SearchUtil.instance().restriction("createDate", Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.findByRestrictions(restrictions, first, max, orderings);
 	}
 
 	@Override
 	public SearchUniqueResult<Long> getCountUpdateds(LocalDateTime referentialDateTime) throws SearchException {
-		List<Restriction> restrictions = new ArrayList<Restriction>();
+		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getDocumentClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction("lastModifiedDate", Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.getCountFindByRestrictions(restrictions);
 	}
@@ -665,24 +665,24 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	@Override
 	public SearchResult<E> getUpdateds(LocalDateTime referentialDateTime, int first, int max, Ordering... orderings)
 			throws SearchException {
-		List<Restriction> restrictions = new ArrayList<Restriction>();
+		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction("lastModifiedDate", Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.findByRestrictions(restrictions, first, max, orderings);
 	}
 
 	@Override
 	public SearchUniqueResult<Long> getCountDeleteds(LocalDateTime referentialDateTime) throws SearchException {
-		List<Restriction> restrictions = new ArrayList<Restriction>();
+		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction("lastModifiedDate", Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.INACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.INACTIVE));
 		}
 		return this.getCountFindByRestrictions(restrictions);
 	}
@@ -692,15 +692,15 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	public SearchResult<PK> getDeleteds(LocalDateTime referentialDateTime, int first, int max, Ordering... orderings)
 			throws SearchException {
 		long start = System.currentTimeMillis();
-		List<Restriction> restrictions = new ArrayList<Restriction>();
+		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction("lastModifiedDate", Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction("status", Operator.EQ, Status.INACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.INACTIVE));
 		}
 		SearchResult<E> findByRestrictions = this.findByRestrictions(restrictions, first, max, orderings);
-		List<PK> deletedIds = new ArrayList<PK>();
+		List<PK> deletedIds = new ArrayList<>();
 		Class<PK> classPK = null;
 		for (E entity : findByRestrictions.getResults()) {
 			if (classPK == null) {
@@ -721,10 +721,8 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	 */
 	protected Path<?> getFieldPathToOrder(String field, Root<E> from, Map<String, Path<?>> mapFieldPaths) {
 		Path<?> path = null;
-		if (!mapFieldPaths.isEmpty()) {
-			if (mapFieldPaths.containsKey(field)) {
-				path = mapFieldPaths.get(field);
-			}
+		if (!mapFieldPaths.isEmpty() && mapFieldPaths.containsKey(field)) {
+			path = mapFieldPaths.get(field);
 		}
 		if (path == null) {
 			String[] fieldPathArray = field.split("[.]");
@@ -737,8 +735,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 						path = path.get(fieldPath);
 					}
 				}
-				path = path
-						.get(fieldPathArray[fieldPathArray.length - 1]);
+				path = path.get(fieldPathArray[fieldPathArray.length - 1]);
 			} else {
 				path = from.get(field);
 			}
@@ -748,23 +745,23 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	
 	@Override
 	@SuppressWarnings("rawtypes")
-	public PageResponse<E> findPage(PageRequest pageRequest) throws SearchException, PersistenceException {
+	public PageResponse<E> findPage(PageRequest pageRequest){
 		CriteriaBuilder cBuilder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<E> criteriaQuery = cBuilder.createQuery(getEntityClass());
 		criteriaQuery.distinct(true);
 		Root<E> from = criteriaQuery.from(getEntityClass());
-		Map<String, Path<?>> mapFieldPaths = new HashMap<String, Path<?>>();
+		Map<String, Path<?>> mapFieldPaths = new HashMap<>();
 		// adiciona um predicado para registros ativos
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass()) && pageRequest.getFilters() != null) {
 			boolean isStatusPresent = false;
 			for (Entry<String, FilterMetadata> entry : pageRequest.getFilters().entrySet()) {
-				if (entry.getKey().equals("status")) {
+				if (entry.getKey().equals(STATUS)) {
 					isStatusPresent = true;
 					break;
 				}
 			}
 			if (!isStatusPresent) {
-				pageRequest.getFilters().put("status", new FilterMetadata(Status.ACTIVE, Operator.EQ));
+				pageRequest.getFilters().put(STATUS, new FilterMetadata(Status.ACTIVE, Operator.EQ));
 			}
 		}
 		List<Predicate> predicates = createQueryPagePredicates(pageRequest, cBuilder, criteriaQuery, from, mapFieldPaths);
@@ -781,7 +778,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		}
 		boolean hasSortField = (pageRequest.getSortField() != null && !pageRequest.getSortField().trim().isEmpty()) ;
 		if (hasSortField || !pageRequest.getMultiSortMeta().isEmpty()) {
-			List<javax.persistence.criteria.Order> orders = new ArrayList<javax.persistence.criteria.Order>();
+			List<javax.persistence.criteria.Order> orders = new ArrayList<>();
 			if (hasSortField) {
 				Path<?> sortFieldPath = getFieldPathToOrder(pageRequest.getSortField(), from, mapFieldPaths);
 				if (pageRequest.getSortOrder().equals(Order.ASC)) {
@@ -825,9 +822,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			if (pageRequest.getEntityGraph() != null && !pageRequest.getEntityGraph().trim().isEmpty()) {
 				try{
 					EntityGraph graph = getEntityManager().getEntityGraph(pageRequest.getEntityGraph());
-					query.setHint("javax.persistence.fetchgraph", graph);
+					query.setHint(FETCH_GRAPH, graph);
 				} catch (IllegalArgumentException e) {
-					logger.warn(String.format("EntityGraph %s não encontrado! O resultado será carregado de forma padrão.", pageRequest.getEntityGraph()), e);
+					logger.warn(String.format(FETCH_GRAPH_MSG, pageRequest.getEntityGraph()), e);
 				}
 			}
 			if (pageRequest.getFirst() > -1 && pageRequest.getRows() > 0) {
@@ -854,7 +851,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	protected List<Predicate> createQueryPagePredicates(
 			PageRequest pageRequest, CriteriaBuilder cBuilder, CriteriaQuery<?> criteriaQuery,
 			Root<E> from, Map<String, Path<?>> mapFieldPaths) {
-		List<Predicate> predicates = new ArrayList<Predicate>();
+		List<Predicate> predicates = new ArrayList<>();
 		if (pageRequest.getFilters() != null && !pageRequest.getFilters().isEmpty()) {
 			for (Entry<String, FilterMetadata> entry : pageRequest.getFilters().entrySet()) {
 				FilterMetadata filter = entry.getValue();
@@ -866,6 +863,51 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		}
 		return predicates;
 	}
+	
+	private <Y extends Comparable<? super Y>> Predicate returnPredicateByOperator(CriteriaBuilder cBuilder, Operator operator,Expression<? extends Y> x, Y y) {
+		switch (operator) {
+		case LT:
+			return cBuilder.lessThan(x,  y);
+		case LE:
+			return cBuilder.lessThanOrEqualTo(x,  y);
+		case GT:
+			return cBuilder.greaterThan(x,  y);
+		case GE:
+			return cBuilder.greaterThanOrEqualTo(x,  y);
+		default:
+			return null;
+		}
+	}
+	
+	private Predicate returnPredicateByOperatorFromPathAndNumber(CriteriaBuilder cBuilder, Operator operator, Path x, Number y) {
+		switch (operator) {
+		case LT:
+			return cBuilder.lt(x, y);
+		case LE:
+			return cBuilder.le(x, y);
+		case GT:
+			return cBuilder.gt(x, y);
+		case GE:
+			return cBuilder.ge(x, y);
+		default:
+			return null;
+		}
+		
+	}
+	
+	private Predicate returnInNotInPredicate(Operator operator, Path path, Collection lista) {
+		
+		switch (operator) {
+			case IN:
+				return path.in(lista);
+			case NI:
+				return path.in(lista).not();
+			default:
+				return null;
+		}
+		
+	}
+	
 	
 	/**
 	 * Cria um {@link Predicate} para o campo/operador/valor informados.
@@ -910,10 +952,10 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		Predicate predicate = null;
 		Field field = ReflectionUtils.getField(leaf, pathLeaf.getParentPath().getJavaType());
 		if (field == null) {
-			logger.error(String.format("Field %s não encontrado na classe %s", leaf, pathLeaf.getParentPath().getJavaType().getSimpleName()));
+			logger.error(String.format("Field %s nÃ£o encontrado na classe %s", leaf, pathLeaf.getParentPath().getJavaType().getSimpleName()));
 			return null;
 		}
-		// valor nulo, não cria predicate
+		// valor nulo, nÃ£o cria predicate
 		if (value == null) {
 			return null;
 		}
@@ -922,114 +964,33 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		boolean isIdField = fieldGetter.isAnnotationPresent(Id.class);
 		switch (operator) {
 			case LT:
-				if (isIdField) {
-					if (Number.class.isAssignableFrom(value.getClass())) {
-						predicate = cBuilder.lt((Path) pathLeaf, (Number) value);
-					} else if (Map.class.isAssignableFrom(value.getClass())) {
-						Map<String, Object> valuesMap = (Map<String, Object>) value;
-						Object objectValue = valuesMap.get(leaf);
-						if (Number.class.isAssignableFrom(objectValue.getClass())) {
-							predicate = cBuilder.lt((Path) pathLeaf, (Number) objectValue);
-						} else {
-							predicate = cBuilder.lessThan((Path) pathLeaf, objectValue.toString());
-						}
-					} else {
-						predicate = cBuilder.lessThan((Path) pathLeaf, value.toString());
-					}
-				} else {
-					if (pathLeaf.getJavaType().isAssignableFrom(Number.class)) {
-						predicate = cBuilder.lt((Path) pathLeaf, (Number) value);
-					} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
-						Date date = parseDate(value.toString());
-						if (date != null) {
-							predicate = cBuilder.lessThan((Path) pathLeaf, date);
-						}
-					} else {
-						predicate = cBuilder.lessThan((Path) pathLeaf, value.toString());
-					}
-				}
-				break;
 			case LE:
-				if (isIdField) {
-					if (Number.class.isAssignableFrom(value.getClass())) {
-						predicate = cBuilder.le((Path) pathLeaf, (Number) value);
-					} else if (Map.class.isAssignableFrom(value.getClass())) {
-						Map<String, Object> valuesMap = (Map<String, Object>) value;
-						Object objectValue = valuesMap.get(leaf);
-						if (Number.class.isAssignableFrom(objectValue.getClass())) {
-							predicate = cBuilder.le((Path) pathLeaf, (Number) objectValue);
-						} else {
-							predicate = cBuilder.lessThanOrEqualTo((Path) pathLeaf, objectValue.toString());
-						}
-					} else {
-						predicate = cBuilder.lessThanOrEqualTo((Path) pathLeaf, value.toString());
-					}
-				} else {
-					if (pathLeaf.getJavaType().isAssignableFrom(Number.class)) {
-						predicate = cBuilder.le((Path) pathLeaf, (Number) value);
-					} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
-						Date date = parseDate(value.toString());
-						if (date != null) {
-							predicate = cBuilder.lessThanOrEqualTo((Path) pathLeaf, date);
-						}
-					} else {
-						predicate = cBuilder.lessThanOrEqualTo((Path) pathLeaf, value.toString());
-					}
-				}
-				break;
 			case GT:
-				if (isIdField) {
-					if (Number.class.isAssignableFrom(value.getClass())) {
-						predicate = cBuilder.gt((Path) pathLeaf, (Number) value);
-					} else if (Map.class.isAssignableFrom(value.getClass())) {
-						Map<String, Object> valuesMap = (Map<String, Object>) value;
-						Object objectValue = valuesMap.get(leaf);
-						if (Number.class.isAssignableFrom(objectValue.getClass())) {
-							predicate = cBuilder.gt((Path) pathLeaf, (Number) objectValue);
-						} else {
-							predicate = cBuilder.greaterThan((Path) pathLeaf, objectValue.toString());
-						}
-					} else {
-						predicate = cBuilder.greaterThan((Path) pathLeaf, value.toString());
-					}
-				} else {
-					if (pathLeaf.getJavaType().isAssignableFrom(Number.class)) {
-						predicate = cBuilder.gt((Path) pathLeaf, (Number) value);
-					} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
-						Date date = parseDate(value.toString());
-						if (date != null) {
-							predicate = cBuilder.greaterThan((Path) pathLeaf, date);
-						}
-					} else {
-						predicate = cBuilder.greaterThan((Path) pathLeaf, value.toString());
-					}
-				}
-				break;
 			case GE:
 				if (isIdField) {
 					if (Number.class.isAssignableFrom(value.getClass())) {
-						predicate = cBuilder.ge((Path) pathLeaf, (Number) value);
+						predicate = returnPredicateByOperatorFromPathAndNumber(cBuilder, operator, (Path) pathLeaf, (Number) value);
 					} else if (Map.class.isAssignableFrom(value.getClass())) {
 						Map<String, Object> valuesMap = (Map<String, Object>) value;
 						Object objectValue = valuesMap.get(leaf);
 						if (Number.class.isAssignableFrom(objectValue.getClass())) {
-							predicate = cBuilder.ge((Path) pathLeaf, (Number) objectValue);
+							predicate = returnPredicateByOperatorFromPathAndNumber(cBuilder, operator, (Path) pathLeaf, (Number) objectValue);
 						} else {
-							predicate = cBuilder.greaterThanOrEqualTo((Path) pathLeaf, objectValue.toString());
+							predicate = returnPredicateByOperator(cBuilder, operator,(Path) pathLeaf, objectValue.toString());
 						}
 					} else {
-						predicate = cBuilder.greaterThanOrEqualTo((Path) pathLeaf, value.toString());
+						predicate = cBuilder.lessThan((Path) pathLeaf, value.toString());
 					}
 				} else {
 					if (pathLeaf.getJavaType().isAssignableFrom(Number.class)) {
-						predicate = cBuilder.ge((Path) pathLeaf, (Number) value);
+						predicate = returnPredicateByOperatorFromPathAndNumber(cBuilder, operator, (Path) pathLeaf, (Number) value);
 					} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
 						Date date = parseDate(value.toString());
 						if (date != null) {
-							predicate = cBuilder.greaterThanOrEqualTo((Path) pathLeaf, date);
+							predicate = returnPredicateByOperator(cBuilder, operator,(Path) pathLeaf, date);
 						}
 					} else {
-						predicate = cBuilder.greaterThanOrEqualTo((Path) pathLeaf, value.toString());
+						predicate = returnPredicateByOperator(cBuilder, operator,(Path) pathLeaf,  value.toString());
 					}
 				}
 				break;
@@ -1128,64 +1089,6 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 				}
 				break;
 			case IN:
-				try {
-					if (isIdField) {
-						if (Collection.class.isAssignableFrom(value.getClass())) {
-							List<Object> itensIn = new ArrayList<>();
-							Iterator<Serializable> iterator = ((Collection) value).iterator();
-							while(iterator.hasNext()) {
-								Object item = iterator.next();
-								if (String.class.isAssignableFrom(item.getClass())) {
-									if (!((String) item).trim().isEmpty()) {
-										itensIn.add(item);
-									}
-								} else if (Map.class.isAssignableFrom(item.getClass())) {
-									Map<String, Object> itemMap = (Map<String, Object>) item;
-									Object itemValue = itemMap.get(leaf);
-									itensIn.add(itemValue);
-								} else {
-									itensIn.add(item);
-								}
-							}
-							if (!itensIn.isEmpty()) {
-								predicate = pathLeaf.in(itensIn);
-							}
-						} else if (Map.class.isAssignableFrom(value.getClass())) {
-							Map<String, Object> valuesMap = (Map<String, Object>) value;
-							Object objectValue = valuesMap.get(leaf);
-							predicate = pathLeaf.in(Arrays.asList(objectValue));						
-						} else {
-							predicate = pathLeaf.in(Arrays.asList(value));
-						}
-					} else {
-						if (Enum.class.isAssignableFrom(fieldClass)) {
-							List<Enum> itensIn = new ArrayList<Enum>();
-							Enum[] enumConstants = (Enum[])fieldClass.getEnumConstants();
-							if (value instanceof Collection) {
-								Iterator<Serializable> iterator = ((Collection) value).iterator();
-								while(iterator.hasNext()) {
-									Object item = iterator.next();
-									Enum enumValue = getEnumValue(item, enumConstants, false, false);
-									if (enumValue != null) {
-										itensIn.add(enumValue);
-									}
-								}
-							}
-							if (!itensIn.isEmpty()) {
-								predicate = pathLeaf.in(itensIn);
-							}
-						} else {
-							if (Collection.class.isAssignableFrom(value.getClass())) {
-								predicate = pathLeaf.in((Collection) value);
-							} else {
-								predicate = pathLeaf.in(Arrays.asList(value));
-							}
-						}
-					}
-				} catch (Exception e) {
-					logger.error(String.format("Erro ao criar predicado. Field %s, classe %s", leaf, pathLeaf.getParentPath().getJavaType().getSimpleName()), e);
-				}
-				break;
 			case NI:
 				try {
 					if (isIdField) {
@@ -1206,17 +1109,19 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 									itensIn.add(item);
 								}
 							}
-							predicate = pathLeaf.in(itensIn).not();
+							if (!itensIn.isEmpty()) {
+								predicate = returnInNotInPredicate(operator, pathLeaf, itensIn);
+							}
 						} else if (Map.class.isAssignableFrom(value.getClass())) {
 							Map<String, Object> valuesMap = (Map<String, Object>) value;
 							Object objectValue = valuesMap.get(leaf);
-							predicate = pathLeaf.in(Arrays.asList(objectValue)).not();						
+							predicate = returnInNotInPredicate(operator, pathLeaf, Arrays.asList(objectValue));						
 						} else {
-							predicate = pathLeaf.in(Arrays.asList(value)).not();
+							predicate = returnInNotInPredicate(operator, pathLeaf, Arrays.asList(value));
 						}
 					} else {
 						if (Enum.class.isAssignableFrom(fieldClass)) {
-							List<Enum> itensIn = new ArrayList<Enum>();
+							List<Enum> itensIn = new ArrayList<>();
 							Enum[] enumConstants = (Enum[])fieldClass.getEnumConstants();
 							if (value instanceof Collection) {
 								Iterator<Serializable> iterator = ((Collection) value).iterator();
@@ -1229,46 +1134,16 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 								}
 							}
 							if (!itensIn.isEmpty()) {
-								predicate = pathLeaf.in(itensIn).not();
+								predicate = returnInNotInPredicate(operator, pathLeaf, itensIn);
 							}
 						} else {
 							if (Collection.class.isAssignableFrom(value.getClass())) {
-								predicate = pathLeaf.in((Collection) value).not();
+								predicate = returnInNotInPredicate(operator, pathLeaf, (Collection) value);
 							} else {
-								predicate = pathLeaf.in(Arrays.asList(value)).not();
+								predicate = returnInNotInPredicate(operator, pathLeaf, Arrays.asList(value));
 							}
 						}
 					}
-					/*
-					
-					if (Enum.class.isAssignableFrom(fieldClass)) {
-						List<Enum> itensIn = new ArrayList<Enum>();
-						Enum[] enumConstants = (Enum[])fieldClass.getEnumConstants();
-						if (value instanceof Collection) {
-							Iterator<Serializable> iterator = ((Collection) value).iterator();
-							while(iterator.hasNext()) {
-								Object item = iterator.next();
-								Enum enumValue = getEnumValue(item, enumConstants, false, false);
-								if (enumValue != null) {
-									itensIn.add(enumValue);
-								}
-							}
-						}
-						
-						if (!itensIn.isEmpty()) {
-							predicate = path.in(itensIn).not();
-						}
-					} else if (BaseEntity.class.isAssignableFrom(fieldClass)) {
-						List<Long> itensIn = new ArrayList<Long>();
-						Iterator<Serializable> iterator = ((Collection) value).iterator();
-						while(iterator.hasNext()) {
-							Serializable itemId = iterator.next();
-							itensIn.add(Long.parseLong(itemId.toString()));
-						}
-						predicate = from.join(leaf).get("id").in(itensIn).not();
-					} else {
-						predicate = path.in((Collection) value).not();
-					}*/
 				} catch (Exception e) {
 					logger.error(String.format("Erro ao criar predicado. Field %s, classe %s", leaf, pathLeaf.getParentPath().getJavaType().getSimpleName()), e);
 				}

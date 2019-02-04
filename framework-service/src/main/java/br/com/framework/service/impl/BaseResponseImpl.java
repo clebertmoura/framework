@@ -9,7 +9,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import br.com.framework.service.api.BaseResponse;
-import br.com.framework.service.api.Error;
 
 /**
  * @author Cleber Moura <cleber.t.moura@gmail.com>
@@ -53,7 +52,7 @@ public class BaseResponseImpl<R> implements BaseResponse<R> {
 	@Override
 	public List<Error> getErros() {
 		if (errors == null) {
-			errors = new ArrayList<Error>();
+			errors = new ArrayList<>();
 		}
 		return errors;
 	}

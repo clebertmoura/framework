@@ -8,9 +8,9 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.service.api.BaseEntityResource;
 import br.com.framework.service.api.BaseResource;
-import br.com.framework.domain.api.BaseEntity;
 
 /**
  * Implementação da interface {@link BaseResource}
@@ -56,7 +56,6 @@ public abstract class BaseEntityResourceImpl<PK extends Serializable, E extends 
 				loadFromEntity(entity);
 			}
 		}
-		//loadExtraFromEntity(entity);
 	}
 	
 	/**

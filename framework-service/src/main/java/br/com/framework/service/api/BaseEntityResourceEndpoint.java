@@ -2,13 +2,14 @@ package br.com.framework.service.api;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Response;
 
+import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.search.impl.PageRequest;
 import br.com.framework.search.impl.PageResponse;
 import br.com.framework.search.impl.Ordering.Order;
 import br.com.framework.service.impl.FindByRestrictionsRequest;
-import br.com.framework.domain.api.BaseEntity;
 
 /**
  * Interface base dos serviços REST para acesso aos resources de entidades.
@@ -53,7 +54,7 @@ public interface BaseEntityResourceEndpoint<PK extends Serializable, E extends B
 	 * @param depth Profundidade da serialização do objeto.
 	 * @return
 	 */
-	public abstract Response findById(PK id, Integer depth);
+	public abstract Response findById(@NotNull PK id, Integer depth);
 	
 	/**
 	 * Search todos os registros de forma paginada

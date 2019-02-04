@@ -9,24 +9,6 @@ default.format.date2time2=dd/MM/yy HH:mm
 
 app.nome=ae-pje-server
 
-# Enums - core
-SimNao.S=Sim
-SimNao.N=Não
-
-# Enums - cadastro
-ModalidadePolo.AT=Ativo
-ModalidadePolo.PA=Passivo
-
-SituacaoLoteEnum.PROTOCOLADO=Protocolado
-SituacaoLoteEnum.A_PROCESSAR=A Processar
-SituacaoLoteEnum.EM_PROCESSAMENTO=Em Processamento
-SituacaoLoteEnum.PROCESSADO=Processado
-SituacaoLoteEnum.ERRO=Erro
-SituacaoLoteEnum.PENDENTE_DE_VERIFICACAO=Pendente de Verificação
-
-SituacaoAcaoEnum.PROTOCOLADO=Protocolado
-SituacaoAcaoEnum.A_PROCESSAR=A Processar
-SituacaoAcaoEnum.EM_PROCESSAMENTO=Em Processamento
-SituacaoAcaoEnum.PROCESSADO=Processado
-SituacaoAcaoEnum.ERRO=Erro
-SituacaoAcaoEnum.PENDENTE_DE_VERIFICACAO=Pendente de Verificação
+# Enums
+Status.INACTIVE=Inativo
+Status.ACTIVE=Ativo

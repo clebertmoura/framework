@@ -19,13 +19,6 @@ public class InvalidKeystorePassword extends GeneralSecurityException {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
-	 */
-	public InvalidKeystorePassword() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
 	 * @param msg
 	 */
 	public InvalidKeystorePassword(String msg) {

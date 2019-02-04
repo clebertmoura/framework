@@ -20,10 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.framework.model.exception.ModelException;
+import br.com.framework.model.log.impl.ErrorDefault;
 import br.com.framework.service.api.BaseResource;
 import br.com.framework.service.api.BaseResourceEndpoint;
 import br.com.framework.service.api.EnumResource;
-import br.com.framework.service.api.Error;
 import br.com.framework.service.util.UtilBuilder;
 import br.com.framework.util.resource.MessageResource;
 import br.com.framework.util.resource.MessageResourceFactory;
@@ -34,8 +34,8 @@ import br.com.framework.util.resource.MessageResourceFactory;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Consumes({MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_JSON})
 public abstract class BaseResourceEndpointImpl<R extends BaseResource> implements BaseResourceEndpoint<R> {
 
 	public static final String DEFAULT_BUNDLE_MESSAGES = "Mensagens";
@@ -95,16 +95,17 @@ public abstract class BaseResourceEndpointImpl<R extends BaseResource> implement
      * @param violations
      * @return
      */
-    protected List<Error> createModelErrors(ModelException me) {
+    protected List<ErrorDefault> createModelErrors(ModelException me) {
     	if (logger.isDebugEnabled()) {
-    		logger.debug("Foram encontrados erros em validações de negócio! Total: " + me.getMensagensMap().size());
+    		logger.debug("Foram encontrados erros em validações de negócio! Total: {0} ",  me.getMensagensMap().size());
     	}
-        List<Error> errors = new ArrayList<Error>();
+        List<ErrorDefault> errors = new ArrayList<>();
         if (!me.getMensagensMap().isEmpty()) {
+        	MessageResource messageResource = getMessageResource();
         	Map<String, Object[]> mensagensMap = me.getMensagensMap();
         	for (String key : mensagensMap.keySet()) {
     			Object[] objects = mensagensMap.get(key);
-    			String msg = getMessageResource().get(key, objects);
+    			String msg = messageResource != null ? messageResource.get(key, objects) : key;
     			errors.add(UtilBuilder.buildError(key, msg));
     		}
         } else {
@@ -119,7 +120,7 @@ public abstract class BaseResourceEndpointImpl<R extends BaseResource> implement
      * @param ex
      * @return
      */
-    protected Error createGenericError(Exception ex) {
+    protected ErrorDefault createGenericError(Exception ex) {
         return UtilBuilder.buildError(ex.getClass().getName(), ex.getMessage());
     }
     
@@ -131,9 +132,9 @@ public abstract class BaseResourceEndpointImpl<R extends BaseResource> implement
 	 * @return
 	 */
 	protected <En extends Enum<En>> List<EnumResource> createEnumResourceList(Class<En> enumType) {
-		List<EnumResource> resources = new ArrayList<EnumResource>();
+		List<EnumResource> resources = new ArrayList<>();
+		MessageResource messageResource = getMessageResource();
 		for (En item : enumType.getEnumConstants()) {
-			MessageResource messageResource = getMessageResource();
 			String labelEnum = String.format("%s.%s", item.getClass().getSimpleName(), item.name());
 			labelEnum = messageResource != null ? messageResource.get(labelEnum) : labelEnum;
 			EnumResource enumResource = UtilBuilder.buildEnumResource(item.name(), labelEnum);

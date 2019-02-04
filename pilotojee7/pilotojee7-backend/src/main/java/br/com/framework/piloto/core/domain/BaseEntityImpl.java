@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import br.com.framework.domain.util.BaseEntityHashBuilder;
  * @param <PK> Tipo da chave primária.
  */
 @MappedSuperclass
+@XmlRootElement
 public abstract class BaseEntityImpl<PK extends Serializable> implements BaseEntity<PK> {
 
 	/**
@@ -119,8 +121,9 @@ public abstract class BaseEntityImpl<PK extends Serializable> implements BaseEnt
 		} else if (getId() == null) {
 			if (other.getId() != null)
 				return false;
-		} else if (!getId().equals(other.getId()))
+		} else if (!getId().equals(other.getId())) {
 			return false;
+		}
 		return true;
 	}
 

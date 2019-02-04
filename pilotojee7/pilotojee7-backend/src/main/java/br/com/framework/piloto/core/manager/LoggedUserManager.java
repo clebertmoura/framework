@@ -26,12 +26,6 @@ public class LoggedUserManager implements LoggedUser {
 	@Resource
 	private SessionContext sessionContext;
 
-	/**
-	 * 
-	 */
-	public LoggedUserManager() {
-	}
-
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.api.LoggedUser#getLoggedUser()
 	 */

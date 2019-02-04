@@ -198,7 +198,7 @@ public class KeyStoreUtil {
 		PrivateKey privateKey = null;
 		try {
 			Key key = keyStore.getKey(alias, privateKeyPin);
-			if (key != null && key instanceof PrivateKey) {
+			if (key instanceof PrivateKey) {
 				privateKey = (PrivateKey) key;
 			}
 		} catch (UnrecoverableKeyException e) {

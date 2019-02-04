@@ -5,8 +5,8 @@ package br.com.framework.service.util;
 
 import java.io.Serializable;
 
-import br.com.framework.service.api.BaseEntityResource;
 import br.com.framework.domain.api.BaseEntity;
+import br.com.framework.service.api.BaseEntityResource;
 
 /**
  * Classe abstrata utilizada para carregar uma entidade reacionada.

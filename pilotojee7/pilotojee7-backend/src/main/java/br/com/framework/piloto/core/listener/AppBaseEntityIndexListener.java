@@ -31,13 +31,7 @@ public class AppBaseEntityIndexListener extends IndexedBaseEntityListener {
 	private BeanManager beanManager;
 	
 
-	/**
-	 * 
-	 */
-	public AppBaseEntityIndexListener() {
-	}
-
-	@Override
+		@Override
 	public IndexerService getIndexerService() {
 		Set<Bean<?>> beans = beanManager.getBeans(IndexerService.class);
 		return !beans.isEmpty() ? (IndexerService) beans.iterator().next() : null;

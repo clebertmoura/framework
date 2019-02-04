@@ -9,11 +9,11 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import br.com.framework.domain.api.BaseEntityAudited;
 import br.com.framework.model.manager.api.BaseManager;
 import br.com.framework.search.api.Search;
 import br.com.framework.service.api.BaseEntityAuditedResource;
 import br.com.framework.service.api.BaseEntityAuditedResourceEndpoint;
-import br.com.framework.domain.api.BaseEntityAudited;
 
 /**
  * Implementação abstrata para fornecimento de API WebService dos CRUDs de entitys.
@@ -21,8 +21,8 @@ import br.com.framework.domain.api.BaseEntityAudited;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Consumes({MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_JSON})
 public abstract class BaseEntityAuditedResourceEndpointImpl<PK extends Serializable, E extends BaseEntityAudited<PK>, R extends BaseEntityAuditedResource<PK, E>, B extends Search<PK, E>, Manager extends BaseManager<PK, E, B>>
 	extends BaseEntityResourceEndpointImpl<PK, E, R, B, Manager> implements BaseEntityAuditedResourceEndpoint<PK, E, R> {
 

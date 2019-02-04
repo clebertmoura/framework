@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>3.0.1-SNAPSHOT</version>
+		<version>3.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>celerio-pack-frontend</artifactId>
 	<name>celerio-pack-frontend</name>
@@ -12,13 +12,18 @@
 	<build>
 		<resources>
 			<resource>
-				<filtering>false</filtering>
-				<directory>${basedir}</directory>
-				<excludes>
-					<exclude>target</exclude>
-					<exclude>pom.xml</exclude>
-				</excludes>
-			</resource>
+                <directory>celerio</directory>
+                <filtering>false</filtering>
+                <targetPath>celerio</targetPath>
+            </resource>
+            <resource>
+                <directory>META-INF</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>celerio-pack.xml</include>
+                </includes>
+                <targetPath>META-INF</targetPath>
+            </resource>
 		</resources>
 	</build>
 </project>

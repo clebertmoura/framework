@@ -3,17 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.framework</groupId>
 	<artifactId>framework-parent</artifactId>
-	<version>3.0.1-SNAPSHOT</version>
+	<version>3.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>framework-parent</name>
-	<description>Projeto raiz do Framework</description>
+	<description>Projeto raiz do Framework-TJPE</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<version.surefire.plugin>2.19.1</version.surefire.plugin>
 		<version.resources.plugin>3.0.1</version.resources.plugin>
 		<version.compiler.plugin>3.5.1</version.compiler.plugin>
-		<version.source.plugin>3.0.0</version.source.plugin>
+		<version.source.plugin>3.0.1</version.source.plugin>
 		<version.javadoc.plugin>2.10.4</version.javadoc.plugin>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -22,14 +22,16 @@
 		<commons-codec.version>1.10</commons-codec.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
-		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<commons-beanutils.version>1.9.3.redhat-1</commons-beanutils.version>
 		<bcprov-jdk16.version>1.46</bcprov-jdk16.version>
 		<bcmail-jdk16.version>1.46</bcmail-jdk16.version>
 		<solrj.version>4.10.3</solrj.version>
 		<hibernate-envers.version>4.2.18.Final</hibernate-envers.version>
 		<caelum-stella-core.version>2.1.2</caelum-stella-core.version>
 		<reflections.version>0.9.10</reflections.version>
-		<resteasy.version>3.0.19.Final</resteasy.version>
+		<resteasy.version>3.0.16.Final</resteasy.version>
+		<gson.version>2.6.2</gson.version>
+		<swagger.version>1.5.0</swagger.version>
 	</properties>
 	<modules>
 		<module>framework-util</module>
@@ -37,7 +39,10 @@
 		<module>framework-search</module>
 		<module>framework-model</module>
 		<module>framework-service</module>
+		
+		
 		<module>pilotojee7</module>
+		
 		<module>celerio-pack-backend</module>
 		<module>celerio-pack-frontend</module>
 	</modules>
@@ -46,7 +51,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.4</version>
+				<version>${version.source.plugin}</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -97,14 +102,14 @@
 	
 	<distributionManagement>
 		<repository>
-			<id>maven-releases</id>
+			<id>nexus-tjpe</id>
 			<name>maven-releases</name>
-			<url>http://nexus.trinitysolucoes.com.br:8081/repository/maven-releases/</url>
+			<url>http://www.tjpe.jus.br/nexus/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>maven-snapshots</id>
+			<id>nexus-tjpe</id>
 			<name>maven-snapshots</name>
-			<url>http://nexus.trinitysolucoes.com.br:8081/repository/maven-snapshots/</url>
+			<url>http://www.tjpe.jus.br/nexus/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 	

@@ -4,8 +4,19 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 	<display-name>pilotojee7-backend</display-name>
 	
+	<filter>
+		<filter-name>CorsFilter</filter-name>
+		<filter-class>br.com.framework.service.filter.CorsFilter</filter-class>
+	</filter>
+	
+	 <filter-mapping>
+	     <filter-name>CorsFilter</filter-name>
+	     <url-pattern>/*</url-pattern>
+  	</filter-mapping>
+	
     <!-- Java Melody -->
-<!--     <filter>
+<!--     
+	<filter>
 		<filter-name>javamelody</filter-name>
 		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
 		<async-supported>true</async-supported>
@@ -26,7 +37,8 @@
 	        <param-value>monitoring:monitoring</param-value>
 	    </init-param>
 	</filter>
- --><!-- 	<filter-mapping>
+
+ 	<filter-mapping>
 		<filter-name>javamelody</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
@@ -41,11 +53,11 @@
 	</listener>
  -->
  
- 	<listener>
+ 	<!-- <listener>
 	    <listener-class>
 	        org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
 	    </listener-class>
-	</listener>
+	</listener> -->
 
 
 	<security-constraint>
@@ -55,10 +67,10 @@
 		</web-resource-collection>
 	</security-constraint>
 	
-	<login-config>
+	<!-- <login-config>
 		<auth-method>KEYCLOAK</auth-method>
 		<realm-name>pilotojee7-realm</realm-name>
-	</login-config>
+	</login-config> -->
 
 	<!-- specify all the roles defined for this web app -->
 	<security-role>
@@ -70,5 +82,7 @@
 	<security-role>
 		<role-name>monitoring</role-name>
 	</security-role>
+	
+
 	
 </web-app>

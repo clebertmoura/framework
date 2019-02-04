@@ -108,7 +108,9 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
+**/src/main/generated-java/*
 **/src/main/resources/Mensagens_pt_BR.properties
 **/src/main/resources/ValidationMessages.properties
+**/src/main/resources/ValidationMessages_pt_BR.properties
 
 # End of https://www.gitignore.io/api/jboss,maven,eclipse,java-web

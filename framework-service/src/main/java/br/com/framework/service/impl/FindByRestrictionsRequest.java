@@ -21,10 +21,10 @@ public class FindByRestrictionsRequest implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<Restriction> restrictions = new ArrayList<Restriction>();
+	private List<Restriction> restrictions = new ArrayList<>();
 	private Integer first;
 	private Integer max;
-	private List<Ordering> orderings = new ArrayList<Ordering>();
+	private List<Ordering> orderings = new ArrayList<>();
 
 	/**
 	 * 

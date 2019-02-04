@@ -102,7 +102,7 @@ public abstract class SearchImpl<DocId extends Serializable, Doc extends Seriali
 	
 	@Override
 	public SearchUniqueResult<Doc> findUniqueByField(String field,
-			Operator operator, Object value) throws SearchException,
+			Operator operator, Object value) throws 
 			NonUniqueResultException {
 		return findUniqueByRestriction(searchUtil.restriction(field, operator, (Serializable) value));
 	}
@@ -150,7 +150,7 @@ public abstract class SearchImpl<DocId extends Serializable, Doc extends Seriali
 
 	@Override
 	public SearchUniqueResult<Doc> findUniqueByRestriction(
-			Restriction restriction) throws SearchException,
+			Restriction restriction) throws 
 			NonUniqueResultException {
 		List<Restriction> restrictions = new ArrayList<Restriction>(1);
 		restrictions.add(restriction);
@@ -159,7 +159,7 @@ public abstract class SearchImpl<DocId extends Serializable, Doc extends Seriali
 
 	@Override
 	public SearchUniqueResult<Doc> findUniqueByRestrictions(
-			List<Restriction> restrictions) throws SearchException,
+			List<Restriction> restrictions) throws 
 			NonUniqueResultException {
 		SearchResult<Doc> searchResult = findByRestrictions(restrictions, -1, -1);
 		if (!searchResult.getResults().isEmpty()) {

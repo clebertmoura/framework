@@ -45,15 +45,16 @@ import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
+import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.model.dao.api.BaseDao;
 import br.com.framework.model.exception.ModelException;
+import br.com.framework.model.log.impl.ErrorDefault;
 import br.com.framework.model.manager.api.BaseManager;
 import br.com.framework.search.api.Search;
 import br.com.framework.search.api.SearchResult;
@@ -66,11 +67,8 @@ import br.com.framework.search.util.SearchUtil;
 import br.com.framework.service.api.BaseEntityResource;
 import br.com.framework.service.api.BaseEntityResourceEndpoint;
 import br.com.framework.service.api.BaseResource;
-import br.com.framework.service.api.Error;
 import br.com.framework.service.api.PaginatedResourceResponse;
 import br.com.framework.service.util.LoadRelatedEntityResource;
-import br.com.framework.service.util.UtilBuilder;
-import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.util.reflection.ReflectionUtils;
 
 /**
@@ -79,8 +77,8 @@ import br.com.framework.util.reflection.ReflectionUtils;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Consumes({MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_JSON})
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E extends BaseEntity<PK>, R extends BaseEntityResource<PK, E>, B extends Search<PK, E>, Manager extends BaseManager<PK, E, B>>
 	extends BaseResourceEndpointImpl<R> implements BaseEntityResourceEndpoint<PK, E, R> {
@@ -231,7 +229,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	 * @return
 	 */
 	public List<E> fromResources(List<R> resourceList) {
-		List<E> list = new ArrayList<E>();
+		List<E> list = new ArrayList<>();
 		for (R i : resourceList) {
 			list.add(fromResource(i, null));
 		}
@@ -246,7 +244,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	 * @return
 	 */
 	public List<E> fromResources(List<R> resourceList, int depth) {
-		List<E> list = new ArrayList<E>();
+		List<E> list = new ArrayList<>();
 		for (R i : resourceList) {
 			list.add(fromResource(i, null, depth));
 		}
@@ -511,7 +509,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	 * @return
 	 */
 	public List<R> toResources(List<E> entityList) {
-		List<R> list = new ArrayList<R>();
+		List<R> list = new ArrayList<>();
 		for (E i : entityList) {
 			list.add(toResource(i));
 		}
@@ -529,7 +527,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	 * @return
 	 */
 	public List<R> toResources(List<E> entityList, int depth) {
-		List<R> list = new ArrayList<R>();
+		List<R> list = new ArrayList<>();
 		for (E i : entityList) {
 			try {
 				R resource = getEntityResourceClass().newInstance();
@@ -549,13 +547,16 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
      * @param violations
      * @return
      */
-    protected List<Error> createViolationErrors(Set<ConstraintViolation<?>> violations) {
+    protected List<ErrorDefault> createViolationErrors(Set<ConstraintViolation<?>> violations) {
     	if (logger.isDebugEnabled()) {
     		logger.debug("Validation completed. violations found: " + violations.size());
     	}
-        List<Error> errors = new ArrayList<Error>();
+        List<ErrorDefault> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : violations) {
-        	errors.add(UtilBuilder.buildError(violation.getPropertyPath().toString(), violation.getMessage()));
+        	//errors.add(UtilBuilder.buildError(violation.getPropertyPath().toString(), violation.getMessage()));
+        	
+        	ErrorDefault erro = new  ErrorDefault(new Throwable(violation.getPropertyPath().toString()), violation.getMessage());
+			errors.add(erro);
         }
         return errors;
     }
@@ -566,14 +567,14 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
      * @param ex
      * @return
      */
-    protected List<Error> createViolationErrors(ConstraintViolationException ex) {
+    protected List<ErrorDefault> createViolationErrors(ConstraintViolationException ex) {
         return createViolationErrors(ex.getConstraintViolations());
     }
     
     
 	@Override
 	@POST
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON})
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Response insert(R resource) {
 		if (resource == null) {
@@ -622,7 +623,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Override
 	@PUT
 	@Path("/{id}")
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON})
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Response update(@PathParam("id") PK id, R resource) {
 		if (resource == null) {
@@ -673,7 +674,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Override
 	@DELETE
 	@Path("/{id}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON})
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Response remove(@PathParam("id") PK id) {
 		if (id == null) {
@@ -723,7 +724,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Override
 	@GET
 	@Path("/{id}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON})
 	public Response findById(@PathParam("id") PK id, @QueryParam("depth") @DefaultValue("1") Integer depth) {
 		if (id == null) {
 			return Response.status(Status.BAD_REQUEST).build();
@@ -738,7 +739,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 
 	@Override
 	@GET
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON})
 	public PaginatedResourceResponse<R> findAll(
 			@QueryParam("first") @DefaultValue("-1") Integer first, 
 			@QueryParam("max") @DefaultValue("-1") Integer max,
@@ -767,7 +768,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Override
 	@GET
     @Path("/count")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON})
 	public Long getCountFindAll() {
 		SearchUniqueResult<Long> countFindAll = getSearch().getCountFindAll();
 		Long result = 0L;
@@ -780,11 +781,11 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Override
 	@POST
     @Path("/findByRestrictions")
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
 	public PaginatedResourceResponse<R> findByRestrictions(
 			FindByRestrictionsRequest request) {
-		PaginatedResourceResponse<R> response = new PaginatedResourceResponseImpl<R>();
+		PaginatedResourceResponse<R> response = new PaginatedResourceResponseImpl<>();
 		SearchUniqueResult<Long> countFindByRestrictions = getSearch().getCountFindByRestrictions(request.getRestrictions());
 		if (countFindByRestrictions != null && countFindByRestrictions.getUniqueResult() != null) {
 			response.setTotalRecords(countFindByRestrictions.getUniqueResult());
@@ -801,8 +802,8 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Override
 	@POST
     @Path("/countFindByRestrictions")
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
 	public Long getCountFindByRestrictions(FindByRestrictionsRequest request) {
 		SearchUniqueResult<Long> countFindByRestrictions = getSearch().getCountFindByRestrictions(request.getRestrictions());
 		Long result = 0L;
@@ -814,13 +815,11 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	
 	@POST
     @Path("/findPage")
-	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
 	public PageResponse<R> findPage(PageRequest pageRequest) {
 		PageResponse<E> pageResponse = getSearch().findPage(pageRequest);
-		PageResponse<R> response = new PageResponse<>(
-				toResources(pageResponse.getResults(), pageRequest.getDepth()), pageResponse.getTotalRegisters());
-		return response;
+		return new PageResponse<>(toResources(pageResponse.getResults(), pageRequest.getDepth()), pageResponse.getTotalRegisters());
 	}
 	
 	/**

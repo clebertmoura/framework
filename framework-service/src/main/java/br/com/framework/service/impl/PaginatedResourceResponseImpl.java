@@ -3,6 +3,8 @@ package br.com.framework.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import br.com.framework.service.api.BaseResource;
 import br.com.framework.service.api.PaginatedResourceResponse;
 
@@ -13,6 +15,7 @@ import br.com.framework.service.api.PaginatedResourceResponse;
  *
  * @param <R>
  */
+@XmlRootElement
 public class PaginatedResourceResponseImpl<R extends BaseResource> implements PaginatedResourceResponse<R> {
 	
 	/**
@@ -39,7 +42,7 @@ public class PaginatedResourceResponseImpl<R extends BaseResource> implements Pa
 	@Override
 	public List<R> getResults() {
 		if (results == null) {
-			results = new ArrayList<R>();
+			results = new ArrayList<>();
 		}
 		return results;
 	}

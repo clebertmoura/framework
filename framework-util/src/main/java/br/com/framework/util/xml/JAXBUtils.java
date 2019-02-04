@@ -22,7 +22,7 @@ import org.apache.commons.lang3.text.WordUtils;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
-public abstract class JAXBUtils {
+public interface JAXBUtils {
 
 	/**
 	 * Converte uma um objeto do tipo <T> informado para uma String XML.

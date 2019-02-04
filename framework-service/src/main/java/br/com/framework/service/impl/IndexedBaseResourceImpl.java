@@ -5,8 +5,8 @@ package br.com.framework.service.impl;
 
 import java.io.Serializable;
 
-import br.com.framework.service.api.IndexedBaseResource;
 import br.com.framework.domain.api.BaseEntity;
+import br.com.framework.service.api.IndexedBaseResource;
 
 /**
  * Implementação da 

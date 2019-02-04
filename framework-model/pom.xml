@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>framework-model</artifactId>
 	<name>framework-model</name>
-	
+
 	<dependencies>
 		<!-- Dependencias dos Frameworks -->
 		<dependency>
@@ -24,7 +25,7 @@
 			<version>${project.parent.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- SPEC Java EE 7 -->
 		<dependency>
 			<groupId>javax</groupId>
@@ -32,14 +33,14 @@
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
 			<version>${solrj.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		 <dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j-api.version}</version>
@@ -57,11 +58,24 @@
 			<version>${reflections.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
+
+
 	</dependencies>
-	
+
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>3.0.1-SNAPSHOT</version>
+		<version>3.0.2-SNAPSHOT</version>
 	</parent>
 </project>

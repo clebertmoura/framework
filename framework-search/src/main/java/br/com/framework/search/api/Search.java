@@ -152,7 +152,7 @@ public interface Search<DocId extends Serializable, Doc extends Serializable> ex
 	 * @throws SearchException
 	 * @throws NonUniqueResultException
 	 */
-	public SearchUniqueResult<Doc> findUniqueByRestriction(Restriction restriction) throws SearchException, NonUniqueResultException;
+	public SearchUniqueResult<Doc> findUniqueByRestriction(Restriction restriction) throws  NonUniqueResultException;
 	
 	/**
 	 * Pesquisa um registro único de acordo com as restrições informadas.
@@ -162,7 +162,7 @@ public interface Search<DocId extends Serializable, Doc extends Serializable> ex
 	 * @throws SearchException
 	 * @throws NonUniqueResultException
 	 */
-	public SearchUniqueResult<Doc> findUniqueByRestrictions(List<Restriction> restrictions) throws SearchException, NonUniqueResultException;
+	public SearchUniqueResult<Doc> findUniqueByRestrictions(List<Restriction> restrictions) throws  NonUniqueResultException;
 	
 	/**
 	 * Pesquisa um registro único de acordo com as restrições informadas.
@@ -173,7 +173,7 @@ public interface Search<DocId extends Serializable, Doc extends Serializable> ex
 	 * @throws SearchException
 	 * @throws NonUniqueResultException
 	 */
-	public SearchUniqueResult<Doc> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr) throws SearchException, NonUniqueResultException;
+	public SearchUniqueResult<Doc> findUniqueByRestrictions(List<Restriction> restrictions, boolean useOperatorOr) throws  NonUniqueResultException;
 	
 	
 	/**

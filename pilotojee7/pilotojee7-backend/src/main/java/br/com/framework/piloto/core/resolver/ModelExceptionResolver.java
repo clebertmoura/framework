@@ -11,9 +11,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import br.com.framework.service.api.Error;
-import br.com.framework.service.util.UtilBuilder;
 import br.com.framework.model.exception.ModelException;
+import br.com.framework.model.log.impl.ErrorDefault;
 import br.com.framework.util.resource.MessageResource;
 import br.com.framework.util.resource.MessageResourceFactory;
 
@@ -46,11 +45,18 @@ public class ModelExceptionResolver implements
 		Response.Status httpStatus = Response.Status.BAD_REQUEST;
 		LOGGER.severe("Erro de violação de regra de negócio na requisição.");
 		Map<String, Object[]> mensagensMap = exception.getMensagensMap();
-		List<Error> errors = new ArrayList<Error>();
+		List<ErrorDefault> errors = new ArrayList<>();
+		
+		
+		
 		for (String key : mensagensMap.keySet()) {
 			Object[] params = mensagensMap.get(key);
 			String msg = messageResource.get(key, params);
-			errors.add(UtilBuilder.buildError(key, msg));
+			//errors.add(UtilBuilder.buildError(key, msg));
+			
+			ErrorDefault erro = new ErrorDefault(new Throwable(key), msg);
+			errors.add(erro);
+			
 		}
 		return Response.status(httpStatus).entity(errors).build();
 	}

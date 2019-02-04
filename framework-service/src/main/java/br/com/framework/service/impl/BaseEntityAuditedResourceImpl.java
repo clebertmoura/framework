@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import br.com.framework.service.api.BaseEntityAuditedResource;
-import br.com.framework.service.api.BaseResource;
 import br.com.framework.domain.api.BaseEntityAudited;
 import br.com.framework.domain.enums.Status;
+import br.com.framework.service.api.BaseEntityAuditedResource;
+import br.com.framework.service.api.BaseResource;
 
 /**
  * Implementação da interface {@link BaseResource}
@@ -60,7 +60,6 @@ public abstract class BaseEntityAuditedResourceImpl<PK extends Serializable, E e
 				loadFromEntity(entity);
 			}
 		}
-		//loadExtraFromEntity(entity);
 	}
 	
 	/**

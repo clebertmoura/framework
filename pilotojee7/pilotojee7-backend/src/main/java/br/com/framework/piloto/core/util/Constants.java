@@ -3,14 +3,16 @@
  */
 package br.com.framework.piloto.core.util;
 
+import br.com.framework.model.util.Constantes;
+
 /**
  * Classe que contem as contantes do sistema.
  * 
  * @author Cleber
  *
  */
-public abstract class Constants extends br.com.framework.model.util.Constants {
-
+public abstract class Constants extends Constantes {
+	
 	public static final String CONFIG_FILENAME = "config.properties";
 
 	/**

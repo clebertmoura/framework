@@ -25,8 +25,13 @@ import org.apache.commons.io.IOUtils;
  */
 public abstract class CryptoUtils {
 	
-	public final static int DEFAULT_READ_WRITE_BLOCK_BUFFER_SIZE = 1024;
-	public final static String DEFAULT_CIPHER_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
+	static public final int DEFAULT_READ_WRITE_BLOCK_BUFFER_SIZE = 1024;
+	static public final String DEFAULT_CIPHER_TRANSFORMATION = "RSA/ECB/PKCS1Padding";
+	
+	private CryptoUtils(){
+		throw new IllegalStateException("Classe utilitária");
+
+	}
 	
 	/**
 	 * Gera um hash SHA1 da string informada.

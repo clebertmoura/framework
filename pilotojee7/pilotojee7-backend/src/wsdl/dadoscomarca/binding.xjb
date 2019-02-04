@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings version="2.1" 
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<jaxb:globalBindings>
+		<jaxb:serializable uid="1" />
+		<xjc:javaType adapter="br.com.framework.service.adapter.DateTimeAdapter"
+			name="java.util.Date" xmlType="xs:dateTime" />
+		<xjc:javaType adapter="br.com.framework.service.adapter.DateAdapter"
+			name="java.util.Date" xmlType="xs:date" />
+		<xjc:javaType adapter="br.com.framework.service.adapter.TimeAdapter"
+			name="java.util.Date" xmlType="xs:time" />
+	</jaxb:globalBindings>
+	<jaxb:bindings schemaLocation="./TiposSimples.xsd"
+		node="//xs:schema[@targetNamespace='http://schema.tjpe.jus.br/v01/tiposSimples']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="br.jus.tjpe.service.v01.dataservice.tipossimples" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="./TiposComplexos.xsd"
+		node="//xs:schema[@targetNamespace='http://schema.tjpe.jus.br/v01/tiposComplexos']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="br.jus.tjpe.service.v01.dataservice.tiposcomplexos" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+    <jaxb:bindings schemaLocation="./TiposComarca.xsd"
+		node="//xs:schema[@targetNamespace='http://schema.tjpe.jus.br/v01/tiposComarca']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="br.jus.tjpe.service.v01.dataservice.tiposcomarca" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="./TiposDataServices.xsd"
+		node="//xs:schema[@targetNamespace='http://service.tjpe.jus.br/v01/DataService']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="br.jus.tjpe.service.v01.dataservice.tiposdataservice" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="./ComarcaDataService.xsd"
+        node="//xs:schema[@targetNamespace='http://service.tjpe.jus.br/v01/ComarcaDataService']">
+        <jaxb:schemaBindings>
+            <jaxb:package name="br.jus.tjpe.service.v01.dataservice.comarca" />
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+    
+</jaxb:bindings>

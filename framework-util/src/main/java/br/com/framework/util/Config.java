@@ -29,7 +29,7 @@ public class Config implements Serializable {
 	private String propFileName;
 	private Properties props;
 	
-	private static HashMap<String, Properties> mapInstances = new HashMap<String, Properties>();
+	private static HashMap<String, Properties> mapInstances = new HashMap<>();
 	
 
 	/**
@@ -60,7 +60,7 @@ public class Config implements Serializable {
 		try {
 			resources = classLoader.getResources(propFileName);
 		} catch (IOException e1) {
-			LOGGER.error("Nenhum arquivo de propriedades encontrado com nome: " + propFileName);
+			LOGGER.error("Nenhum arquivo de propriedades encontrado com nome: {0}", propFileName);
 		}
 		if (resources != null) {
 			props = new Properties();
@@ -68,17 +68,11 @@ public class Config implements Serializable {
 				URL url = resources.nextElement();
 				try {
 					InputStream inputStream = url.openStream();
-					if (inputStream != null) {
-						try {
-							props.load(inputStream);
-							mapInstances.put(propFileName, props);
-						} catch (IOException e) {
-							LOGGER.warn("Nao foi possivel carregar propriedades do arquivo: " + url.toString());
-						}
-						IOUtils.closeQuietly(inputStream);
-					}
+					props.load(inputStream);
+					mapInstances.put(propFileName, props);
+					IOUtils.closeQuietly(inputStream);
 				} catch (IOException e) {
-					LOGGER.error("Nao foi possivel ler o arquivo de propriedades: " + url.toString());
+					LOGGER.error("Nao foi possivel ler o arquivo de propriedades: {0}", url.toString());
 				}
 			}
 		}

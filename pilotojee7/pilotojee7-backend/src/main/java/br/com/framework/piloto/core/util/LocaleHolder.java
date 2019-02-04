@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class LocaleHolder {
 	
-	private static final ThreadLocal<Locale> currentLocaleHolder = new ThreadLocal<Locale>();
+	private static final ThreadLocal<Locale> currentLocaleHolder = new ThreadLocal<>();
 
 	public static Locale getLocale() {
 		Locale locale = currentLocaleHolder.get();

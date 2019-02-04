@@ -48,7 +48,9 @@ public abstract class IndexedBaseEntityListener implements Serializable {
 		try {
 			field.setAccessible(true);
 			fieldValue = field.get(object);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			LOGGER.error("indexFieldTree");
+		}
 		if (fieldValue != null) {
 			Class<?> runtimeFieldType = fieldValue.getClass();
 			if (BaseEntity.class.isAssignableFrom(runtimeFieldType)) {
@@ -58,7 +60,7 @@ public abstract class IndexedBaseEntityListener implements Serializable {
 				Collection<?> collectionValue = (Collection<?>) fieldValue;
 				Object firstItem = collectionValue.iterator().next();
 				Class<?> itemClass = firstItem.getClass();
-				List<Object> items = new ArrayList<Object>();
+				List<Object> items = new ArrayList<>();
 				if (BaseEntity.class.isAssignableFrom(itemClass)) {
 					for (Object item : collectionValue) {
 						items.add(String.format("%s|%s", itemClass.getName(), ((BaseEntity)item).getId()));
@@ -118,8 +120,8 @@ public abstract class IndexedBaseEntityListener implements Serializable {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug(String.format("Montando documento de indice da entidade: %s", entity.toString()));
 			}
-			List<Field> fieldsToIndex = new ArrayList<Field>();
-			List<Field> fieldsDocumentId = new ArrayList<Field>();
+			List<Field> fieldsToIndex = new ArrayList<>();
+			List<Field> fieldsDocumentId = new ArrayList<>();
 			initIndexFieldsList(entityClass, fieldsToIndex, fieldsDocumentId);
 			
 			document = new SolrInputDocument();

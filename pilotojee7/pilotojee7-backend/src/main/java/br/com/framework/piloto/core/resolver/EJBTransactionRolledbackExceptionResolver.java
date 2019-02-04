@@ -16,9 +16,9 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import br.com.framework.service.api.Error;
-import br.com.framework.service.util.UtilBuilder;
 import br.com.framework.model.exception.ModelException;
+import br.com.framework.model.log.impl.ErrorDefault;
+import br.com.framework.service.util.UtilBuilder;
 import br.com.framework.util.resource.MessageResource;
 import br.com.framework.util.resource.MessageResourceFactory;
 
@@ -52,7 +52,7 @@ public class EJBTransactionRolledbackExceptionResolver implements
 		if (causedByException instanceof ConstraintViolationException) {
 			httpStatus = Response.Status.BAD_REQUEST;
 			Set<ConstraintViolation<?>> violations = ((ConstraintViolationException) causedByException).getConstraintViolations();
-	        List<Error> errors = new ArrayList<Error>();
+	        List<ErrorDefault> errors = new ArrayList<>();
 	        for (ConstraintViolation<?> violation : violations) {
 	        	errors.add(UtilBuilder.buildError(violation.getPropertyPath().toString(), violation.getMessage()));
 	        }
@@ -61,7 +61,7 @@ public class EJBTransactionRolledbackExceptionResolver implements
 			httpStatus = Response.Status.BAD_REQUEST;
 			ModelException me = (ModelException) causedByException;
 			Map<String, Object[]> mensagensMap = me.getMensagensMap();
-			List<Error> errors = new ArrayList<Error>();
+			List<ErrorDefault> errors = new ArrayList<>();
 			for (String key : mensagensMap.keySet()) {
 				Object[] params = mensagensMap.get(key);
 				String msg = messageResource.get(key, params);

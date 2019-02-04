@@ -15,6 +15,10 @@ public abstract class CriteriaBuilderHelper {
 	public static final String TRANSLATE_FUNCTION_NAME = "translate";
 	public static final String TRANSLATE_FROM = "'áàâãäéèêëíìïóòôõöúùûüÁÀÂÃÄÉÈÊËÍÌÏÓÒÔÕÖÚÙÛÜçÇ'";
 	public static final String TRANSLATE_TO = "'aaaaaeeeeiiiooooouuuuAAAAAEEEEIIIOOOOOUUUUcC'";
+	
+	private CriteriaBuilderHelper() {
+		throw new IllegalStateException("Classe utiliária");
+	}
 
 	/**
 	 * Retorna uma expression que converte todos os caracteres acentuados

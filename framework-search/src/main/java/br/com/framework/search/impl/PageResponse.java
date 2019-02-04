@@ -6,12 +6,15 @@ package br.com.framework.search.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Representa a requisição a uma página de resultados.
  * 
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
+@XmlRootElement
 public class PageResponse<E> {
 	/**
 	 * Lista dos resultados

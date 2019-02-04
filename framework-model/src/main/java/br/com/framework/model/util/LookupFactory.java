@@ -32,7 +32,7 @@ public class LookupFactory implements Serializable {
 	private Config config;
 	
 	public LookupFactory() {
-		config = new Config(Thread.currentThread().getContextClassLoader(), Constants.CONFIG_FILENAME);
+		config = new Config(Thread.currentThread().getContextClassLoader(), Constantes.CONFIG_FILENAME);
 		buildComponentLookup();
 	}
 	

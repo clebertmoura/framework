@@ -1,0 +1,540 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:tns="http://schema.tjpe.jus.br/v01/tiposComplexos"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
+	xmlns:ts="http://schema.tjpe.jus.br/v01/tiposSimples" targetNamespace="http://schema.tjpe.jus.br/v01/tiposComplexos"
+	attributeFormDefault="unqualified" elementFormDefault="unqualified">
+
+	<!-- Importa os tipos simples  -->
+	<xs:import namespace="http://schema.tjpe.jus.br/v01/tiposSimples"
+		schemaLocation="TiposSimples.xsd" />
+
+	<xs:complexType name="Cidade">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeCidade" nillable="true" />
+			<xs:element name="uf" type="tns:UnidadeFederativa"
+				nillable="true" />
+			<xs:element name="regiaoMetropolitana" type="ts:tsRegiaoMetropolitana" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Feriado">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="data" type="ts:tsData" />
+			<xs:element name="descricao" type="ts:tsDescricaoFeriado" nillable="true"/>
+			<xs:element name="esfera" type="ts:tsEsferaFeriado" nillable="true"/>
+			<xs:element name="dataFixa" type="ts:tsDataFixa" nillable="true"/>
+			<xs:element name="cidade" type="tns:Cidade" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Comarca">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeComarca" nillable="true" />
+			<xs:element name="entrancia" type="tns:Entrancia"
+				nillable="true" />
+			<xs:element name="enderecos" type="tns:Endereco"
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
+			<xs:element name="varas" type="tns:Vara" minOccurs="0"
+				maxOccurs="unbounded" nillable="true" />
+			<xs:element name="distribuidores" type="tns:Distribuidor"
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
+			<xs:element name="codigoCNJ" type="ts:tsCodigoCNJComarca" nillable="true"/>
+			<xs:element name="jurisdicoes" type="tns:Jurisdicao"
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Jurisdicao">
+		<xs:sequence>
+			<xs:element name="codigoJurisdicao" type="ts:tsCodigoJurisdicao" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Entrancia">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoEntrancia"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Endereco">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="tipoEndereco" type="tns:TipoEndereco"
+				nillable="true" />
+			<xs:element name="tipoLogradouro" type="tns:TipoLogradouro"
+				nillable="true" />
+			<xs:element name="logradouro" type="ts:tsLogradouroEndereco"
+				nillable="true" />
+			<xs:element name="numero" type="ts:tsNumeroEndereco"
+				nillable="true" />
+			<xs:element name="complemento" type="ts:tsComplementoEndereco"
+				nillable="true" />
+			<xs:element name="CEP" type="ts:tsCEPEndereco" nillable="true" />
+			<xs:element name="bairro" type="ts:tsBairroEndereco"
+				nillable="true" />
+			<xs:element name="cidade" type="tns:Cidade" nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoEndereco">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoEndereco"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UnidadeFederativa">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="sigla" type="ts:tsSiglaUnidadeFederativa"
+				nillable="true" />
+			<xs:element name="descricao" type="ts:tsDescricaoUnidadeFederativa"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoLogradouro">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="abreviatura" type="ts:tsAbreviaturaTipoLogradouro"
+				nillable="true" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoLogradouro"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Parte">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="tipoParte" type="tns:TipoParte"
+				nillable="true" />
+			<xs:element name="pessoa" type="tns:Pessoa" nillable="true" />
+			<xs:element name="tipoPolo" type="tns:TipoPolo" nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoPolo">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoPolo"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoParte">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoParte"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Pessoa" abstract="true">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomePessoa" nillable="true" />
+			<xs:element name="tipoPessoa" type="tns:TipoPessoa"
+				nillable="true" />
+			<xs:element name="enderecos" type="tns:Endereco"
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
+			<xs:element name="documentos" type="tns:Documento"
+				minOccurs="0" maxOccurs="unbounded" nillable="true" />
+			<xs:element name="genero" type="ts:tsGenero" nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PessoaJuridica">
+		<xs:complexContent>
+			<xs:extension base="tns:Pessoa">
+				<xs:sequence>
+					<xs:element name="nomeMajoritario" type="ts:tsNomeMajoritarioPessoaJuridica"
+						nillable="true" />
+					<xs:element name="dataFundacao" type="ts:tsData"
+						nillable="true" />
+					<xs:element name="cnpj" type="ts:tsCNPJ" nillable="true" />
+					<xs:element name="tipoPessoaJuridica" type="tns:TipoPessoaJuridica"
+						nillable="true" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="PessoaFisica">
+		<xs:complexContent>
+			<xs:extension base="tns:Pessoa">
+				<xs:sequence>
+					<xs:element name="nomePai" type="ts:tsNomePaiPessoaFisica"
+						nillable="true" />
+					<xs:element name="nomeMae" type="ts:tsNomeMaePessoaFisica"
+						nillable="true" />
+					<xs:element name="responsavelLegal" type="ts:tsResponsavelLegalPessoaFisica"
+						nillable="true" />
+					<xs:element name="dataNascimento" type="ts:tsData"
+						nillable="true" />
+					<xs:element name="cpf" type="ts:tsCPF" nillable="true" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ListaElemento">
+		<xs:complexContent>
+			<xs:restriction base="xs:anyType">
+				<xs:sequence>
+					<xs:element name="item" type="xs:anyType" maxOccurs="unbounded"
+						minOccurs="0" />
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Erro">
+		<xs:sequence>
+			<xs:element name="tipoErro" type="ts:tsTipoErro"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="mensagem" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Processo">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="classe" type="tns:Classe" nillable="true" />
+			<xs:element name="distribuidor" type="tns:Distribuidor"
+				nillable="true" />
+			<xs:element name="vara" type="tns:Vara" nillable="true" />
+			<xs:element name="assuntos" type="tns:Assunto" minOccurs="0"
+				maxOccurs="unbounded" nillable="true" />
+			<xs:element name="partes" type="tns:Parte" minOccurs="0"
+				maxOccurs="unbounded" nillable="true" />
+			<xs:element name="natureza" type="tns:Natureza" nillable="true" />
+			<xs:element name="objeto" type="tns:Objeto" nillable="true" />
+			<xs:element name="npu" type="ts:tsNPUProcesso" nillable="true" />
+			<xs:element name="valorCausa" type="ts:tsValorCausaProcesso"
+				nillable="true" />
+			<xs:element name="dataAjuizamento" type="ts:tsData"
+				nillable="true" />
+			<xs:element name="dataDistribuicao" type="ts:tsData"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Objeto">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="tipoObjeto" type="tns:TipoObjeto"
+				nillable="true" />
+			<xs:element name="descricao" type="ts:tsDescricaoObjeto"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Assunto">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoAssunto"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Classe">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoClasse"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="Vara">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="idVara" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeVara" nillable="true" />
+			<xs:element name="nomeSimples" type="ts:tsNomeSimplesVara"
+				nillable="true" minOccurs="1" maxOccurs="1"/>			
+			<xs:element name="endereco" type="tns:Endereco" nillable="true" />
+			<xs:element name="tipoVara" type="tns:TipoVara" nillable="true" />
+			<xs:element name="comarca" type="tns:Comarca" nillable="true" />
+			<xs:element name="codigoComplemento" type="ts:tsCodigoComplemento" nillable="true" />
+			<xs:element name="codigoUnidadeCartoraria" type="ts:tsCodigoUnidadeCartoraria" nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoVara">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoVara"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Distribuidor">
+
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeDistribuidor"
+				nillable="true" />
+			<xs:element name="comarca" type="tns:Comarca" nillable="true" />
+			<xs:element name="codigoPrimeiroGrau" type="ts:tsCodigoPrimeiroGrau" />
+			<xs:element name="codigoUnidadeCartoraria" type="ts:tsCodigoUnidadeCartoraria" />
+			<xs:element name="numeroOrigem" nillable="true" type="ts:tsNumeroOrigem" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoPessoa">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoPessoa"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoObjeto">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoObjeto"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Natureza">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoNatureza"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoDocumento">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoDocumento"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="OrgaoExpedidor">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoOrgaoExpedidor"
+				nillable="true" />
+			<xs:element name="sigla" type="ts:tsSiglaOrgaoExpedidor"
+				nillable="true" />
+			<xs:element name="exigeUF" type="xs:boolean"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Documento">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoDocumento"
+				nillable="true" />
+			<xs:element name="numero" type="ts:tsNumeroDocumento"
+				nillable="true" />
+			<xs:element name="validade" type="ts:tsData" nillable="true" />
+			<xs:element name="uf" type="tns:UnidadeFederativa"
+				nillable="true" />
+			<xs:element name="tipoDocumento" type="tns:TipoDocumento"
+				nillable="true" />
+			<xs:element name="orgaoExpedidor" type="tns:OrgaoExpedidor"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TipoPessoaJuridica">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoTipoPessoaJuridica"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Cargo">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoCargo"
+				nillable="true" />
+			<xs:element name="substituto" type="ts:tsSubstitutoCargo"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CondicaoExercicio">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoCondicaoExercicio"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AreaAtuacao">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="natureza" type="tns:Natureza" nillable="true" />
+			<xs:element name="descricao" type="ts:tsDescricaoAreaAtuacao"
+				nillable="true" />
+			<xs:element name="juizado" type="ts:tsJuizadoAreaAtuacao"
+				nillable="true" />
+			<xs:element name="especializacao" type="ts:tsEspecializacaoAreaAtuacao"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Magistrado">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="pessoaFisica" type="tns:PessoaFisica"
+				nillable="true" />
+			<xs:element name="areaAtuacao" type="tns:AreaAtuacao"
+				nillable="true" />
+			<xs:element name="cargo" type="tns:Cargo" nillable="true" />
+			<xs:element name="condicaoExercicio" type="tns:CondicaoExercicio"
+				nillable="true" />
+			<xs:element name="comarca" type="tns:Comarca" nillable="true" />
+			<xs:element name="codigoCNJ" type="ts:tsCodigoCNJMagistrado"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Lotacao">
+		<xs:sequence>
+			<xs:element name="idMagistrado" type="ts:tsID" />
+			<xs:element name="comarca" type="tns:Comarca" nillable="true" />
+			<xs:element name="vara" type="tns:Vara" nillable="true" />
+			<xs:element name="tipoVara" type="tns:TipoVara" nillable="true" />			
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="Entidade">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="pessoa" type="tns:Pessoa" nillable="true" />
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="Juizado">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoJuizado"
+				nillable="true"  minOccurs="1" maxOccurs="1"/>
+			<xs:element name="areaAtuacao" type="tns:AreaAtuacao" 
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="tipoJuizado" type="tns:TipoJuizado" 
+				nillable="true" minOccurs="1" maxOccurs="1"/>				
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="EstadoCivil">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoEstadoCivil"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Profissao">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoProfissao"
+				nillable="true" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="TipoJuizado">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeTipoJuizado"
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="UnidadeOrigem">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsDescricaoUnidadeOrigem"
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="OrgaoJulgador">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeOrgaoJulgador"
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>		
+	
+	<xs:complexType name="Gabinete">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeGabinete"
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>		
+
+	<xs:complexType name="Diretoria">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeDiretoria"
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DiretoriaOrgaoJulgador">
+		<xs:sequence>
+			<xs:element name="codigoDiretoriaOrgaoJulgador" type="ts:tsCodigoDiretoriaOrgaoJulgador" />
+			<xs:element name="diretoria" type="tns:Diretoria" 
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="orgaoJulgador" type="tns:OrgaoJulgador"
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AreaAtuacaoJuizado">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="nome" type="ts:tsNomeAreaAtuacaoJuizado" 
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="Tribunal">
+		<xs:sequence>
+			<xs:element name="codigoTribunal" type="ts:tsCodigoTribunal" 
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nomeTribunal" type="ts:tsNomeTribunal" 
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="siglaTribunal" type="ts:tsSiglaTribunal" 
+				nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="ListaID">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="TipoVazio">
+		<xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Forum">
+		<xs:sequence>
+			<xs:element name="id" type="ts:tsID" />
+			<xs:element name="descricao" type="ts:tsDescricaoForum" nillable="true" />
+		</xs:sequence>
+	</xs:complexType>	
+	
+</xs:schema>
