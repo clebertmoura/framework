@@ -750,6 +750,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		CriteriaQuery<E> criteriaQuery = cBuilder.createQuery(getEntityClass());
 		criteriaQuery.distinct(true);
 		Root<E> from = criteriaQuery.from(getEntityClass());
+		from.alias(getEntityClass().getSimpleName().toLowerCase() + "Alias");
 		Map<String, Path<?>> mapFieldPaths = new HashMap<>();
 		// adiciona um predicado para registros ativos
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass()) && pageRequest.getFilters() != null) {
@@ -804,7 +805,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		
 		// cria e executa a query de count
 		CriteriaQuery<Long> criteriaCountQuery = cBuilder.createQuery(Long.class);
-		criteriaCountQuery.select(cBuilder.count(from));
+		Root<E> fromCount = criteriaCountQuery.from(getEntityClass());
+		fromCount.alias(getEntityClass().getSimpleName().toLowerCase() + "Alias");
+		criteriaCountQuery.select(cBuilder.count(fromCount));
 		if (!predicates.isEmpty()) {
 			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
 			if (pageRequest.isAndOperand()) {

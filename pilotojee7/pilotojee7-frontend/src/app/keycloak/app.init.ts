@@ -7,7 +7,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
         await keycloak.init({
           config: {
             url: 'https://localhost:8443/auth/', // .ie: http://localhost:8080/auth/
-            realm: 'pilotojee7-realm', // .ie: master
+            realm: 'master', // .ie: master
             clientId: 'pilotojee7-frontend' // .ie: account
           },
           initOptions: {

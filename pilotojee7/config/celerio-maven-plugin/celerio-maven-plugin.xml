@@ -303,10 +303,10 @@
                 <enumValue value="ACTIVE" label="Ativo" />
             </enumValues>
         </sharedEnumConfig>
-        <sharedEnumConfig name="SimNao" type="STRING">
+        <sharedEnumConfig name="SimNao" type="ORDINAL">
             <enumValues>
-                <enumValue value="S" label="Sim" />
                 <enumValue value="N" label="Não" />
+                <enumValue value="S" label="Sim" />
             </enumValues>
         </sharedEnumConfig>
         <sharedEnumConfig name="Genero" type="STRING">
@@ -315,7 +315,7 @@
                 <enumValue value="F" label="Feminino" />
             </enumValues>
         </sharedEnumConfig>
-        <sharedEnumConfig name="Ocorrencia" type="STRING">
+        <sharedEnumConfig name="Ocorrencia" type="ORDINAL">
             <enumValues>
                 <enumValue value="DIARIA" label="Diária" />
                 <enumValue value="SEMANAL" label="Semanal" />
