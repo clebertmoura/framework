@@ -78,6 +78,7 @@
 								</goals>
 								<configuration>
 									<xmlMetadata>${project.basedir}/../config/celerio-maven-plugin/metadata.xml</xmlMetadata>
+									<xmlConfiguration>${project.basedir}/../config/celerio-maven-plugin/celerio-maven-plugin.xml</xmlConfiguration>
 								</configuration>
 							</execution>
 						</executions>

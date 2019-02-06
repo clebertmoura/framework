@@ -141,13 +141,10 @@
             </dependency>
 		</dependencies>
 	</dependencyManagement>
-
+	
 	<profiles>
 		<profile>
 			<id>oracle</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<!-- Driver properties -->
 				<jdbc.groupId>com.oracle</jdbc.groupId>
@@ -166,19 +163,26 @@
 		
 		<profile>
 			<id>postgres</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<!-- Driver properties -->
 				<jdbc.groupId>org.postgresql</jdbc.groupId>
 				<jdbc.artifactId>postgresql</jdbc.artifactId>
 				<jdbc.version>42.2.5</jdbc.version>
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
-				<jdbc.url>jdbc:postgresql://localhost:5432/dbpiloto</jdbc.url>
 				
 				<!-- Database properties -->
+				<jdbc.database.host>localhost</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>igrejariodb</jdbc.database.name>
 				<jdbc.user>postgres</jdbc.user>
 				<jdbc.password>postgres</jdbc.password>
-				<jdbc.schema>dbpiloto01</jdbc.schema>
+				<jdbc.schema></jdbc.schema>
 				<jdbc.catalog></jdbc.catalog>
+				
+				<jdbc.url>jdbc:postgresql://${jdbc.database.host}:${jdbc.database.port}/${jdbc.database.name}</jdbc.url>
 			</properties>
 		</profile>
 	
@@ -192,6 +196,13 @@
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>https://homologacao.tjpe.gov.br</keycloak.rootUrl>
+				
+				<jdbc.database.host>localhost</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				<jdbc.user>postgres</jdbc.user>
+				<jdbc.password>postgres</jdbc.password>
+				
 			</properties>
 		</profile>
 		<profile>
@@ -219,6 +230,12 @@
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://www.tjpe.gov.br/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>https://www.tjpe.gov.br</keycloak.rootUrl>
+				
+				<jdbc.database.host>207.180.198.112</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				<jdbc.user>igrejario</jdbc.user>
+				<jdbc.password>Igreja1234</jdbc.password>
 			</properties>
 		</profile>
 
@@ -237,6 +254,7 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>sql-maven-plugin</artifactId>
 						<version>1.5</version>
+						<inherited>false</inherited>
 						<executions>
 							<execution>
 								<id>Create and initialize the database</id>
@@ -288,6 +306,7 @@
 						<groupId>com.jaxio.celerio</groupId>
 						<artifactId>dbmetadata-maven-plugin</artifactId>
 						<version>${celerio-maven-plugin.version}</version>
+						<inherited>false</inherited>
 						<executions>
 							<execution>
 								<id>Extract the database schema.</id>

@@ -1,0 +1,1 @@
+ALTER TABLE user_dia_testemunho DROP CONSTRAINT user_dia_testemunho_uk_1;

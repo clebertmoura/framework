@@ -47,8 +47,20 @@ import { RequestInterceptor } from './util/interceptor/request.interceptor';
 import { SpinnerService } from './util/spinner/spinner.service';
 import { SpinnerComponent } from './util/spinner/spinner.component';
 
-import { UsuarioModule } from './entities/usuario/usuario.module';
-import { UsuarioService } from './entities/usuario/usuario.service';
+import { DesafioModule } from './entities/desafio/desafio.module';
+import { DesafioService } from './entities/desafio/desafio.service';
+import { HabitoModule } from './entities/habito/habito.module';
+import { HabitoService } from './entities/habito/habito.service';
+import { RoleModule } from './entities/role/role.module';
+import { RoleService } from './entities/role/role.service';
+import { UserModule } from './entities/user/user.module';
+import { UserService } from './entities/user/user.service';
+import { UserDiaDesafioModule } from './entities/userdiadesafio/userdiadesafio.module';
+import { UserDiaDesafioService } from './entities/userdiadesafio/userdiadesafio.service';
+import { UserDiaHabitoModule } from './entities/userdiahabito/userdiahabito.module';
+import { UserDiaHabitoService } from './entities/userdiahabito/userdiahabito.service';
+import { UserDiaTestemunhoModule } from './entities/userdiatestemunho/userdiatestemunho.module';
+import { UserDiaTestemunhoService } from './entities/userdiatestemunho/userdiatestemunho.service';
 
 @NgModule({
   declarations: [
@@ -82,15 +94,26 @@ import { UsuarioService } from './entities/usuario/usuario.service';
     MatFormFieldModule,
     MatDialogModule,
 
-    UsuarioModule,
+    DesafioModule,
+    HabitoModule,
+    RoleModule,
+    UserModule,
+    UserDiaDesafioModule,
+    UserDiaHabitoModule,
+    UserDiaTestemunhoModule,
     
     SharedModule
   ],
   providers: [
-    UsuarioService,
-
-    MessageService,
-	  EnumeratorsService,
+    DesafioService,
+    HabitoService,
+    RoleService,
+    UserService,
+    UserDiaDesafioService,
+    UserDiaHabitoService,
+    UserDiaTestemunhoService,
+	EnumeratorsService,
+	MessageService,
     KeycloakService,
     SpinnerService,
     {provide: OWL_DATE_TIME_LOCALE, useValue: 'pt'},

@@ -29,6 +29,27 @@ export class EnumeratorsService {
     }
 
     /**
+     * Retorna a coleção de valores do enumerator: Genero
+     */
+    public getGeneroValues(): Observable<any[]> {
+        return this.getEnumValues('Genero');
+    }
+
+    /**
+     * Retorna a coleção de valores do enumerator: Ocorrencia
+     */
+    public getOcorrenciaValues(): Observable<any[]> {
+        return this.getEnumValues('Ocorrencia');
+    }
+
+    /**
+     * Retorna a coleção de valores do enumerator: SimNao
+     */
+    public getSimNaoValues(): Observable<any[]> {
+        return this.getEnumValues('SimNao');
+    }
+
+    /**
      * Retorna a coleção de valores do enumerator: Status
      */
     public getStatusValues(): Observable<any[]> {
