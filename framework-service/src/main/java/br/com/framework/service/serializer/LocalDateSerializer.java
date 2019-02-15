@@ -18,10 +18,6 @@ public class LocalDateSerializer extends StdSerializer<LocalDate> {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String LOCAL_DATE_PATTERN = "yyyy-MM-dd";
-	
-	private transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalDateSerializer.LOCAL_DATE_PATTERN);
-
 	public LocalDateSerializer() {
 		super(LocalDate.class);
 	}
@@ -29,6 +25,6 @@ public class LocalDateSerializer extends StdSerializer<LocalDate> {
 	@Override
 	public void serialize(LocalDate value, JsonGenerator gen, SerializerProvider sp)
 			throws IOException {
-		gen.writeString(value.format(formatter));
+		gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_DATE));
 	}
 }

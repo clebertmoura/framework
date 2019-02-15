@@ -1,7 +1,10 @@
 package br.com.framework.model.manager.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -23,12 +26,16 @@ import org.slf4j.LoggerFactory;
 import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.domain.api.BaseEntityAudited;
 import br.com.framework.domain.enums.Status;
+import br.com.framework.model.error.impl.ErrorBuilder;
+import br.com.framework.model.error.impl.ErrorBusiness;
 import br.com.framework.model.exception.ModelException;
+import br.com.framework.model.locale.UtilLocale;
 import br.com.framework.model.manager.api.BaseManager;
-import br.com.framework.model.util.Constantes;
+import br.com.framework.model.util.Constants;
 import br.com.framework.search.api.Search;
 import br.com.framework.search.api.SearchUniqueResult;
 import br.com.framework.util.Config;
+import br.com.framework.util.resource.MessageSource;
 
 /**
  * Implementação base do {@link BaseManager} das entidades de domínio. 
@@ -47,7 +54,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	protected transient Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Inject
@@ -61,8 +68,13 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	
 	protected Config config;
 	
+	protected MessageSource messageSource;
+	
 	@Resource
 	protected transient SessionContext sessionContext;
+	
+	@Inject
+	protected UtilLocale utilLocale;
 	
 	/**
 	 * @param entityClass
@@ -70,7 +82,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	public BaseManagerImpl(Class<E> entityClass) {
 		super();
 		this.entityClass = entityClass;
-		this.config = new Config(entityClass.getClassLoader(), Constantes.CONFIG_FILENAME);
+		this.config = new Config(entityClass.getClassLoader(), Constants.CONFIG_FILENAME);
 	}
 	
 	/**
@@ -90,6 +102,47 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	}
 
 	/**
+	 * @return
+	 */
+	protected Config getConfig() {
+		return config;
+	}
+
+	/**
+	 * @param config
+	 */
+	protected void setConfig(Config config) {
+		this.config = config;
+	}
+
+	/**
+	 * @return
+	 */
+	protected MessageSource getMessageSource() {
+		return messageSource;
+	}
+
+	/**
+	 * Deve ser injetado no bean concreto.
+	 *  
+	 * @param messageSource
+	 */
+	protected void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+	
+	/**
+	 * @return
+	 */
+	protected Locale getLocale() {
+		/*Locale locale = (Locale) this.sessionContext.getContextData().get(LocaleInterceptor.LOCALE);
+		if (locale == null) {
+			locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
+		}*/
+		return this.utilLocale.getLocale();
+	}
+
+	/**
 	 * Retorna o nome simples da classe da entidade.
 	 * 
 	 * @return
@@ -106,6 +159,76 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	public String getEntityClassName(){
 		return getEntityClass().getName();
 	}
+	
+	/**
+	 * Adiciona um {@link ErrorBusiness} na {@link List} de erros.
+	 * 
+	 * @param errors
+	 * @param businessRuleCode
+	 * @param key
+	 * @param params
+	 */
+	protected void addError(List<ErrorBusiness> errors, Integer businessRuleCode, String key, Object... params) {
+		errors.add(createErrorBusiness(businessRuleCode, key, params));
+	}
+	
+	/**
+	 * Adiciona um {@link ErrorBusiness} na {@link List} de erros.
+	 * 
+	 * @param errors
+	 * @param key
+	 * @param params
+	 */
+	protected void addError(List<ErrorBusiness> errors, String key, Object... params) {
+		this.addError(errors, null, key, params);
+	}
+
+	/**
+	 * Cria um {@link ErrorBusiness}
+	 * 
+	 * @param businessRuleCode
+	 * @param key
+	 * @param params
+	 * @return
+	 */
+	protected ErrorBusiness createErrorBusiness(Integer businessRuleCode, String key, Object... params) {
+		String message = getMessageSource().getMessage(getLocale(), key, params);
+		return ErrorBuilder.buildErrorBusiness(businessRuleCode, message);
+	}
+	
+	/**
+	 * Cria um {@link ErrorBusiness}
+	 * 
+	 * @param key
+	 * @param params
+	 * @return
+	 */
+	protected ErrorBusiness createErrorBusiness(String key, Object... params) {
+		return createErrorBusiness(null, key, params);
+	}
+	
+	/**
+     * Lança uma {@link ModelException} caso a {@link List} de erros contenha ao menos um {@link ErrorBusiness}
+     * 
+     * @param errors
+     * @throws ModelException
+     */
+    protected void throwIfErros(List<ErrorBusiness> errors) throws ModelException{
+    	if (errors != null && !errors.isEmpty()) {
+            String message = getMessageSource().getMessage(getLocale(), "br.com.framework.model.business.violation", errors.size());
+			throw new ModelException(message, errors);
+        }
+    }
+    
+    /**
+     * Retorna uma lista de {@link ErrorBusiness} vazia.
+     * 
+     * @return
+     * @throws ModelException
+     */
+    protected List<ErrorBusiness> newErrorList() throws ModelException{
+    	return new ArrayList<ErrorBusiness>();
+    }
 
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.impl.BaseNegocio#insert(E)

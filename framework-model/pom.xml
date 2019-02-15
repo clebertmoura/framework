@@ -6,7 +6,7 @@
 	<name>framework-model</name>
 
 	<dependencies>
-		<!-- Dependencias dos Frameworks -->
+		<!-- Dependencias dos Frameworks-TJPE -->
 		<dependency>
 			<groupId>br.com.framework</groupId>
 			<artifactId>framework-util</artifactId>
@@ -76,6 +76,6 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.0.3</version>
 	</parent>
 </project>

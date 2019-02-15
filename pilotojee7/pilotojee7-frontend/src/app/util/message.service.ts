@@ -13,21 +13,39 @@ export class MessageService {
     constructor(private toastr: ToastrService) {
     }
 
-    info(summary: string, detail: string) {
-        this.messageSource.next({severity: 'info', summary: summary, detail: detail});
-        this.toastr.success(detail, summary);
-        console.log('INFO: ' + summary + ' DETAIL: ' + detail);
+    /**
+     * Exibe uma mensagem de informação
+     * 
+     * @param message mensagem
+     * @param title titulo
+     */
+    info(message?: string, title?: string) {
+        this.messageSource.next({severity: 'info', title: title, message: message});
+        this.toastr.success(message, title);
+        console.log('INFO: ' + title + ' MESSAGE: ' + message);
     }
 
-    warning(summary: string, detail: string) {
-        this.messageSource.next({severity: 'warning', summary: summary, detail: detail});
-        this.toastr.warning(detail, summary);
-        console.log('WARN: ' + summary + ' DETAIL: ' + detail);
+    /**
+     * Exibe uma mensagem de alerta
+     * 
+     * @param message mensagem
+     * @param title titulo
+     */
+    warning(message?: string, title?: string) {
+        this.messageSource.next({severity: 'warning', title: title, message: message});
+        this.toastr.warning(message, title);
+        console.warn('WARN: ' + title + ' MESSAGE: ' + message);
     }
 
-    error(summary: string, detail: string) {
-        this.messageSource.next({severity: 'error', summary: summary, detail: detail});
-        this.toastr.error('', summary);
-        console.log('ERROR: ' + summary + ' DETAIL: ' + detail);
+    /**
+     * Exibe uma mensagem de erro
+     * 
+     * @param message mensagem
+     * @param title titulo
+     */
+    error(message?: string, title?: string) {
+        this.messageSource.next({severity: 'error', title: title, message: message});
+        this.toastr.error(message, title);
+        console.error('ERROR: ' + title + ' MESSAGE: ' + message);
     }
 }

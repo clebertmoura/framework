@@ -5,6 +5,10 @@ import { EntityService } from '../service/entity.service';
 import { BaseEntity } from '../entity/baseEntity';
 import { EnumeratorsService } from '../../entities/enumerators.service';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { isArray } from 'util';
+import { Error } from '../service/error/error';
+import { ErrorLayer } from '../service/error/errorlayer';
 
 export abstract class EntityDetailComponent<E extends BaseEntity, S extends EntityService<E>> implements OnInit, OnDestroy {
 
@@ -146,8 +150,34 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
                     this.openList();
                 }
             },
-            error =>  this.messageService.error('Could not save', error)
+            error => this.handleErrorOnSave(error)
         );
+    }
+
+    public handleErrorOnSave(httpError: HttpErrorResponse) {
+        if (httpError.status === 400) {
+            if (httpError.error && isArray(httpError.error)) {
+                const errors = Error.toArray(httpError.error);
+                for (let i = 0; i < errors.length; i++) {
+                    const e = errors[i];
+                    switch (e.layer) {
+                        case ErrorLayer.BEAN_VALIDATION:
+                            this.messageService.warning(e.propertyPath + ': ' + e.message);
+                            break;
+                        case ErrorLayer.BUSINESS:
+                            this.messageService.warning(e.message);
+                            break;
+                        default:
+                            this.messageService.error(e.message);
+                        break;
+                    }
+                }
+            } else {
+                this.messageService.error('Erro ao salvar!');
+            }
+        } else {
+            this.messageService.error('Erro ao salvar!');
+        }
     }
 
     /**

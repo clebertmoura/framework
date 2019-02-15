@@ -36,10 +36,6 @@ public abstract class BaseEntityAuditedResourceEndpointImpl<PK extends Serializa
 		super(entityPKClass, entityClass, entityResourceClass);
 	}
 
-	public BaseEntityAuditedResourceEndpointImpl(String bundleMessagesName) {
-		super(bundleMessagesName);
-	}
-
 	@Override
 	public E fromResource(R resource, E entity, int depth) {
 		entity = super.fromResource(resource, entity, depth);

@@ -20,6 +20,10 @@ import { FilterMetadata } from '../service/paging/filtermetadata';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ConfirmDeleteDialogComponent } from '../../shared/confirm-delete-dialog/confirm-delete-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { isArray } from 'util';
+import { ErrorLayer } from '../service/error/errorlayer';
+import { Error } from '../service/error/error';
 
 export abstract class EntityListComponent<E extends BaseEntity, S extends EntityService<E>> implements OnChanges, OnInit, AfterViewInit {
 
@@ -232,9 +236,33 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
         this.messageService.info('Sucesso!', 'O registro foi removido.');
         this.loadPage();
       },
-      error => {
-        console.error(error);
-      }
+      error => this.handleErrorOnDelete(error)
     );
   }
+
+  public handleErrorOnDelete(httpError: HttpErrorResponse) {
+    if (httpError.status === 400) {
+        if (httpError.error && isArray(httpError.error)) {
+            const errors = Error.toArray(httpError.error);
+            for (let i = 0; i < errors.length; i++) {
+                const e = errors[i];
+                switch (e.layer) {
+                    case ErrorLayer.BEAN_VALIDATION:
+                        this.messageService.warning(e.propertyPath + ': ' + e.message);
+                        break;
+                    case ErrorLayer.BUSINESS:
+                        this.messageService.warning(e.message);
+                        break;
+                    default:
+                        this.messageService.error(e.message);
+                    break;
+                }
+            }
+        } else {
+            this.messageService.error('Erro ao salvar!');
+        }
+    } else {
+        this.messageService.error('Erro ao salvar!');
+    }
+}
 }

@@ -5,7 +5,8 @@ package br.com.framework.service.util;
 
 import java.util.List;
 
-import br.com.framework.model.log.impl.ErrorDefault;
+import br.com.framework.model.error.impl.ErrorBuilder;
+import br.com.framework.model.error.impl.ErrorDefault;
 import br.com.framework.service.api.BaseResponse;
 import br.com.framework.service.api.EnumResource;
 import br.com.framework.service.impl.BaseResponseImpl;
@@ -66,7 +67,7 @@ public class UtilBuilder {
 	 * @return
 	 */
 	public static ErrorDefault buildError(String code, String desc) {
-		return new ErrorDefault(new Throwable(code), desc);
+		return ErrorBuilder.buildError(desc);
 	}
 	
 	/**

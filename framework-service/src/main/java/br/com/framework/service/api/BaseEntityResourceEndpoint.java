@@ -43,9 +43,11 @@ public interface BaseEntityResourceEndpoint<PK extends Serializable, E extends B
 	 * Remove uma entidade existente do banco de dados.
 	 * 
 	 * @param id
+	 * @param definitely
+	 * 	Indica se a remoção deve ser realizada de forma definitiva (para entidades com suporte a deleção lógica)
 	 * @return
 	 */
-	public abstract Response remove(PK id);
+	public abstract Response remove(PK id, Boolean definitely);
 
 	/**
 	 * Search a entidade pelo sua chave primária.

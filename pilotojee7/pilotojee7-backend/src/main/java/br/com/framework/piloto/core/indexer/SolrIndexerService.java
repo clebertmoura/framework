@@ -13,7 +13,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.framework.piloto.core.util.Constants;
+import br.com.framework.piloto.core.util.AppConstants;
 import br.com.framework.search.indexer.api.service.IndexerService;
 import br.com.framework.util.Config;
 
@@ -41,15 +41,15 @@ public class SolrIndexerService implements IndexerService {
 	 * 
 	 */
 	private SolrIndexerService() {
-		modelConfig = new Config(Thread.currentThread().getContextClassLoader(), Constants.CONFIG_FILENAME);
+		modelConfig = new Config(Thread.currentThread().getContextClassLoader(), AppConstants.CONFIG_FILENAME);
 	}
 	
 	protected void init() {
-		if (modelConfig.getPropriedade(Constants.INDEXER_ACTIVE) != null) {
-			boolean indexerActive = Boolean.parseBoolean(modelConfig.getPropriedade(Constants.INDEXER_ACTIVE));
+		if (modelConfig.getPropriedade(AppConstants.INDEXER_ACTIVE) != null) {
+			boolean indexerActive = Boolean.parseBoolean(modelConfig.getPropriedade(AppConstants.INDEXER_ACTIVE));
 			if (indexerActive) {
-				String serverAddress = modelConfig.getPropriedade(Constants.INDEXER_SERVER_ADDRESS);
-				String collectionName = modelConfig.getPropriedade(Constants.INDEXER_COLLECTION_NAME);
+				String serverAddress = modelConfig.getPropriedade(AppConstants.INDEXER_SERVER_ADDRESS);
+				String collectionName = modelConfig.getPropriedade(AppConstants.INDEXER_COLLECTION_NAME);
 				solrServer = new HttpSolrServer(String.format("%s/%s", serverAddress, collectionName));
 				startService();
 			}
@@ -132,11 +132,11 @@ public class SolrIndexerService implements IndexerService {
 	public void startService() {
 		if (!running) {
 			LOG.info("Iniciando o servico de indexaxao Solr.");
-			if (modelConfig.getPropriedade(Constants.INDEXER_ACTIVE) != null) {
-				boolean indexerActive = Boolean.valueOf(modelConfig.getPropriedade(Constants.INDEXER_ACTIVE));
+			if (modelConfig.getPropriedade(AppConstants.INDEXER_ACTIVE) != null) {
+				boolean indexerActive = Boolean.valueOf(modelConfig.getPropriedade(AppConstants.INDEXER_ACTIVE));
 				if (indexerActive) {
-					String serverAddress = modelConfig.getPropriedade(Constants.INDEXER_SERVER_ADDRESS);
-					String collectionName = modelConfig.getPropriedade(Constants.INDEXER_COLLECTION_NAME);
+					String serverAddress = modelConfig.getPropriedade(AppConstants.INDEXER_SERVER_ADDRESS);
+					String collectionName = modelConfig.getPropriedade(AppConstants.INDEXER_COLLECTION_NAME);
 					solrServer = new HttpSolrServer(String.format("%s/%s", serverAddress, collectionName));
 					
 					checkServerStatus();

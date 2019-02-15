@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>pilotojee7</artifactId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.0.3</version>
 	</parent>
 
 	<properties>
@@ -47,7 +47,6 @@
 		<celerio-maven-plugin.configuration>${project.basedir}/../config/celerio-maven-plugin/celerio-maven-plugin.xml</celerio-maven-plugin.configuration>
 		<celerio-maven-plugin.packs.configuration>${project.basedir}/src/main/config/celerio-maven-plugin/celerio-template-packs.xml</celerio-maven-plugin.packs.configuration>
 
-		<app.basedir>/sistemas/AjuizamentoEletronico/processamento_lotes</app.basedir>
 	</properties>
 
 	<dependencies>
@@ -133,12 +132,6 @@
 					<artifactId>validation-api</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-core</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Keycloak -->
@@ -301,26 +294,46 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
   				<artifactId>jackson-core</artifactId>
+  				<version>${version.jackson}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
+				<version>${version.jackson}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
+				<version>${version.slf4j}</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
+	
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.properties</exclude>
+					<exclude>**/*.properties-utf-8</exclude>
+					<exclude>**/persistence.xml</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/persistence.xml</include>
+				</includes>
 			</resource>
 		</resources>
 

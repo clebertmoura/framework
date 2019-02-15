@@ -1,7 +1,7 @@
 export interface Message {
     severity?: string;
-    summary?: string;
-    detail?: string;
+    title?: string;
+    message?: string;
     id?: any;
     key?: string;
 }

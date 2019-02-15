@@ -8,6 +8,7 @@ $output.require($entity.dao)##
 $output.require("javax.ejb.Stateless")##
 $output.require("javax.ejb.EJB")##
 
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
@@ -15,7 +16,9 @@ import javax.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 
 import br.com.framework.model.exception.ModelException;
+import br.com.framework.model.log.impl.ErrorBusiness;
 import br.com.framework.search.impl.Operator;
+
 
 /**
  * Implementação Manager da entidade: {@link $entity.model.type} 
@@ -40,7 +43,7 @@ public class $output.currentClass extends AppBaseManagerImpl<${entity.root.prima
     		throws ConstraintViolationException, ModelException {
     	super.validateEntityFields(entity, isInsert);
     	
-    	Map<String, Object[]> messagesMap = ModelException.createMessagesMap();
+    	List<ErrorBusiness> errors = newErrorList();
     	
 ## --- Raw attributes
 #foreach ($attribute in $entity.nonCpkAttributes.list)
@@ -53,14 +56,12 @@ public class $output.currentClass extends AppBaseManagerImpl<${entity.root.prima
 		#end
 			${entity.model.type} entityAttr = getSearch().findUniqueByField("${attribute.var}", Operator.EQ, entity.${attribute.getter}()).getUniqueResult();
 			if ((isInsert && entityAttr != null) || (!isInsert && !entityAttr.getId().equals(entity.getId()))) {
-				messagesMap.put("${entity.model.var}.validation.${attribute.var}.uniqueViolation", null);
+				addError(errors, "${entity.model.var}.validation.${attribute.var}.uniqueViolation", entity.${attribute.getter}());
 			}
 		}
 	#end
 #end
 
-    	if (!messagesMap.isEmpty()) {
-    		throw new ModelException(messagesMap);
-    	}
+		throwIfErros(errors);
     }
 }

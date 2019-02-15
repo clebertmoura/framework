@@ -18,8 +18,6 @@ public class LocalDateDeserializer extends StdDeserializer<LocalDate> {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalDateSerializer.LOCAL_DATE_PATTERN);
-
 	public LocalDateDeserializer() {
 		super(LocalDate.class);
 	}
@@ -27,7 +25,7 @@ public class LocalDateDeserializer extends StdDeserializer<LocalDate> {
 	@Override
 	public LocalDate deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException{
-		return LocalDate.parse(jp.readValueAs(String.class), formatter);
+		return LocalDate.parse(jp.readValueAs(String.class), DateTimeFormatter.ISO_LOCAL_DATE);
 	}
 
 }

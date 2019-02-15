@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.0.3</version>
 	</parent>
 	
 	<artifactId>pilotojee7</artifactId>
@@ -46,6 +46,7 @@
 		<version.httpcore>4.4</version.httpcore>
 		<version.jackson>2.5.4</version.jackson>
 		<version.guava>20.0.0.redhat-1</version.guava>
+		<version.slf4j>1.7.7</version.slf4j>
 		
 		<version.gson>2.7</version.gson>
 		<version.hibernate-envers>5.0.1.Final</version.hibernate-envers>
@@ -141,7 +142,7 @@
             </dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<profiles>
 		<profile>
 			<id>oracle</id>
@@ -151,13 +152,18 @@
 				<jdbc.artifactId>ojdbc6</jdbc.artifactId>
 				<jdbc.version>11.2.0.3</jdbc.version>
 				<jdbc.driver>oracle.jdbc.OracleDriver</jdbc.driver>
-				<jdbc.url>jdbc:oracle:thin:@sddboracle01.tjpe.gov.br:1521:orades</jdbc.url>
 				
 				<!-- Database properties -->
+				<jdbc.database.host>sddboracle01.tjpe.gov.br</jdbc.database.host>
+				<jdbc.database.port>1521</jdbc.database.port>
+				<jdbc.database.name>orades</jdbc.database.name>
+				
 				<jdbc.user>dbsmarco</jdbc.user>
 				<jdbc.password>dbsmarco</jdbc.password>
 				<jdbc.schema>DBSMARCO01</jdbc.schema>
 				<jdbc.catalog></jdbc.catalog>
+				
+				<jdbc.url>jdbc:oracle:thin:@${jdbc.database.host}:${jdbc.database.port}:${jdbc.database.name}</jdbc.url>
 			</properties>
 		</profile>
 		
@@ -177,6 +183,7 @@
 				<jdbc.database.host>localhost</jdbc.database.host>
 				<jdbc.database.port>5432</jdbc.database.port>
 				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				
 				<jdbc.user>postgres</jdbc.user>
 				<jdbc.password>postgres</jdbc.password>
 				<jdbc.schema></jdbc.schema>

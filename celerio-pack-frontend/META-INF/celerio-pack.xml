@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <celerioPack xmlns="http://www.jaxio.com/schema/celerio">
     <packName value="celerio-pack-frontend"/>
-    <packDescription value="Pack de artefatos projeto frontend em Angular"/>
+    <packDescription value="Pack de artefatos TJPE frontend em Angular"/>
     <packDescription2 value="Generates pages and componentes."/>
     <packCommand value="mvn -Pdb,metadata,gen test"/>
     <packCommandHelp value=""/>

@@ -1,20 +1,16 @@
 package br.com.framework.piloto.core.resolver;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.framework.model.exception.ModelException;
-import br.com.framework.model.log.impl.ErrorDefault;
-import br.com.framework.util.resource.MessageResource;
-import br.com.framework.util.resource.MessageResourceFactory;
 
 /**
  * Trata a exception {@link ModelException}
@@ -23,42 +19,25 @@ import br.com.framework.util.resource.MessageResourceFactory;
  *
  */
 @Provider
-public class ModelExceptionResolver implements
-        ExceptionMapper<ModelException> {
+public class ModelExceptionResolver implements ExceptionMapper<ModelException> {
 	
-	private static final Logger LOGGER = Logger.getLogger(ModelExceptionResolver.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ModelExceptionResolver.class);
 	
 	@Context 
 	private HttpServletRequest request;
-	
-	private MessageResource messageResource;
-	
-	private void initMessageResource() {
-		if (messageResource == null) {
-			messageResource = MessageResourceFactory.createMessageResource("Mensagens", request.getLocale(), getClass().getClassLoader());
-		}
-	}
 
 	@Override
 	public Response toResponse(ModelException exception) {
-		initMessageResource();
-		Response.Status httpStatus = Response.Status.BAD_REQUEST;
-		LOGGER.severe("Erro de violação de regra de negócio na requisição.");
-		Map<String, Object[]> mensagensMap = exception.getMensagensMap();
-		List<ErrorDefault> errors = new ArrayList<>();
-		
-		
-		
-		for (String key : mensagensMap.keySet()) {
-			Object[] params = mensagensMap.get(key);
-			String msg = messageResource.get(key, params);
-			//errors.add(UtilBuilder.buildError(key, msg));
-			
-			ErrorDefault erro = new ErrorDefault(new Throwable(key), msg);
-			errors.add(erro);
-			
-		}
-		return Response.status(httpStatus).entity(errors).build();
+		LOGGER.error("Esta operação vioulou regra de negócio.", exception);
+		return exceptionToResponse(exception);
+	}
+	
+	/**
+	 * @param modelException
+	 * @return
+	 */
+	protected Response exceptionToResponse(ModelException modelException) {
+		return Response.status(Status.BAD_REQUEST).entity(modelException.getErrors()).build();
 	}
  
 }

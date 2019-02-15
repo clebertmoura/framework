@@ -8,6 +8,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 
+import javax.enterprise.inject.Vetoed;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
+@Vetoed
 public class Config implements Serializable {
 
 	/**

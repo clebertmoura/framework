@@ -1,18 +1,15 @@
 package br.com.framework.piloto.core.resolver;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import br.com.framework.model.log.impl.ErrorDefault;
-import br.com.framework.service.util.UtilBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.framework.model.error.impl.ErrorBuilder;
 
 /**
  * Trata a exception {@link ConstraintViolationException}
@@ -24,18 +21,21 @@ import br.com.framework.service.util.UtilBuilder;
 public class ConstraintViolationExceptionResolver implements
         ExceptionMapper<ConstraintViolationException> {
 	
-	private static final Logger LOGGER = Logger.getLogger(ConstraintViolationExceptionResolver.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConstraintViolationExceptionResolver.class);
 
 	@Override
 	public Response toResponse(ConstraintViolationException exception) {
-		Response.Status httpStatus = Response.Status.BAD_REQUEST;
-		Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
-		LOGGER.warning("Erro de violação de constraint na requisição.");
-        List<ErrorDefault> errors = new ArrayList<>();
-        for (ConstraintViolation<?> violation : violations) {
-        	errors.add(UtilBuilder.buildError(violation.getPropertyPath().toString(), violation.getMessage()));
-        }
-		return Response.status(httpStatus).entity(errors).build();
+		
+		return exceptionToResponse(exception);
+	}
+	
+	/**
+	 * @param exception
+	 * @return
+	 */
+	protected Response exceptionToResponse(ConstraintViolationException exception) {
+		LOGGER.error("Esta operação violou validações do bean.", exception);
+		return Response.status(Status.BAD_REQUEST).entity(ErrorBuilder.buildFromConstraintViolationException(exception)).build();
 	}
  
 }

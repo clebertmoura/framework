@@ -7,11 +7,12 @@ package br.com.framework.model.util;
  *
  */
 public abstract class Constants {
+	
 
 	/**
 	 * Nome do arquivo de configuração da aplicação. Este arquivo deve ser criado no projeto 'model' da aplicação.
 	 */
-	public static String CONFIG_FILENAME = "config.properties";
+	public static final String CONFIG_FILENAME = "config.properties";
 	
 	/**
 	 * Propriedade que indica se o indexador deve ser ativado na aplicação. 
@@ -22,7 +23,7 @@ public abstract class Constants {
 	 */
 	public static final String INDEXER_SERVER_ADDRESS = "indexer.server.address";
 	/**
-	 * Nome da collection de índices 
+	 * Nome da collection de Índices 
 	 */
 	public static final String INDEXER_COLLECTION_NAME = "indexer.collection.name";
 	

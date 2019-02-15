@@ -11,6 +11,7 @@ import { FilterMetadata } from './paging/filtermetadata';
 import { PageRequest } from './paging/pagerequest';
 import { Order } from './paging/order';
 import { PageResponse } from './paging/pageresponse';
+import { isArray } from 'util';
 
 /**
  * Classe abstrata de implementação de serviço.
@@ -187,14 +188,12 @@ export abstract class EntityService<E extends BaseEntity> {
     }
 
     // sample method from angular doc
-    protected handleError (error: HttpErrorResponse) {
-        // TODO: seems we cannot use messageService from here...
-        const errMsg = (error.message) ? error.message : 'Server error';
-        // console.error(errMsg);
-        if (error.status === 401 ) {
+    protected handleError (httpError: HttpErrorResponse) {
+        console.error('Ocorreu erro na requisição:', httpError);
+        if (httpError.status >= 401 && httpError.status <= 403) {
             window.location.href = '/';
         }
-        return observableThrowError(errMsg);
+        return observableThrowError(httpError);
     }
 
     /**

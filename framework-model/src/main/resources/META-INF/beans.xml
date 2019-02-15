@@ -4,6 +4,6 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
 	bean-discovery-mode="all">
 	<interceptors>
-		<class>br.com.framework.model.log.impl.LogInterceptor</class>
+		<class>br.com.framework.model.error.interceptor.LogInterceptor</class>
 	</interceptors>
 </beans>

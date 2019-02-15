@@ -6,12 +6,15 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.enterprise.inject.Vetoed;
+
 /**
  * Classe de recursos utilizado nas mensagens de properties.
  * 
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
+@Vetoed
 public class MessageResource implements Serializable {
 
 	/**

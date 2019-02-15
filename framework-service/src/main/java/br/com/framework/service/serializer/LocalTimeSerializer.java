@@ -18,10 +18,6 @@ public class LocalTimeSerializer extends StdSerializer<LocalTime> {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String LOCAL_TIME_PATTERN = "HH:mm:ss.SSS'Z'";
-	
-	private transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalTimeSerializer.LOCAL_TIME_PATTERN);
-
 	public LocalTimeSerializer() {
 		super(LocalTime.class);
 	}
@@ -29,6 +25,6 @@ public class LocalTimeSerializer extends StdSerializer<LocalTime> {
 	@Override
 	public void serialize(LocalTime value, JsonGenerator gen, SerializerProvider sp)
 			throws IOException{
-		gen.writeString(value.format(formatter));
+		gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_TIME));
 	}
 }

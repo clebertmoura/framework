@@ -1,0 +1,9 @@
+SimNao.S=Sim
+SimNao.N=Não
+
+Status.INACTIVE=Inativo
+Status.ACTIVE=Ativo
+
+TipoParametro.INTEIRO=Inteiro
+TipoParametro.STRING=String
+

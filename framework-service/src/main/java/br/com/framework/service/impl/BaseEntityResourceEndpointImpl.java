@@ -53,8 +53,9 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.model.dao.api.BaseDao;
+import br.com.framework.model.error.impl.ErrorBuilder;
+import br.com.framework.model.error.impl.ErrorDefault;
 import br.com.framework.model.exception.ModelException;
-import br.com.framework.model.log.impl.ErrorDefault;
 import br.com.framework.model.manager.api.BaseManager;
 import br.com.framework.search.api.Search;
 import br.com.framework.search.api.SearchResult;
@@ -113,10 +114,6 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 		this.entityPKClass = entityPKClass;
 		this.entityClass = entityClass;
 		this.entityResourceClass = entityResourceClass;
-	}
-
-	public BaseEntityResourceEndpointImpl(String bundleMessagesName) {
-		super(bundleMessagesName);
 	}
 
 	protected Class<PK> getEntityPKClass() {
@@ -546,16 +543,18 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
      * 
      * @param violations
      * @return
+     * @deprecated
      */
+	@Deprecated
     protected List<ErrorDefault> createViolationErrors(Set<ConstraintViolation<?>> violations) {
     	if (logger.isDebugEnabled()) {
     		logger.debug("Validation completed. violations found: " + violations.size());
     	}
         List<ErrorDefault> errors = new ArrayList<>();
-        for (ConstraintViolation<?> violation : violations) {
-        	//errors.add(UtilBuilder.buildError(violation.getPropertyPath().toString(), violation.getMessage()));
-        	
-        	ErrorDefault erro = new  ErrorDefault(new Throwable(violation.getPropertyPath().toString()), violation.getMessage());
+        for (ConstraintViolation<?> cv : violations) {
+        	String rootBeanClass = cv.getRootBean() != null ? cv.getRootBean().getClass().getSimpleName() : null;
+        	ErrorDefault erro = ErrorBuilder.buildErrorBeanValidation(rootBeanClass, cv.getInvalidValue(), 
+        			cv.getPropertyPath().toString(), cv.getMessage());
 			errors.add(erro);
         }
         return errors;
@@ -566,7 +565,9 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
      * 
      * @param ex
      * @return
+     * @deprecated
      */
+	@Deprecated
     protected List<ErrorDefault> createViolationErrors(ConstraintViolationException ex) {
         return createViolationErrors(ex.getConstraintViolations());
     }
@@ -589,35 +590,42 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 						.build())
 						.entity(toResource(entity))
 						.build();
-        } catch (ConstraintViolationException ce) {
-        	response = Response.status(Status.BAD_REQUEST).entity(createViolationErrors(ce)).build();
+        } catch (ConstraintViolationException cve) {
+        	response = exceptionToResponse(cve);
         } catch (ModelException me) {
-        	response = Response.status(Status.BAD_REQUEST).entity(createModelErrors(me)).build();
+        	response = exceptionToResponse(me);
         } catch (EJBException e) {
         	logger.error("Error ao inserir resource da entity: " + entity.getClass(), e);
-        	Exception causedByException = e.getCausedByException();
-        	Throwable rootCause = ExceptionUtils.getRootCause(e);
-        	if (rootCause instanceof ConstraintViolationException) {
-        		response = Response.status(Status.BAD_REQUEST).entity(createViolationErrors((ConstraintViolationException)rootCause)).build();
-        	} else if (rootCause instanceof ModelException) {
-        		response = Response.status(Status.BAD_REQUEST).entity(createModelErrors((ModelException)rootCause)).build();
-        	} else {
-    			response = Response.status(Status.BAD_REQUEST).entity(createGenericError(causedByException)).build();
-    		}
+        	response = handleEJBExceptionToResponse(e);
         } catch (Exception e) {
         	logger.error("Error ao inserir resource da entity: " + entity.getClass(), e);
-        	if (e.getCause() instanceof ConstraintViolationException) {
-				response = Response.status(Status.BAD_REQUEST).entity(
-					createViolationErrors((ConstraintViolationException) e.getCause())).build();
-			} else if (e.getCause() instanceof ModelException) {
-				response = Response.status(Status.BAD_REQUEST).entity(
-					createModelErrors((ModelException)e.getCause())).build();
-			} else{
-				response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(
-					createGenericError(e)).build();
-			}
+        	response = exceptionToResponse(e);
 		}
         return response;
+	}
+
+	/**
+	 * @param constraintViolationException
+	 * @return
+	 */
+	protected Response exceptionToResponse(ConstraintViolationException constraintViolationException) {
+		return Response.status(Status.BAD_REQUEST).entity(ErrorBuilder.buildFromConstraintViolationException(constraintViolationException)).build();
+	}
+
+	/**
+	 * @param throwable
+	 * @return
+	 */
+	protected Response exceptionToResponse(Throwable throwable) {
+		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ErrorBuilder.buildError(throwable.getMessage())).build();
+	}
+
+	/**
+	 * @param modelException
+	 * @return
+	 */
+	protected Response exceptionToResponse(ModelException modelException) {
+		return Response.status(Status.BAD_REQUEST).entity(modelException.getErrors()).build();
 	}
 
 	@Override
@@ -638,35 +646,45 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
         try {
         	entity = getManager().update(entity);
             response = Response.accepted(toResource(entity)).build();
-        } catch (ConstraintViolationException ce) {
-        	response = Response.status(Status.BAD_REQUEST).entity(createViolationErrors(ce)).build();
+        } catch (ConstraintViolationException cve) {
+        	response = exceptionToResponse(cve);
         } catch (OptimisticLockException e) {
         	response = Response.status(Status.CONFLICT).entity(e.getEntity()).build();
 		} catch (ModelException me) {
-        	response = Response.status(Status.BAD_REQUEST).entity(createModelErrors(me)).build();
+        	response = exceptionToResponse(me);
         } catch (EJBException e) {
-        	logger.error("Error ao editar resource da entity: " + entity.getClass(), e);
-        	Exception causedByException = e.getCausedByException();
-        	Throwable rootCause = ExceptionUtils.getRootCause(e);
-        	if (rootCause instanceof ConstraintViolationException) {
-        		response = Response.status(Status.BAD_REQUEST).entity(createViolationErrors((ConstraintViolationException)rootCause)).build();
-        	} else if (rootCause instanceof ModelException) {
-        		response = Response.status(Status.BAD_REQUEST).entity(createModelErrors((ModelException)rootCause)).build();
-        	} else {
-    			response = Response.status(Status.BAD_REQUEST).entity(createGenericError(causedByException)).build();
-    		}
+        	logger.error("Error ao editar resource da entity id: " + id, e);
+        	response = handleEJBExceptionToResponse(e);
         } catch (Exception e) {
-        	logger.error("Error ao editar resource da entity: " + findById.getUniqueResult().getClass(), e);
-			if (e.getCause() instanceof ConstraintViolationException) {
-				response = Response.status(Status.BAD_REQUEST).entity(
-					createViolationErrors((ConstraintViolationException) e.getCause())).build();
-			} else if (e.getCause() instanceof ModelException) {
-				response = Response.status(Status.BAD_REQUEST).entity(
-					createModelErrors((ModelException)e.getCause())).build();
-			} else{
-				response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(
-					createGenericError(e)).build();
+        	logger.error("Error ao editar resource da entity id: " + id, e);
+        	response = exceptionToResponse(e);
+		}
+		return response;
+	}
+
+	/**
+	 * Trata uma {@link EJBException} convertendo para um {@link Response}.
+	 * 
+	 * @param e
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected Response handleEJBExceptionToResponse(EJBException e) {
+		Response response;
+		Throwable rootCause = ExceptionUtils.getRootCause(e);
+		if (rootCause != null) {
+			if (rootCause instanceof ConstraintViolationException) {
+				response = exceptionToResponse((ConstraintViolationException)rootCause);
+			} else if (rootCause instanceof OptimisticLockException) {
+				E entity = (E)((OptimisticLockException)rootCause).getEntity();
+				response = Response.status(Status.CONFLICT).entity(toResource(entity)).build();
+			} else if (rootCause instanceof ModelException) {
+				response = exceptionToResponse((ModelException)rootCause);
+			} else {
+				response = exceptionToResponse(rootCause);
 			}
+		} else {
+			response = exceptionToResponse(e);
 		}
 		return response;
 	}
@@ -676,7 +694,7 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_JSON})
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public Response remove(@PathParam("id") PK id) {
+	public Response remove(@PathParam("id") PK id, @QueryParam("definitely") @DefaultValue("false") Boolean definitely) {
 		if (id == null) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
@@ -686,37 +704,25 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 		}
 		Response response = null;
 		try {
-			getManager().remove(findById.getUniqueResult());
-			response = Response.noContent().build();
-        } catch (ConstraintViolationException ce) {
-        	response = Response.status(Status.BAD_REQUEST).entity(createViolationErrors(ce)).build();
+			E entity = findById.getUniqueResult();
+			if (definitely) {
+				getManager().removeDefinitely(entity);
+			} else {
+				getManager().remove(entity);
+			}
+			response = Response.ok().build();
+        } catch (ConstraintViolationException cve) {
+        	response = exceptionToResponse(cve);
         } catch (OptimisticLockException e) {
         	response = Response.status(Status.CONFLICT).entity(e.getEntity()).build();
 		} catch (ModelException me) {
-        	response = Response.status(Status.BAD_REQUEST).entity(createModelErrors(me)).build();
+        	response = exceptionToResponse(me);
         } catch (EJBException e) {
         	logger.error("Error ao remover resource da entity id: " + id, e);
-        	Exception causedByException = e.getCausedByException();
-        	Throwable rootCause = ExceptionUtils.getRootCause(e);
-        	if (rootCause instanceof ConstraintViolationException) {
-        		response = Response.status(Status.BAD_REQUEST).entity(createViolationErrors((ConstraintViolationException)rootCause)).build();
-        	} else if (rootCause instanceof ModelException) {
-        		response = Response.status(Status.BAD_REQUEST).entity(createModelErrors((ModelException)rootCause)).build();
-        	} else {
-    			response = Response.status(Status.BAD_REQUEST).entity(createGenericError(causedByException)).build();
-    		}
+        	response = handleEJBExceptionToResponse(e);
         } catch (Exception e) {
         	logger.error("Error ao remover resource da entity: " + findById.getUniqueResult().getClass(), e);
-			if (e.getCause() instanceof ConstraintViolationException) {
-				response = Response.status(Status.BAD_REQUEST).entity(
-					createViolationErrors((ConstraintViolationException) e.getCause())).build();
-			} else if (e.getCause() instanceof ModelException) {
-				response = Response.status(Status.BAD_REQUEST).entity(
-					createModelErrors((ModelException)e.getCause())).build();
-			} else{
-				response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(
-					createGenericError(e)).build();
-			}
+        	response = exceptionToResponse(e);
 		}
 		return response;
 	}

@@ -3,7 +3,6 @@ package br.com.framework.model.manager.api;
 import java.io.Serializable;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 
 import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.domain.api.BaseEntityAudited;
@@ -15,8 +14,8 @@ import br.com.framework.search.api.Search;
  * 
  * @author Cleber Moura <cleber.t.moura@gmail.com>
 
- * @param <PK> Tipo da chave primária. 
- * @param <E> Tipo da entidade de domínio.
+ * @param <PK> Tipo da chave primÃ¡ria. 
+ * @param <E> Tipo da entidade de domÃ­nio.
  * @param <B> Interface de pesquisa
  */
 public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, B extends Search<PK, E>> extends Serializable {
@@ -99,7 +98,7 @@ public interface BaseManager<PK extends Serializable, E extends BaseEntity<PK>, 
 	public abstract void detach(E entidade);
 /*
 	*//**
-	 * Consulta todas as revisões de uma entidade anotada com @Audited
+	 * Consulta todas as revisÃµes de uma entidade anotada com @Audited
 	 * @param entidade
 	 * @return
 	 *//*
