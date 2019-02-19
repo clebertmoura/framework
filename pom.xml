@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.framework</groupId>
+	<artifactId>framework-parent</artifactId>
+	<version>3.0.3</version>
+	<packaging>pom</packaging>
+	<name>framework-parent</name>
+	<description>Projeto raiz do Framework-TJPE</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<version.surefire.plugin>2.19.1</version.surefire.plugin>
+		<version.resources.plugin>3.0.1</version.resources.plugin>
+		<version.compiler.plugin>3.5.1</version.compiler.plugin>
+		<version.source.plugin>3.0.1</version.source.plugin>
+		<version.javadoc.plugin>2.10.4</version.javadoc.plugin>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+
+		<slf4j-api.version>1.7.16</slf4j-api.version>
+		<commons-codec.version>1.10</commons-codec.version>
+		<commons-io.version>2.4</commons-io.version>
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<commons-beanutils.version>1.9.3.redhat-1</commons-beanutils.version>
+		<bcprov-jdk16.version>1.46</bcprov-jdk16.version>
+		<bcmail-jdk16.version>1.46</bcmail-jdk16.version>
+		<solrj.version>4.10.3</solrj.version>
+		<hibernate-envers.version>4.2.18.Final</hibernate-envers.version>
+		<caelum-stella-core.version>2.1.2</caelum-stella-core.version>
+		<reflections.version>0.9.10</reflections.version>
+		<resteasy.version>3.0.16.Final</resteasy.version>
+		<gson.version>2.6.2</gson.version>
+		<swagger.version>1.5.0</swagger.version>
+	</properties>
+	<modules>
+		<module>framework-util</module>
+		<module>framework-domain</module>
+		<module>framework-search</module>
+		<module>framework-model</module>
+		<module>framework-service</module>
+		
+		
+		<module>pilotojee7</module>
+		
+		<module>celerio-pack-backend</module>
+		<module>celerio-pack-frontend</module>
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${version.source.plugin}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${version.javadoc.plugin}</version>
+				<configuration>
+					<additionalparam>-Xdoclint:none</additionalparam>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>jdk8</id>
+			<activation>
+				<jdk>1.8</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							 <additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<distributionManagement>
+		<repository>
+			<id>nexus-tjpe</id>
+			<name>maven-releases</name>
+			<url>http://www.tjpe.jus.br/nexus/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-tjpe</id>
+			<name>maven-snapshots</name>
+			<url>http://www.tjpe.jus.br/nexus/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+</project>

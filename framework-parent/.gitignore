@@ -1,9 +1,0 @@
-/target/
-**/target/
-**/pom.xml.versionsBackup
-**/.settings/
-**/.classpath
-**/lib/vendor/
-**/frontend/node_modules/
-**/extras/scripts/keycloak/*.sh
-**/extras/scripts/keycloak/*.bat

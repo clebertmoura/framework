@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="primary" transaction-type="JTA">
+		<provider>${jpaProvider.class}</provider>
+		<jta-data-source>${dataSource.jndiName}</jta-data-source>
+		<properties>
+			<!-- <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/> -->
+			<property name="javax.persistence.schema-generation.database.action" value="none" />
+			<!-- <property name="javax.persistence.schema-generation.create-source" value="script-then-metadata" />
+			<property name="javax.persistence.schema-generation.create-script-source" value="META-INF/create-script.sql"/> -->
+			
+			<!-- Properties for Hibernate -->			
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.enable_lazy_load_no_trans" value="true" />
+			<property name="hibernate.transaction.jta.platform" value="${jtaPlatform}" />
+			
+			<!-- Propriedades que habilitam o hibernate-envers para regitros de logs de auditoria -->
+			<property name="hibernate.integration.envers.enabled" value="false"/>
+			<!-- <property name="org.hibernate.envers.default_schema" value="DBARCHETYPE01_LOG" />
+			<property name="org.hibernate.envers.revision_listener"	value="br.jus.pje.ajuizamentoeletronico.core.listener.AppRevisionLogListener" />
+			<property name="org.hibernate.envers.audit_strategy_validity_store_revend_timestamp" value="true" /> -->
+			
+		
+			<!-- Properties for eclipselink -->
+			<!-- <property name="eclipselink.target-server" value="JBoss"/> -->
+			
+			<!-- Properties for Hibernate 
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.show_sql" value="false" />
+			-->
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,14 @@
+default.lang=pt
+default.country=BR
+default.timezone=GMT-3
+default.format.date=dd/MM/yyyy
+default.format.date2=dd/MM/yy
+default.format.datetime=dd/MM/yyyy HH:mm:ss
+default.format.date2time=dd/MM/yy HH:mm:ss
+default.format.date2time2=dd/MM/yy HH:mm
+
+app.nome=ae-pje-server
+
+# Enums
+Status.INACTIVE=Inativo
+Status.ACTIVE=Ativo

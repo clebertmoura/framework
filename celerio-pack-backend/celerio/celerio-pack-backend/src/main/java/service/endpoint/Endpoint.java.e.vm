@@ -1,0 +1,149 @@
+$output.java($entity.endpoint)##
+
+$output.require("javax.inject.Inject")##
+$output.require("javax.ejb.Stateless")##
+$output.require("javax.ws.rs.Path")##
+$output.require("java.util.List")##
+$output.require("java.util.stream.Collectors")##
+$output.require("io.swagger.annotations.Api")##
+$output.require($entity.root.primaryKey)##
+
+$output.require($entity.model)##
+$output.require($entity.resource)##
+$output.require($entity.manager)##
+$output.require($entity.dao)##
+
+#if ($entity.isEntityAudited()) 
+$output.require("br.com.framework.service.impl.BaseEntityAuditedResourceEndpointImpl")##
+#else
+$output.require("br.com.framework.service.impl.BaseEntityResourceEndpointImpl")##
+#end
+
+
+/**
+ * A simple Endpoint for ${entity.model.type}.
+ */
+@Stateless
+@Path("/${entity.model.type}")
+@Api
+public class $output.currentClass extends#if ($entity.isEntityAudited()) BaseEntityAuditedResourceEndpointImpl#else BaseEntityResourceEndpointImpl#end<${entity.root.primaryKey.type}, ${entity.model.type}, ${entity.resource.type}, ${entity.dao.type}, ${entity.manager.type}> { 
+
+	private static final long serialVersionUID = 1L;
+
+#foreach ($relation in $entity.xToOne.list)
+#if(!$relation.to.type.equals($entity.model.type))
+#if($output.requireFirstTime($relation.toEntity.endpoint))
+    @Inject
+    private $relation.toEntity.endpoint.type $relation.toEntity.endpoint.var;
+#end
+#end
+#end
+
+## --- ManyToMany
+#foreach ($relation in $entity.manyToMany.list)
+#if(!$relation.to.type.equals($entity.model.type))
+#if($output.requireFirstTime($relation.toEntity.endpoint))
+    @Inject
+    private $relation.toEntity.endpoint.type $relation.toEntity.endpoint.var;
+#end
+#end
+#end
+
+## --- OneToMany
+#foreach ($relation in $entity.oneToMany.list)
+#if(!$relation.to.type.equals($entity.model.type))
+#if($output.requireFirstTime($relation.toEntity.endpoint))
+    @Inject
+    private $relation.toEntity.endpoint.type $relation.toEntity.endpoint.var;
+#end
+#end
+#end
+
+	public $output.currentClass () {
+		super(${entity.root.primaryKey.type}.class, ${entity.model.type}.class, ${entity.resource.type}.class);
+	}
+	
+	@Override
+	@Inject
+	protected void setManager(${entity.manager.type} manager) {
+		super.setManager(manager);
+	}
+	
+	@Override
+	@Inject
+	protected void setSearch(${entity.dao.type} search) {
+		super.setSearch(search);
+	}
+
+    @Override
+	public $entity.resource.type toResource($entity.model.type entity, $entity.resource.type resource, int depth) {
+		resource = super.toResource(entity, resource, depth);
+		if (resource != null) {
+#foreach ($attribute in $entity.nonCpkAttributes.list)
+#if(!$attribute.isInPk() && !$attribute.isVersion() && !$attribute.isAuditEntityAttribute() && !$attribute.isInFk() && !$attribute.getColumnConfig().getFieldName().equals("status") && !$attribute.isBinary())
+			resource.${attribute.setter}(entity.${attribute.getter}());
+#end
+#end
+        	if (depth-- > 0) {
+				final int fdepth = depth;
+#foreach ($relation in $entity.xToOne.list)
+#if($relation.to.type.equals($entity.model.type))
+            	resource.${relation.to.setter}(toResource(entity.${relation.to.getter}(), depth));
+#else
+            	resource.${relation.to.setter}(${relation.toEntity.endpoint.var}.toResource(entity.${relation.to.getter}(), depth));
+#end
+#end
+#foreach ($relation in $entity.manyToMany.list)
+#if($relation.to.type.equals($entity.model.type))
+				resource.$relation.to.vars = ${entity.model.var}.${relation.to.getters}().stream().
+					map($relation.to.var -> toResource($relation.to.var, fdepth)).collect(Collectors.toList());
+#else
+				resource.${relation.to.setters}(entity.${relation.to.getters}().stream().map(
+					$relation.to.var -> ${relation.toEntity.endpoint.var}.toResource($relation.to.var, fdepth)).collect(Collectors.toList())
+                );
+#end
+#end
+#foreach ($relation in $entity.oneToMany.list)
+#if($relation.to.type.equals($entity.model.type))
+				resource.$relation.to.vars = ${entity.model.var}.${relation.to.getters}().stream().
+					map($relation.to.var -> toResource($relation.to.var, fdepth)).collect(Collectors.toList());
+#else
+				resource.${relation.to.setters}(entity.${relation.to.getters}().stream().map(
+					$relation.to.var -> ${relation.toEntity.endpoint.var}.toResource($relation.to.var, fdepth)).collect(Collectors.toList())
+                );
+#end
+#end
+			}
+		}
+		return resource;
+	}
+
+
+    /**
+     * Converts the passed dto to a ${entity.model.type}.
+     * Convenient for query by example.
+     */
+    public $entity.model.type fromResource($entity.resource.type resource, $entity.model.type entity, int depth) {
+        entity = super.fromResource(resource, entity, depth);
+		if (entity != null) {
+#if ($entity.isRoot() && $entity.primaryKey.isComposite())
+			entity.${entity.primaryKey.setter}(resource.id);
+#end
+#foreach ($attribute in $entity.nonCpkAttributes.list)
+#if(!$attribute.isInPk() && !$attribute.isVersion() && !$attribute.isAuditEntityAttribute() && !$attribute.isInFk() && !$attribute.getColumnConfig().getFieldName().equals("status") && !$attribute.isBinary())
+			entity.${attribute.setter}(resource.${attribute.getter}());
+#end
+#end
+			if (depth-- > 0) {
+#foreach ($relation in $entity.xToOne.list)
+#if($relation.to.type.equals($entity.model.type))
+				entity.${relation.to.setter}(fromResource(resource.${relation.to.getter}(), entity.${relation.to.getter}(), depth));
+#else
+				entity.${relation.to.setter}(${relation.toEntity.endpoint.var}.fromResource(resource.${relation.to.getter}(), entity.${relation.to.getter}(), depth));
+#end
+#end
+			}
+		}
+		return entity;
+    }
+}

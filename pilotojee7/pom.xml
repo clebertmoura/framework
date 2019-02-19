@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>br.com.framework</groupId>
+		<artifactId>framework-parent</artifactId>
+		<version>3.0.3</version>
+	</parent>
+	
+	<artifactId>pilotojee7</artifactId>
+	<packaging>pom</packaging>
+	<name>pilotojee7</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<version.server.bom>7.1.0.GA</version.server.bom>
+		<version.jboss.spec.javaee.7.0>1.1.0.Final-redhat-3</version.jboss.spec.javaee.7.0>
+		
+		<version.wildfly.maven.plugin>1.2.0.Beta1</version.wildfly.maven.plugin>
+
+		<!-- other plugin versions -->
+		<version.compiler.plugin>3.1</version.compiler.plugin>
+		<version.surefire.plugin>2.18.1</version.surefire.plugin>
+		<version.war.plugin>2.6</version.war.plugin>
+
+		<!-- maven-compiler-plugin -->
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+
+		<!-- Frameworks -->
+		<version.framework>${project.parent.version}</version.framework>
+
+		<!-- Versoes de dependencias gerais -->
+		<version.solrj>4.10.4</version.solrj>
+		<version.commons-logging>1.2</version.commons-logging>
+		<version.commons-lang3>3.5</version.commons-lang3>
+		<version.commons-codec>1.10</version.commons-codec>
+		<version.commons-io>2.5.0.redhat-2</version.commons-io>
+		<version.commons-beanutils>1.9.2</version.commons-beanutils>
+		<version.bcprov-jdk16>1.46</version.bcprov-jdk16>
+		<version.bcmail-jdk16>1.46</version.bcmail-jdk16>
+		<version.httpclient>4.5.2.redhat-1</version.httpclient>
+		<version.httpcore>4.4</version.httpcore>
+		<version.jackson>2.5.4</version.jackson>
+		<version.guava>20.0.0.redhat-1</version.guava>
+		<version.slf4j>1.7.7</version.slf4j>
+		
+		<version.gson>2.7</version.gson>
+		<version.hibernate-envers>5.0.1.Final</version.hibernate-envers>
+		<version.caelum-stella>2.1.2</version.caelum-stella>
+		<version.keycloak>3.1.0.Final</version.keycloak>
+
+		<!-- Aplication Properties -->
+		<dataSource.jndiName>java:jboss/datasources/pilotojee7DataSource</dataSource.jndiName>
+		<jpaProvider.class>org.hibernate.jpa.HibernatePersistenceProvider</jpaProvider.class>
+		<jtaPlatform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</jtaPlatform>
+		<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
+
+		<!-- Celerio -->
+		<celerio-maven-plugin.version>4.0.23</celerio-maven-plugin.version>
+		
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${version.commons-io}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${version.commons-logging}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.commons-lang3}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${version.httpclient}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>${version.httpcore}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>${version.httpclient}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.yaml</groupId>
+    			<artifactId>snakeyaml</artifactId>
+    			<version>1.19</version>
+    			<scope>provided</scope>
+			</dependency>
+            <!-- JBoss distributes a complete set of Java EE APIs including a Bill
+                of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection)
+                of artifacts. We use this here so that we always get the correct versions
+                of artifacts. Here we use the jboss-eap-javaee7-with-tools stack (you can
+                read this as the JBoss stack of the Java EE APIs, with some extras tools
+                for your project, such as Arquillian for testing) -->
+            <dependency>
+                <groupId>org.jboss.bom</groupId>
+                <artifactId>jboss-eap-javaee7-with-tools</artifactId>
+                <version>${version.server.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Define the version of the JBoss Java EE APIs we want to use -->
+            <!-- JBoss distributes a complete set of Java EE APIs including
+               a Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or
+               a collection) of artifacts. We use this here so that we always get the correct
+               versions of artifacts. Here we use the jboss-javaee-7.0 stack (you can
+               read this as the JBoss stack of the Java EE APIs). You can actually
+               use this stack with any version of JBoss EAP that implements Java EE. -->
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-7.0</artifactId>
+                <version>${version.jboss.spec.javaee.7.0}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>oracle</id>
+			<properties>
+				<!-- Driver properties -->
+				<jdbc.groupId>com.oracle</jdbc.groupId>
+				<jdbc.artifactId>ojdbc6</jdbc.artifactId>
+				<jdbc.version>11.2.0.3</jdbc.version>
+				<jdbc.driver>oracle.jdbc.OracleDriver</jdbc.driver>
+				
+				<!-- Database properties -->
+				<jdbc.database.host>sddboracle01.tjpe.gov.br</jdbc.database.host>
+				<jdbc.database.port>1521</jdbc.database.port>
+				<jdbc.database.name>orades</jdbc.database.name>
+				
+				<jdbc.user>dbsmarco</jdbc.user>
+				<jdbc.password>dbsmarco</jdbc.password>
+				<jdbc.schema>DBSMARCO01</jdbc.schema>
+				<jdbc.catalog></jdbc.catalog>
+				
+				<jdbc.url>jdbc:oracle:thin:@${jdbc.database.host}:${jdbc.database.port}:${jdbc.database.name}</jdbc.url>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>postgres</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Driver properties -->
+				<jdbc.groupId>org.postgresql</jdbc.groupId>
+				<jdbc.artifactId>postgresql</jdbc.artifactId>
+				<jdbc.version>42.2.5</jdbc.version>
+				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
+				
+				<!-- Database properties -->
+				<jdbc.database.host>localhost</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				
+				<jdbc.user>postgres</jdbc.user>
+				<jdbc.password>postgres</jdbc.password>
+				<jdbc.schema></jdbc.schema>
+				<jdbc.catalog></jdbc.catalog>
+				
+				<jdbc.url>jdbc:postgresql://${jdbc.database.host}:${jdbc.database.port}/${jdbc.database.name}</jdbc.url>
+			</properties>
+		</profile>
+	
+		<profile>
+			<id>desenvolvimento</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<keycloak.realm>master</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4nVr2+PU47it5DBOXftYmw9g9kr5TWPYrZuUaTefSj2v24s6XMiFdaKdwEXrmjPdw9/RRdE3tDp/W/FFJ+fmE5iEtKa+4w1mdtj5Qhzsj2uB368sneMcM8+/MdokCnpRmthBNpWSmwhTzq0N65cSYTRXXFjiiH+nlQTvpXhVUFcDP43LoHlmkyl53nfkA9aGLwF3ZvcIGkwGXTbrmc1W4LeeoPQ1bMNmIMFATg6jM4FNr+5Ixf3wFR3ZIm6Uns8BKhzOoLl1UtBurx6vhDownewZNSj8PyVuXk3t/cGtAXySUApezCSRn74KshUxxCdZrmIgLAQ6C40sn7X12+RCaQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
+				
+				<jdbc.database.host>localhost</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				<jdbc.user>postgres</jdbc.user>
+				<jdbc.password>postgres</jdbc.password>
+				
+			</properties>
+		</profile>
+		<profile>
+			<id>teste</id>
+			<properties>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://teste.tjpe.gov.br/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://teste.tjpe.gov.br</keycloak.rootUrl>
+			</properties>
+		</profile>
+		<profile>
+			<id>homologacao</id>
+			<properties>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://homologacao.tjpe.gov.br</keycloak.rootUrl>
+			</properties>
+		</profile>
+		<profile>
+			<id>producao</id>
+			<properties>
+				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://www.tjpe.gov.br/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://www.tjpe.gov.br</keycloak.rootUrl>
+				
+				<jdbc.database.host>207.180.198.112</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				<jdbc.user>igrejario</jdbc.user>
+				<jdbc.password>Igreja1234</jdbc.password>
+			</properties>
+		</profile>
+
+		<!-- Profiles below are used when Celerio Maven Plugin is present in the build process -->
+		
+		<profile>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Drop and recreate the database -->
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<id>db</id>
+			<build>
+				<defaultGoal>initialize</defaultGoal>
+				<plugins>
+					<plugin>
+						<!-- http://mojo.codehaus.org/sql-maven-plugin/ -->
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<version>1.5</version>
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<id>Create and initialize the database</id>
+								<phase>initialize</phase>
+								<configuration>
+									<driver>${jdbc.driver}</driver>
+									<url>${jdbc.url}</url>
+									<username>${jdbc.user}</username>
+									<password>${jdbc.password}</password>
+									<autocommit>true</autocommit>
+									<encoding>UTF-8</encoding>
+									<printResultSet>true</printResultSet>
+									<onError>continue</onError>
+									<delimiter>;</delimiter>
+									<orderFile>ascending</orderFile>
+									<fileset>
+										<basedir>${project.basedir}</basedir>
+										<includes>
+											<include>config/sql/create.sql</include>
+										</includes>
+									</fileset>
+								</configuration>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>${jdbc.groupId}</groupId>
+								<artifactId>${jdbc.artifactId}</artifactId>
+								<version>${jdbc.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Extract the database metadata -->
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<id>metadata</id>
+			<build>
+				<defaultGoal>generate-sources</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>com.jaxio.celerio</groupId>
+						<artifactId>dbmetadata-maven-plugin</artifactId>
+						<version>${celerio-maven-plugin.version}</version>
+						<inherited>false</inherited>
+						<executions>
+							<execution>
+								<id>Extract the database schema.</id>
+								<goals>
+									<goal>extract-metadata</goal>
+								</goals>
+								<configuration>
+									<targetFilename>${project.basedir}/config/celerio-maven-plugin/metadata.xml</targetFilename>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>${jdbc.groupId}</groupId>
+								<artifactId>${jdbc.artifactId}</artifactId>
+								<version>${jdbc.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Delete code generated by Celerio -->
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<id>cleanGen</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.jaxio.celerio</groupId>
+						<artifactId>celerio-maven-plugin</artifactId>
+						<version>${celerio-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>Delete previously generated files (use .celerio/ folder)</id>
+								<goals>
+									<goal>cleanGenerated</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<modules>
+		<module>pilotojee7-backend</module>
+		<module>pilotojee7-frontend</module>
+	</modules>
+	
+	<distributionManagement>
+		<repository>
+			<id>nexus-tjpe</id>
+			<name>maven-releases</name>
+			<url>http://www.tjpe.jus.br/nexus/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-tjpe</id>
+			<name>maven-snapshots</name>
+			<url>http://www.tjpe.jus.br/nexus/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+</project>

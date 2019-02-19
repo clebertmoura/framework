@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://service.tjpe.jus.br/v01/DataService"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tns="http://service.tjpe.jus.br/v01/DataService" xmlns:tc="http://schema.tjpe.jus.br/v01/tiposComplexos"
+	xmlns:ts="http://schema.tjpe.jus.br/v01/tiposSimples"
+	attributeFormDefault="unqualified" elementFormDefault="unqualified">
+
+	<import namespace="http://schema.tjpe.jus.br/v01/tiposComplexos"
+		schemaLocation="TiposComplexos.xsd" />
+	<import namespace="http://schema.tjpe.jus.br/v01/tiposSimples"
+		schemaLocation="TiposSimples.xsd" />
+
+	<complexType name="DataServiceFault">
+		<sequence>
+			<element name="erros" type="tc:Erro" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<complexType name="getByIdRequest">
+		<sequence>
+			<element name="id" type="ts:tsID" />
+			<element name="loadDependencies" type="ts:tsLoadDependencies" />
+		</sequence>
+	</complexType>
+	<complexType name="retrieveAllRequest">
+		<sequence>
+			<element name="entity" nillable="true" type="anyType" />
+			<element name="loadDependencies" type="ts:tsLoadDependencies" />
+		</sequence>
+	</complexType>
+	<complexType name="retrieveAllSimplifiedRequest">
+		<sequence>
+			<element name="entity" nillable="true" type="anyType" />
+		</sequence>
+	</complexType>	
+	<complexType name="retrieveAllPaginatedRequest">
+		<sequence>
+			<element name="entity" nillable="true" type="anyType" />
+			<element name="firstRecordNumber" type="ts:tsFirstRecordNumber" />
+			<element name="maxRecordCount" type="ts:tsRecordCount" />
+			<element name="loadDependencies" type="ts:tsLoadDependencies" />
+		</sequence>
+	</complexType>
+
+	<element name="DataServiceFault" nillable="true"
+		type="tns:DataServiceFault" />
+	<element name="getByIdRequest" nillable="false" type="tns:getByIdRequest" />
+	<element name="retrieveAllRequest" nillable="true"
+		type="tns:retrieveAllRequest" />
+	<element name="retrieveAllSimplifiedRequest" nillable="true"
+		type="tns:retrieveAllSimplifiedRequest" />
+	<element name="retrieveAllPaginatedRequest" nillable="false"
+		type="tns:retrieveAllPaginatedRequest" />
+
+</schema>

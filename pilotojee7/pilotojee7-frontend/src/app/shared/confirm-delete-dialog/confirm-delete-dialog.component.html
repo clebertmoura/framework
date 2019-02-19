@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Confirmação</h2>
+<mat-dialog-content>
+  Você gostaria de remover este item?
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <button class="mat-raised-button mat-primary" (click)="dialogRef.close('delete')">
+          Sim
+        </button>
+      </div>
+      <div class="col">
+        <button class="mat-raised-button mat-accent" mat-dialog-close>
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>

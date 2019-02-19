@@ -1,0 +1,19 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-line/${entity.model.type.toLowerCase()}-line.component.ts")##
+import { Component, OnInit, Input } from '@angular/core';
+import { ${entity.model.type} } from '../${entity.model.type.toLowerCase()}';
+
+@Component({
+  selector: 'app-${entity.model.type.toLowerCase()}-line',
+  templateUrl: './${entity.model.type.toLowerCase()}-line.component.html',
+  styleUrls: ['./${entity.model.type.toLowerCase()}-line.component.scss']
+})
+export class ${entity.model.type}LineComponent implements OnInit {
+
+  @Input() public entity: ${entity.model.type};
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

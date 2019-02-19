@@ -1,0 +1,78 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Imports functions, variables, and mixins that are needed by other Bootstrap files
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/bootstrap-grid';
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/code";
+@import '~ngx-toastr/toastr-bs4-alert';
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.content-wrapper-form {
+    padding: 1em;
+}
+
+.mat-card.mat-card-detail {
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+
+    .mat-card-header {
+        color: rgba(0, 0, 0, 0.54);
+        background: linear-gradient(to bottom, #f6f7f9 0%, #ebedf0 100%);
+        height: 3em;
+        display: flex;
+        align-items: center;
+    }
+
+    .mat-card-title {
+        margin-bottom: 0px;
+        margin-left: 1em;
+    }
+
+    .mat-card-content {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        margin: 1.5em;
+    }
+
+    .mat-card-actions {
+        padding-top: 0em;
+        padding-bottom: 0em;
+        margin-left: 1em;
+    }
+
+    .mat-form-field {
+        width: 100%;
+    }
+    
+    .form-fields {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .form-fields>* {
+        width: 100%;
+    }
+    
+    .mat-column-actions {
+        justify-content: center;
+    }
+    
+}

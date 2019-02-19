@@ -1,0 +1,33 @@
+$output.file("src/app/entities/enumerators.service.ts")##
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { MessageService } from '../util/message.service';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+@Injectable()
+export class EnumeratorsService {
+
+    protected apiUrl: string = environment.baseUrl + '/v1/enums/';
+
+    constructor(protected http: HttpClient, protected messageService: MessageService) {
+    }
+
+    /**
+     * Retorna uma coleção de valores do enumerator informado.
+     * @param enumType
+     */
+    public getEnumValues(enumType: string): Observable<any[]> {
+        return this.http.get<any[]>(this.apiUrl + enumType);
+    }
+
+#foreach($enumType in $project.enumTypes)
+    /**
+     * Retorna a coleção de valores do enumerator: ${enumType.model.type}
+     */
+    public get${enumType.model.type}Values(): Observable<any[]> {
+        return this.getEnumValues('${enumType.model.type}');
+    }
+
+#end
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<celerioPack xmlns="http://www.jaxio.com/schema/celerio">
+    <packName value="celerio-pack-frontend"/>
+    <packDescription value="Pack de artefatos TJPE frontend em Angular"/>
+    <packDescription2 value="Generates pages and componentes."/>
+    <packCommand value="mvn -Pdb,metadata,gen test"/>
+    <packCommandHelp value=""/>
+    <projectLink value="https://github.com/jaxio/javaee-lab"/>
+    
+    <!-- 
+    <celerioTemplateContext>
+        <entityContextProperties>
+            <entityContextProperty property="manager"  subPackage="manager" suffix="Manager"/>
+            <entityContextProperty property="endpoint" subPackage="service.endpoint" suffix="Endpoint"/>
+            <entityContextProperty property="resource" subPackage="service.resource" suffix="Resource"/>
+        </entityContextProperties>
+    </celerioTemplateContext>
+   	 -->
+   	 
+</celerioPack>

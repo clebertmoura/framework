@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.jaxio.com/schema/celerio">
+  <jdbcConnectivity driver="oracle.jdbc.OracleDriver" url="jdbc:oracle:thin:@sddboracle01.tjpe.gov.br:1521:orades" user="dbsmarco" password="dbsmarco" schemaName="DBSMARCO01" oracleRetrieveRemarks="false" oracleRetrieveSynonyms="true" reverseIndexes="true" reverseOnlyUniqueIndexes="true" catalog="">
+    <tableNamePatterns/>
+    <tableTypes>
+      <tableType>TABLE</tableType>
+    </tableTypes>
+  </jdbcConnectivity>
+  <databaseInfo databaseMajorVersion="11" databaseMinorVersion="2" databaseProductName="Oracle" databaseProductVersion="Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Automatic Storage Management, OLAP, Data Mining
+and Real Application Testing options" driverMajorVersion="11" driverMinorVersion="2" driverName="Oracle JDBC driver" driverVersion="11.2.0.3.0" extraInfo=""/>
+  <tables>
+    <table name="AGENDA" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="AGE_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="AGE_DT_INICIO" decimalDigits="0" nullable="false" ordinalPosition="2" size="7" type="TIMESTAMP"/>
+        <column name="AGE_DT_FINAL" decimalDigits="0" nullable="false" ordinalPosition="3" size="7" type="TIMESTAMP"/>
+        <column name="AGE_DH_LIBERACAO" decimalDigits="6" nullable="false" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="AGE_NU_VAGADEP" decimalDigits="-127" nullable="false" ordinalPosition="5" size="0" type="DECIMAL"/>
+        <column name="AGE_NU_VAGAPV" decimalDigits="-127" nullable="false" ordinalPosition="6" size="0" type="DECIMAL"/>
+        <column name="QPRO_ID" decimalDigits="-127" nullable="false" ordinalPosition="7" size="0" type="DECIMAL"/>
+        <column name="AGE_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="8" size="0" type="DECIMAL"/>
+        <column name="AGE_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="9" size="11" type="TIMESTAMP"/>
+        <column name="AGE_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="10" size="20" type="VARCHAR"/>
+        <column name="AGE_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="11" size="11" type="TIMESTAMP"/>
+        <column name="AGE_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="12" size="20" type="VARCHAR"/>
+        <column name="AGE_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="13" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="AGE_ID" indexName="PK_AGE" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="QPRO_ID" fkName="FK_AGE_QPRO_001" pkColumnName="QPRO_ID" pkTableName="QUALIFICACAO_PROFISSIONAL" pkTableSchema="DBSMARCO01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>AGE_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="AGENDA_DETALHE" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="AGED_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="AGED_DH_INICIO" decimalDigits="6" nullable="false" ordinalPosition="2" size="11" type="TIMESTAMP"/>
+        <column name="AGED_DH_FINAL" decimalDigits="6" nullable="false" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="TPCO_ID" decimalDigits="-127" nullable="false" ordinalPosition="4" size="0" type="DECIMAL"/>
+        <column name="AGEP_ID" decimalDigits="-127" nullable="false" ordinalPosition="5" size="0" type="DECIMAL"/>
+        <column name="AGED_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="6" size="0" type="DECIMAL"/>
+        <column name="AGED_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="7" size="11" type="TIMESTAMP"/>
+        <column name="AGED_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="8" size="20" type="VARCHAR"/>
+        <column name="AGED_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="9" size="11" type="TIMESTAMP"/>
+        <column name="AGED_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="10" size="20" type="VARCHAR"/>
+        <column name="AGED_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="11" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="AGED_ID" indexName="PK_AGED" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="AGEP_ID" fkName="FK_AGED_AGEP_001" pkColumnName="AGEP_ID" pkTableName="AGENDA_PERIODO" pkTableSchema="DBSMARCO01"/>
+        <importedKey fkColumnName="TPCO_ID" fkName="FK_AGED_TPCO_001" pkColumnName="TPCO_ID" pkTableName="TIPO_CONSULTA" pkTableSchema="DBSMARCO01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>AGED_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="AGENDA_PERIODO" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="AGEP_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="AGEP_NU_VAGAGER" decimalDigits="-127" nullable="false" ordinalPosition="2" size="0" type="DECIMAL"/>
+        <column name="AGEP_NM_JUSTIFICATIVA" decimalDigits="0" nullable="true" ordinalPosition="3" size="1000" type="VARCHAR"/>
+        <column name="AGEP_DH_INICIO" decimalDigits="6" nullable="true" ordinalPosition="4" size="11" type="TIMESTAMP"/>
+        <column name="AGEP_DH_FINAL" decimalDigits="6" nullable="true" ordinalPosition="5" size="11" type="TIMESTAMP"/>
+        <column name="AGE_ID" decimalDigits="-127" nullable="false" ordinalPosition="6" size="0" type="DECIMAL"/>
+        <column name="BLOQ_ID" decimalDigits="-127" nullable="false" ordinalPosition="7" size="0" type="DECIMAL"/>
+        <column name="TPAG_ID" decimalDigits="-127" nullable="false" ordinalPosition="8" size="0" type="DECIMAL"/>
+        <column name="AGEP_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="9" size="0" type="DECIMAL"/>
+        <column name="AGEP_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="10" size="11" type="TIMESTAMP"/>
+        <column name="AGEP_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="11" size="20" type="VARCHAR"/>
+        <column name="AGEP_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="12" size="11" type="TIMESTAMP"/>
+        <column name="AGEP_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="13" size="20" type="VARCHAR"/>
+        <column name="AGEP_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="14" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="AGEP_ID" indexName="PK_AGEP" nonUnique="false"/>
+        <indexe columnName="AGE_ID" indexName="UK_AGEP" nonUnique="false"/>
+        <indexe columnName="AGEP_DH_INICIO" indexName="UK_AGEP" nonUnique="false"/>
+        <indexe columnName="AGEP_DH_FINAL" indexName="UK_AGEP" nonUnique="false"/>
+        <indexe columnName="TPAG_ID" indexName="UK_AGEP" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="AGE_ID" fkName="FK_AGEP_AGE_001" pkColumnName="AGE_ID" pkTableName="AGENDA" pkTableSchema="DBSMARCO01"/>
+        <importedKey fkColumnName="BLOQ_ID" fkName="FK_AGEP_BLOQ_001" pkColumnName="BLOQ_ID" pkTableName="BLOQUEIO" pkTableSchema="DBSMARCO01"/>
+        <importedKey fkColumnName="TPAG_ID" fkName="FK_AGEP_TPAG_001" pkColumnName="TPAG_ID" pkTableName="TIPO_AGENDA" pkTableSchema="DBSMARCO01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>AGEP_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="AREA" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="AREA_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="AREA_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="2" size="80" type="VARCHAR"/>
+        <column name="AREA_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="3" size="0" type="DECIMAL"/>
+        <column name="AREA_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="4" size="0" type="DECIMAL"/>
+        <column name="AREA_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="5" size="11" type="TIMESTAMP"/>
+        <column name="AREA_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="6" size="20" type="VARCHAR"/>
+        <column name="AREA_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="7" size="11" type="TIMESTAMP"/>
+        <column name="AREA_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="8" size="20" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="AREA_ID" indexName="PK_AREA" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>AREA_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="BLOQUEIO" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="BLOQ_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="BLOQ_NM_SIGLA" decimalDigits="0" nullable="false" ordinalPosition="2" size="3" type="VARCHAR"/>
+        <column name="BLOQ_NM_DESCRICAO" decimalDigits="0" nullable="false" ordinalPosition="3" size="30" type="VARCHAR"/>
+        <column name="BLOQ_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="4" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="BLOQ_ID" indexName="PK_BLOQ" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>BLOQ_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="CONSULTA" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="CONS_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="CONS_ID_PROTOCOLO" decimalDigits="-127" nullable="false" ordinalPosition="2" size="0" type="DECIMAL"/>
+        <column name="CONS_DH_CHEGADA" decimalDigits="6" nullable="true" ordinalPosition="3" size="11" type="TIMESTAMP"/>
+        <column name="CONS_FL_MEDICO" columnDef="N" decimalDigits="0" nullable="false" ordinalPosition="4" size="1" type="VARCHAR"/>
+        <column name="CONS_NM_JUSTIFICATIVA" decimalDigits="0" nullable="true" ordinalPosition="5" size="1000" type="VARCHAR"/>
+        <column name="PAC_ID" decimalDigits="-127" nullable="false" ordinalPosition="6" size="0" type="DECIMAL"/>
+        <column name="AGED_ID" decimalDigits="-127" nullable="false" ordinalPosition="7" size="0" type="DECIMAL"/>
+        <column name="STAT_ID" columnDef="1" decimalDigits="-127" nullable="false" ordinalPosition="8" size="0" type="DECIMAL"/>
+        <column name="CONS_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="9" size="0" type="DECIMAL"/>
+        <column name="CONS_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="10" size="11" type="TIMESTAMP"/>
+        <column name="CONS_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="11" size="20" type="VARCHAR"/>
+        <column name="CONS_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="12" size="11" type="TIMESTAMP"/>
+        <column name="CONS_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="13" size="20" type="VARCHAR"/>
+        <column name="CONS_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="14" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="CONS_ID" indexName="PK_CONS" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="AGED_ID" fkName="FK_CONS_AGED_001" pkColumnName="AGED_ID" pkTableName="AGENDA_DETALHE" pkTableSchema="DBSMARCO01"/>
+        <importedKey fkColumnName="PAC_ID" fkName="FK_CONS_PAC_001" pkColumnName="PAC_ID" pkTableName="PACIENTE" pkTableSchema="DBSMARCO01"/>
+        <importedKey fkColumnName="STAT_ID" fkName="FK_CONS_STAT_001" pkColumnName="STAT_ID" pkTableName="STATUS" pkTableSchema="DBSMARCO01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>CONS_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="ESPECIALIDADE" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="ESPEC_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="ESPEC_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="2" size="300" type="VARCHAR"/>
+        <column name="ESPEC_FL_INFANTIL" decimalDigits="0" nullable="false" ordinalPosition="3" size="1" type="VARCHAR"/>
+        <column name="ESPEC_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="4" size="0" type="DECIMAL"/>
+        <column name="AREA_ID" decimalDigits="-127" nullable="false" ordinalPosition="5" size="0" type="DECIMAL"/>
+        <column name="ESPEC_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="6" size="0" type="DECIMAL"/>
+        <column name="ESPEC_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="7" size="11" type="TIMESTAMP"/>
+        <column name="ESPEC_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="8" size="20" type="VARCHAR"/>
+        <column name="ESPEC_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="9" size="11" type="TIMESTAMP"/>
+        <column name="ESPEC_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="10" size="20" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ESPEC_ID" indexName="PK_ESPEC" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="AREA_ID" fkName="FK_ESPEC_AREA_001" pkColumnName="AREA_ID" pkTableName="AREA" pkTableSchema="DBSMARCO01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>ESPEC_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="PACIENTE" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="PAC_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="PAC_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="2" size="80" type="VARCHAR"/>
+        <column name="PAC_NU_PRONTUARIO" decimalDigits="0" nullable="false" ordinalPosition="3" size="7" type="DECIMAL"/>
+        <column name="PAC_NM_EMAIL_INST" decimalDigits="0" nullable="true" ordinalPosition="4" size="50" type="VARCHAR"/>
+        <column name="PAC_NM_EMAIL_PES" decimalDigits="0" nullable="true" ordinalPosition="5" size="50" type="VARCHAR"/>
+        <column name="PAC_DT_NASCIMENTO" decimalDigits="0" nullable="true" ordinalPosition="6" size="7" type="TIMESTAMP"/>
+        <column name="PAC_NM_DDD_FIXO" decimalDigits="0" nullable="true" ordinalPosition="7" size="3" type="VARCHAR"/>
+        <column name="PAC_NM_TEL_FIXO" decimalDigits="0" nullable="true" ordinalPosition="8" size="15" type="VARCHAR"/>
+        <column name="PAC_NM_DDD_MOVEL" decimalDigits="0" nullable="true" ordinalPosition="9" size="3" type="VARCHAR"/>
+        <column name="PAC_NM_TEL_MOVEL" decimalDigits="0" nullable="true" ordinalPosition="10" size="15" type="VARCHAR"/>
+        <column name="PAC_TITULAR_ID" decimalDigits="-127" nullable="false" ordinalPosition="11" size="0" type="DECIMAL"/>
+        <column name="PAC_NM_MATRICULA" columnDef="ND" decimalDigits="0" nullable="false" ordinalPosition="12" size="10" type="VARCHAR"/>
+        <column name="PAC_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="13" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="PAC_ID" indexName="PK_PAC" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="PAC_TITULAR_ID" fkName="FK_PAC_PAC_001" pkColumnName="PAC_ID" pkTableName="PACIENTE" pkTableSchema="DBSMARCO01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>PAC_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="PARAMETRO" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="PARAM_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="PARAM_NM_DESCRICAO" decimalDigits="0" nullable="true" ordinalPosition="2" size="200" type="VARCHAR"/>
+        <column name="PARAM_NM_VALOR" decimalDigits="0" nullable="true" ordinalPosition="3" size="500" type="VARCHAR"/>
+        <column name="PARAM_NM_CHAVE" decimalDigits="0" nullable="true" ordinalPosition="4" size="100" type="VARCHAR"/>
+        <column name="PARAM_DH_ALTERACAO" decimalDigits="6" nullable="true" ordinalPosition="5" size="11" type="TIMESTAMP"/>
+        <column name="PARAM_NM_TIPOPARAMETRO" decimalDigits="0" nullable="true" ordinalPosition="6" size="2" type="VARCHAR"/>
+        <column name="PARAM_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="7" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="PARAM_ID" indexName="PK_PARAM" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>PARAM_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="PROFISSIONAL_SAUDE" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="PROS_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="PROS_NM_NOME" decimalDigits="0" nullable="false" ordinalPosition="2" size="80" type="VARCHAR"/>
+        <column name="PROS_NM_NMABREVIADO" decimalDigits="0" nullable="false" ordinalPosition="3" size="50" type="VARCHAR"/>
+        <column name="PROS_NM_MATRICULA" decimalDigits="0" nullable="false" ordinalPosition="4" size="10" type="DECIMAL"/>
+        <column name="PROS_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="5" size="0" type="DECIMAL"/>
+        <column name="PROS_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="6" size="0" type="DECIMAL"/>
+        <column name="PROS_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="7" size="11" type="TIMESTAMP"/>
+        <column name="PROS_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="8" size="20" type="VARCHAR"/>
+        <column name="PROS_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="9" size="11" type="TIMESTAMP"/>
+        <column name="PROS_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="10" size="20" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="PROS_ID" indexName="PK_PROS" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>PROS_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="QUALIFICACAO_PROFISSIONAL" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="QPRO_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="PROS_ID" decimalDigits="-127" nullable="false" ordinalPosition="2" size="0" type="DECIMAL"/>
+        <column name="ESPEC_ID" decimalDigits="-127" nullable="false" ordinalPosition="3" size="0" type="DECIMAL"/>
+        <column name="QPRO_FL_ATIVO" decimalDigits="-127" nullable="false" ordinalPosition="4" size="0" type="DECIMAL"/>
+        <column name="QPRO_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="5" size="0" type="DECIMAL"/>
+        <column name="QPRO_DH_CRIACAO" decimalDigits="6" nullable="false" ordinalPosition="6" size="11" type="TIMESTAMP"/>
+        <column name="QPRO_NM_LOGIN" decimalDigits="0" nullable="false" ordinalPosition="7" size="20" type="VARCHAR"/>
+        <column name="QPRO_DH_ALTER" decimalDigits="6" nullable="false" ordinalPosition="8" size="11" type="TIMESTAMP"/>
+        <column name="QPRO_NM_ALTER" decimalDigits="0" nullable="false" ordinalPosition="9" size="20" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="QPRO_ID" indexName="PK_QPRO" nonUnique="false"/>
+        <indexe columnName="PROS_ID" indexName="UK_QPRO" nonUnique="false"/>
+        <indexe columnName="ESPEC_ID" indexName="UK_QPRO" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="ESPEC_ID" fkName="FK_QPRO_ESPEC_001" pkColumnName="ESPEC_ID" pkTableName="ESPECIALIDADE" pkTableSchema="DBSMARCO01"/>
+        <importedKey fkColumnName="PROS_ID" fkName="FK_QPRO_PROS_001" pkColumnName="PROS_ID" pkTableName="PROFISSIONAL_SAUDE" pkTableSchema="DBSMARCO01"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>QPRO_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="STATUS" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="STAT_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="STAT_NM_SIGLA" decimalDigits="0" nullable="false" ordinalPosition="2" size="2" type="VARCHAR"/>
+        <column name="STAT_NM_DESCRICAO" decimalDigits="0" nullable="false" ordinalPosition="3" size="100" type="VARCHAR"/>
+        <column name="STAT_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="4" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="STAT_ID" indexName="PK_STAT" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>STAT_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="TIPO_AGENDA" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="TPAG_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="TPAG_NM_DESCRICAO" decimalDigits="0" nullable="false" ordinalPosition="2" size="20" type="VARCHAR"/>
+        <column name="TPAG_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="3" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="TPAG_ID" indexName="PK_TPAG" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>TPAG_ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="TIPO_CONSULTA" type="TABLE" schemaName="DBSMARCO01">
+      <columns>
+        <column name="TPCO_ID" decimalDigits="-127" nullable="false" ordinalPosition="1" size="0" type="DECIMAL"/>
+        <column name="TPCO_NM_DESCRICAO" decimalDigits="0" nullable="false" ordinalPosition="2" size="20" type="VARCHAR"/>
+        <column name="TPCO_NU_VERSAO" decimalDigits="-127" nullable="false" ordinalPosition="3" size="0" type="DECIMAL"/>
+      </columns>
+      <indexes>
+        <indexe columnName="TPCO_ID" indexName="PK_TPCO" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>TPCO_ID</primaryKey>
+      </primaryKeys>
+    </table>
+  </tables>
+</metadata>

@@ -1,0 +1,16 @@
+$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}.datasource.ts")##
+import { ${entity.model.type} } from './${entity.model.type.toLowerCase()}';
+import { ${entity.service.type} } from './${entity.model.type.toLowerCase()}.service';
+import { EntityDataSource } from '../../framework/service/entity.datasource';
+import { MatPaginator, MatSort } from '@angular/material';
+
+/**
+ * Implementação da classe de serviço da entidade ${entity.model.type}.
+ */
+export class ${entity.model.type}DataSource extends EntityDataSource<${entity.model.type}, ${entity.service.type}> {
+
+  constructor(public paginator: MatPaginator, public sort: MatSort, public entityService: ${entity.service.type}) {
+    super(paginator, sort, entityService);
+  }
+
+}

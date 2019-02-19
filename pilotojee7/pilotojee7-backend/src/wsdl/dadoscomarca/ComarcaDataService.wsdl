@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://service.tjpe.jus.br/v01/ComarcaDataService"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://service.tjpe.jus.br/v01/ComarcaDataService"
+	xmlns:ds="http://service.tjpe.jus.br/v01/DataService" 
+	name="ComarcaDataService">
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://service.tjpe.jus.br/v01/ComarcaDataService">
+			<xsd:import schemaLocation="./TiposSimples.xsd"
+				namespace="http://schema.tjpe.jus.br/v01/tiposSimples" />
+			<xsd:import schemaLocation="./TiposComplexos.xsd"
+				namespace="http://schema.tjpe.jus.br/v01/tiposComplexos" />
+			<xsd:import schemaLocation="./TiposComarca.xsd"
+				namespace="http://schema.tjpe.jus.br/v01/tiposComarca" />				
+			<xsd:import namespace="http://service.tjpe.jus.br/v01/DataService"
+				schemaLocation="./TiposDataServices.xsd" />
+			<xsd:include schemaLocation="./ComarcaDataService.xsd" />
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="insert">
+		<wsdl:part element="tns:insert" name="insert"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="insertResponse">
+		<wsdl:part element="tns:insertResponse" name="insertResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="update">
+		<wsdl:part element="tns:update" name="update"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateResponse">
+		<wsdl:part element="tns:updateResponse" name="updateResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="delete">
+		<wsdl:part element="tns:delete" name="delete"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteResponse"></wsdl:message>
+	<wsdl:message name="getByID">
+		<wsdl:part element="ds:getByIdRequest" name="getByID"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getByIDResponse">
+		<wsdl:part element="tns:getByIdResponse" name="getByIDResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="retrieveAll">
+		<wsdl:part element="ds:retrieveAllRequest" name="retrieveAll"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="retrieveAllResponse">
+		<wsdl:part element="tns:retrieveAllResponse" name="retrieveAllResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="retrieveAllSimplified">
+		<wsdl:part element="ds:retrieveAllSimplifiedRequest" name="retrieveAllSimplified"></wsdl:part>
+	</wsdl:message> 
+	<wsdl:message name="retrieveAllSimplifiedResponse">
+		<wsdl:part element="tns:retrieveAllSimplifiedResponse" name="retrieveAllSimplifiedResponse"></wsdl:part>
+	</wsdl:message> 
+	<wsdl:message name="retrieveAllPaginated">
+		<wsdl:part element="ds:retrieveAllPaginatedRequest" name="retrieveAllPaginated"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="retrieveAllPaginatedResponse">
+		<wsdl:part element="tns:retrieveAllPaginatedResponse" name="retrieveAllPaginatedResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="listarComarcasJurisdicoes">
+		<wsdl:part element="tns:listarComarcasJurisdicoesRequest" name="listarComarcasJurisdicoes"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="listarComarcasJurisdicoesResponse">
+		<wsdl:part element="tns:listarComarcasJurisdicoesResponse" name="listarComarcasJurisdicoesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="consultarForunsPorComarca">
+		<wsdl:part element="tns:consultarForunsPorComarcaRequest" name="consultarForunsPorComarca"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="consultarForunsPorComarcaResponse">
+		<wsdl:part element="tns:consultarForunsPorComarcaResponse" name="consultarForunsPorComarcaResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="DataServiceException">
+		<wsdl:part element="ds:DataServiceFault" name="DataServiceException"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:portType name="ComarcaDataService">
+		<wsdl:operation name="insert">
+			<wsdl:input message="tns:insert" name="insert"></wsdl:input>
+			<wsdl:output message="tns:insertResponse" name="insertResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<wsdl:input message="tns:update" name="update"></wsdl:input>
+			<wsdl:output message="tns:updateResponse" name="updateResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="tns:delete" name="delete"></wsdl:input>
+			<wsdl:output message="tns:deleteResponse" name="deleteResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getByID">
+			<wsdl:input message="tns:getByID" name="getByID"></wsdl:input>
+			<wsdl:output message="tns:getByIDResponse" name="getByIDResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveAll">
+			<wsdl:input message="tns:retrieveAll" name="retrieveAll"></wsdl:input>
+			<wsdl:output message="tns:retrieveAllResponse" name="retrieveAllResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveAllSimplified">
+			<wsdl:input message="tns:retrieveAllSimplified" name="retrieveAllSimplified"></wsdl:input>
+			<wsdl:output message="tns:retrieveAllSimplifiedResponse" name="retrieveAllSimplifiedResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation> 
+		<wsdl:operation name="retrieveAllPaginated">
+			<wsdl:input message="tns:retrieveAllPaginated" name="retrieveAllPaginated"></wsdl:input>
+			<wsdl:output message="tns:retrieveAllPaginatedResponse"
+				name="retrieveAllPaginatedResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>		
+		<wsdl:operation name="listarComarcasJurisdicoes">
+			<wsdl:input message="tns:listarComarcasJurisdicoes" name="listarComarcasJurisdicoes"></wsdl:input>
+			<wsdl:output message="tns:listarComarcasJurisdicoesResponse" name="listarComarcasJurisdicoesResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>		
+		<wsdl:operation name="consultarForunsPorComarca">
+			<wsdl:input message="tns:consultarForunsPorComarca" name="consultarForunsPorComarca"></wsdl:input>
+			<wsdl:output message="tns:consultarForunsPorComarcaResponse" name="consultarForunsPorComarcaResponse"></wsdl:output>
+			<wsdl:fault message="tns:DataServiceException" name="DataServiceException"></wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:portType>
+	
+	<wsdl:binding name="ComarcaDataServiceSoapBinding" type="tns:ComarcaDataService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="insert">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="insert">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="insertResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="update">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="updateResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="delete">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="deleteResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getByID">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="getByID">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="getByIDResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveAll">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="retrieveAll">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="retrieveAllResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveAllSimplified">
+			<soap:operation soapAction="" style="document" /> 
+			<wsdl:input name="retrieveAllSimplified">
+				<soap:body use="literal" />
+			</wsdl:input> 
+			<wsdl:output name="retrieveAllSimplifiedResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>		
+		<wsdl:operation name="retrieveAllPaginated">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="retrieveAllPaginated">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="retrieveAllPaginatedResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="listarComarcasJurisdicoes">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="listarComarcasJurisdicoes">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="listarComarcasJurisdicoesResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="consultarForunsPorComarca">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="consultarForunsPorComarca">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="consultarForunsPorComarcaResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DataServiceException">
+				<soap:fault name="DataServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:binding>
+	<wsdl:service name="ComarcaDataService">
+		<wsdl:port binding="tns:ComarcaDataServiceSoapBinding" name="ComarcaDataServicePort">
+			<soap:address
+				location="http://127.0.0.1:8080/comarca-ds-1.3.0/ComarcaDataServiceImpl" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>
