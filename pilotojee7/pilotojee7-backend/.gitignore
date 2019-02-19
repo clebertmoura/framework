@@ -112,5 +112,6 @@ buildNumber.properties
 **/src/main/resources/Mensagens_pt_BR.properties
 **/src/main/resources/ValidationMessages.properties
 **/src/main/resources/ValidationMessages_pt_BR.properties
+**/src/main/resources/Enums_pt_BR.properties
 
 # End of https://www.gitignore.io/api/jboss,maven,eclipse,java-web

@@ -10,7 +10,7 @@
         
         <!-- default global sequence mapping (optional). initialValue can be set and defaults to 1 when is not set. -->
         <sequences>
-            <sequence tableNamePattern="*" sequenceName="*" allocationSize="1" schema="DBSMARCO01" />
+            <sequence tableNamePattern="*" sequenceName="*" allocationSize="1" />
         </sequences>
 
         <!-- global number mapping (optional) -->
