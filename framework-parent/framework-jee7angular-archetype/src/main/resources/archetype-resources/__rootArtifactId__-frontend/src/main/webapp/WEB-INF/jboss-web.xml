@@ -1,0 +1,6 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<jboss-web>
+	<context-root>${symbol_dollar}{project.artifactId}</context-root>
+</jboss-web>

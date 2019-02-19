@@ -1,0 +1,44 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		Funcionario <small>Cadastro</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Cadastros</a></li>
+		<li class="active">Funcionario</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 ng-show="vmFuncionario.editMode && !vmFuncionario.entity.id">Criar Funcionario</h3>
+			<h3 ng-show="vmFuncionario.editMode && vmFuncionario.entity.id">Editar Funcionario</h3>
+			<h3 ng-show="vmFuncionario.viewMode">Visualizar Funcionario</h3>
+		</div>
+		<div class="box-body">
+			<form id="FuncionarioForm" name="FuncionarioForm" class="form-horizontal" role="form">
+			    
+				<ng-include src="'app/funcionario/detail-inc.html'"></ng-include>
+				
+	    		<div class="row">
+					<div class="col-md-12">
+					    <div class="form-group">
+					        <div class="col-sm-12">
+					            <button id="edit" name="edit" class="btn btn-warning" ng-show="vmFuncionario.viewMode" ng-click="vmFuncionario.editInView()"><span class="glyphicon glyphicon-ok-sign"></span> Editar</button>
+					            <button id="save" name="save" class="btn btn-primary" ng-disabled="vmFuncionario.viewMode || vmFuncionario.isClean() || FuncionarioForm.$invalid" ng-click="vmFuncionario.save()"><span class="glyphicon glyphicon-ok-sign"></span> Salvar</button>
+					            <button id="cancel" name="cancel" class="btn btn-default" ng-click="vmFuncionario.cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancelar</button>
+					        </div>
+					    </div>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+	</div>
+
+</section>
+<!-- /.content -->

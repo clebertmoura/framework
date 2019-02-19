@@ -1,0 +1,68 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': FuncionarioForm.tipoFuncionario.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="tipoFuncionario">TipoFuncionario</label>					        
+				            <ui-select id="tipoFuncionario" name="tipoFuncionario" ng-model="vmFuncionario.entity.tipoFuncionario" theme="bootstrap" 
+				            	ng-disabled="vmFuncionario.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.descricao}}</ui-select-match>
+							    <ui-select-choices repeat="tipoFuncionario in vmFuncionario.tipoFuncionarioList track by tipoFuncionario.id"
+							    	refresh="vmFuncionario.listarTipoFuncionario($select.search)" refresh-delay="300">
+							        <div ng-bind-html="tipoFuncionario.descricao | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': FuncionarioForm.filial.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="filial">Filial</label>					        
+				            <ui-select id="filial" name="filial" ng-model="vmFuncionario.entity.filial" theme="bootstrap" 
+				            	ng-disabled="vmFuncionario.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
+							    <ui-select-choices repeat="filial in vmFuncionario.filialList track by filial.id"
+							    	refresh="vmFuncionario.listarFilial($select.search)" refresh-delay="300">
+							        <div ng-bind-html="filial.id | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': FuncionarioForm.pessoaFisica.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="pessoaFisica">PessoaFisica</label>					        
+				            <ui-select id="pessoaFisica" name="pessoaFisica" ng-model="vmFuncionario.entity.pessoaFisica" theme="bootstrap" 
+				            	ng-disabled="vmFuncionario.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
+							    <ui-select-choices repeat="pessoaFisica in vmFuncionario.pessoaFisicaList track by pessoaFisica.id"
+							    	refresh="vmFuncionario.listarPessoaFisica($select.search)" refresh-delay="300">
+							        <div ng-bind-html="pessoaFisica.id | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': FuncionarioForm.matricula.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="matricula">Matricula</label>					        
+				            <input id="matricula" name="matricula" type="text" class="form-control" ng-model="vmFuncionario.entity.matricula"
+							ng-maxlength="30" ng-disabled="vmFuncionario.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="FuncionarioForm.matricula.$error.maxlength">O tamanho máximo é 30</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

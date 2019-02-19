@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="3.1"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+	<display-name>${artifactId}</display-name>
+	
+	<!-- RESTEasy WADL -->
+	<servlet>
+        <servlet-name>RESTEasy WADL</servlet-name>
+        <servlet-class>org.jboss.resteasy.wadl.ResteasyWadlServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RESTEasy WADL</servlet-name>
+        <url-pattern>/application.wadl</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Java Melody -->
+    <filter>
+		<filter-name>javamelody</filter-name>
+		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+		<async-supported>true</async-supported>
+		<init-param>
+	        <param-name>datasources</param-name>
+	        <param-value>${dataSource.jndiName}</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>sampling-seconds</param-name>
+	        <param-value>10</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>sampling-included-packages</param-name>
+	        <param-value>br.com.framework,br.com.framework.pilotojee7</param-value>
+	    </init-param>
+	    <!-- <init-param>
+	        <param-name>authorized-users</param-name>
+	        <param-value>monitoring:monitoring</param-value>
+	    </init-param> -->
+	</filter>
+	<filter-mapping>
+		<filter-name>javamelody</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+	    <filter-name>javamelody</filter-name>
+	    <url-pattern>/monitoring</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>net.bull.javamelody.SessionListener</listener-class>
+	</listener>
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>API REST Protegida</web-resource-name>
+			<url-pattern>/api/*</url-pattern>
+		</web-resource-collection>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>API REST Protegida</web-resource-name>
+			<url-pattern>/monitoring</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>monitoring</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Acesso Público</web-resource-name>
+			<url-pattern>/api/monitor/*</url-pattern>
+			<url-pattern>/application.wadl</url-pattern>
+		</web-resource-collection>
+	</security-constraint>
+	
+	<login-config>
+		<auth-method>KEYCLOAK</auth-method>
+		<realm-name>${keycloak.realm}</realm-name>
+	</login-config>
+
+	<!-- specify all the roles defined for this web app -->
+	<security-role>
+		<role-name>admin</role-name>
+	</security-role>
+	<security-role>
+		<role-name>user</role-name>
+	</security-role>
+	<security-role>
+		<role-name>monitoring</role-name>
+	</security-role>
+	
+</web-app>

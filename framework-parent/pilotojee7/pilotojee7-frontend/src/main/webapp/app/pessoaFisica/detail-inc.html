@@ -1,0 +1,166 @@
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.endereco.$invalid}">
+			    		<div class="col-sm-12">
+				    		<label for="endereco">Endereco</label>					        
+				            <ui-select id="endereco" name="endereco" ng-model="vmPessoaFisica.entity.endereco" theme="bootstrap" 
+				            	ng-disabled="vmPessoaFisica.viewMode" >
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.id}}</ui-select-match>
+							    <ui-select-choices repeat="endereco in vmPessoaFisica.enderecoList track by endereco.id"
+							    	refresh="vmPessoaFisica.listarEndereco($select.search)" refresh-delay="300">
+							        <div ng-bind-html="endereco.id | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+		    
+		    	
+		    <div class="row">
+				<div class="col-md-12">
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Lista de PessoaContato</h3>
+							<div class="box-tools pull-right">
+								<button id="openModalPessoaContato" name="openModalPessoaContato" class="btn btn-primary" ng-show="!vmPessoaFisica.viewMode" ng-click="vmPessoaFisica.openModalPessoaContato()"
+									title="Adicionar PessoaContato"><i class="fa fa-plus"></i><span class="hidden-xs"> Adicionar PessoaContato</span>
+								</button>
+							</div>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<div class="table-responsive">
+								<table
+									class="table table-responsive table-bordered table-striped clearfix">
+									<thead>
+										<tr>
+											<th>Id</th>								
+											<th></th>
+										</tr>
+									</thead>
+									<tbody id="search-results-body">
+										<tr ng-repeat="item in vmPessoaFisica.entity.contatos track by $index">
+											<td>{{item.id}}</td>
+											<td align="center">
+												<button type="button" class="btn btn-danger" ng-click="vmPessoaFisica.removePessoaContato($index)"><i class="fa fa-trash"></i><span class="hidden-xs"> Remover</span></button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.box-body -->
+					</div>
+				</div>
+		    </div>
+		    	
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.nomePessoa.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nomePessoa">NomePessoa</label>					        
+				            <input id="nomePessoa" name="nomePessoa" type="text" class="form-control" ng-model="vmPessoaFisica.entity.nomePessoa"
+							ng-required="true" ng-maxlength="255" ng-disabled="vmPessoaFisica.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PessoaFisicaForm.nomePessoa.$error.required">obrigatório</span>
+        					<span class="help-block error" ng-show="PessoaFisicaForm.nomePessoa.$error.minlength">O tamanho mínimo é 1</span>
+			            	<span class="help-block error" ng-show="PessoaFisicaForm.nomePessoa.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.cpf.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="cpf">Cpf</label>					        
+				            <input id="cpf" name="cpf" type="text" class="form-control" ng-model="vmPessoaFisica.entity.cpf"
+							ng-maxlength="11" ng-disabled="vmPessoaFisica.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PessoaFisicaForm.cpf.$error.maxlength">O tamanho máximo é 11</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+		    <div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.dataNascimento.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="dataNascimento">DataNascimento</label>					        
+				            <p class="input-group">
+								<input id="dataNascimento" name="dataNascimento" type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm:ss" ng-model="vmPessoaFisica.entity.dataNascimento" ng-disabled="vmPessoaFisica.viewMode"
+									is-open="vmPessoaFisica.dataNascimentoPopupOpened" button-bar="{show: true, now: {show: true, text: 'Agora'}, today: {show: true, text: 'Hoje'}, clear: {show: true, text: 'Limpar'}, date: {show: true, text: 'Data'}, time: {show: true, text: 'Hora'}, close: {show: true, text: 'Fechar'}}"
+									/>
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="vmPessoaFisica.dataNascimentoPopupOpened = true" ng-disabled="vmPessoaFisica.viewMode"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>
+					        </p>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.rg.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="rg">Rg</label>					        
+				            <input id="rg" name="rg" type="text" class="form-control" ng-model="vmPessoaFisica.entity.rg"
+							ng-maxlength="30" ng-disabled="vmPessoaFisica.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PessoaFisicaForm.rg.$error.maxlength">O tamanho máximo é 30</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.nomeMae.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nomeMae">NomeMae</label>					        
+				            <input id="nomeMae" name="nomeMae" type="text" class="form-control" ng-model="vmPessoaFisica.entity.nomeMae"
+							ng-maxlength="255" ng-disabled="vmPessoaFisica.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PessoaFisicaForm.nomeMae.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.nomePai.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="nomePai">NomePai</label>					        
+				            <input id="nomePai" name="nomePai" type="text" class="form-control" ng-model="vmPessoaFisica.entity.nomePai"
+							ng-maxlength="255" ng-disabled="vmPessoaFisica.viewMode">
+				            </input>
+			            	<span class="help-block error" ng-show="PessoaFisicaForm.nomePai.$error.maxlength">O tamanho máximo é 255</span>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    
+			<div class="row">
+				<div class="col-md-12">
+		    		<div class="form-group" ng-class="{'has-error': PessoaFisicaForm.genero.$invalid}">
+			    		<div class="col-sm-12">
+				        	<label for="genero">Genero</label>					        
+				            <ui-select id="genero" name="genero" ng-model="vmPessoaFisica.entity.genero" theme="bootstrap" 
+				            	ng-disabled="vmPessoaFisica.viewMode">
+								<ui-select-match allow-clear="true" placeholder="Selecione...">{{$select.selected.label}}</ui-select-match>
+							    <ui-select-choices repeat="item.key as item in vmPessoaFisica.generoList | filter: { label: $select.search }">
+							        <div ng-bind-html="item.label | highlight: $select.search"></div>
+							    </ui-select-choices>
+							</ui-select>
+				        </div>
+					</div>
+				</div>
+		    </div>
+		    

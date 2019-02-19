@@ -1,1 +1,0 @@
-$output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-autocomplete/${entity.model.type.toLowerCase()}-autocomplete.component.scss")##

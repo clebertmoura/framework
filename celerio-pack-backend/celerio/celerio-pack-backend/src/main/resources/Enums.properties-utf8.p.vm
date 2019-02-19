@@ -1,8 +1,0 @@
-$output.file("src/main/resources/Enums_pt_BR.properties-utf8")##
-#foreach($enumType in $project.enumTypes)
-## ${enumType.model.type}
-#foreach($enumValue in $enumType.config.enumValues)
-${enumType.model.type}.${enumValue.name}=${enumValue.label}
-#end
-
-#end
