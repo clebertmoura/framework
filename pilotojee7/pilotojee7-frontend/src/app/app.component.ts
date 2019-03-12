@@ -1,23 +1,21 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { MENU_ITEMS } from './app-menu';
+import { NbSidebarService } from '@nebular/theme';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
   title = 'pilotojee7-frontend';
+  menu = MENU_ITEMS;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+  constructor(private sidebarService: NbSidebarService) {
+  }
 
-    constructor(private breakpointObserver: BreakpointObserver) {
-    }
-
+  toggle() {
+    this.sidebarService.toggle(true);
+    return false;
+  }
 }

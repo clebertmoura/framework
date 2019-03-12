@@ -1,35 +1,21 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
-    <mat-toolbar color="primary">Menu</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item href="#" routerLink="/dashboard">Dashboard</a>
-      <a mat-list-item href="#" routerLink="/agenda">Agenda</a>
-      <a mat-list-item href="#" routerLink="/agendadetalhe">AgendaDetalhe</a>
-      <a mat-list-item href="#" routerLink="/agendaperiodo">AgendaPeriodo</a>
-      <a mat-list-item href="#" routerLink="/area">Area</a>
-      <a mat-list-item href="#" routerLink="/bloqueio">Bloqueio</a>
-      <a mat-list-item href="#" routerLink="/consulta">Consulta</a>
-      <a mat-list-item href="#" routerLink="/especialidade">Especialidade</a>
-      <a mat-list-item href="#" routerLink="/paciente">Paciente</a>
-      <a mat-list-item href="#" routerLink="/parametro">Parametro</a>
-      <a mat-list-item href="#" routerLink="/profissionalsaude">ProfissionalSaude</a>
-      <a mat-list-item href="#" routerLink="/qualificacaoprofissional">QualificacaoProfissional</a>
-      <a mat-list-item href="#" routerLink="/status">Status</a>
-      <a mat-list-item href="#" routerLink="/tipoagenda">TipoAgenda</a>
-      <a mat-list-item href="#" routerLink="/tipoconsulta">TipoConsulta</a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>Piloto APP</span>
-    </mat-toolbar>
-    <!-- Add Content Here -->
-    <app-breadcrumb></app-breadcrumb>
+<nb-layout>
+  <nb-layout-header fixed>
+    <a href="#" (click)="toggle()"><i class="nb-menu"></i></a>
+  </nb-layout-header>
+
+  <nb-layout-header subheader>
+    <nb-actions>
+      <nb-action icon="nb-home"></nb-action>
+      <nb-action icon="nb-search"></nb-action>
+      <nb-action icon="nb-edit"></nb-action>
+    </nb-actions>
+  </nb-layout-header>
+
+  <nb-sidebar>
+    <nb-menu [items]="menu"></nb-menu>
+  </nb-sidebar>
+
+  <nb-layout-column>
     <router-outlet></router-outlet>
-  </mat-sidenav-content>
-  
-</mat-sidenav-container>
+  </nb-layout-column>
+</nb-layout>

@@ -9,6 +9,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 
+import { NbThemeModule, NbMenuModule, NbLayoutModule, NbActionsModule, NbSidebarModule, NbSidebarService } from '@nebular/theme';
+
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
