@@ -1,8 +1,9 @@
 {
-  "realm": "pilotojee7-realm",
-  "bearer-only": true,
-  "auth-server-url": "https://localhost:8443/auth",
+  "realm": "tjpeconnect",
+  "auth-server-url": "https://homologacao.tjpe.gov.br/auth",
   "ssl-required": "external",
-  "resource": "pilotojee7-backend",
-  "enable-cors": true
+  "bearer-only": true,
+  "use-resource-role-mappings" : true,
+  "enable-cors": true,
+  "resource": "pilotojee7-backend"
 }

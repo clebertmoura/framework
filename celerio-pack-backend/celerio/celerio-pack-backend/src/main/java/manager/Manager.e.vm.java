@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 
 import br.com.framework.model.exception.ModelException;
-import br.com.framework.model.log.impl.ErrorBusiness;
+import br.com.framework.model.error.impl.ErrorBusiness;
 import br.com.framework.search.impl.Operator;
 
 

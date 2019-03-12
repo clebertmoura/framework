@@ -146,6 +146,9 @@
 	<profiles>
 		<profile>
 			<id>oracle</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<!-- Driver properties -->
 				<jdbc.groupId>com.oracle</jdbc.groupId>
@@ -169,9 +172,6 @@
 		
 		<profile>
 			<id>postgres</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<!-- Driver properties -->
 				<jdbc.groupId>org.postgresql</jdbc.groupId>
@@ -182,11 +182,11 @@
 				<!-- Database properties -->
 				<jdbc.database.host>localhost</jdbc.database.host>
 				<jdbc.database.port>5432</jdbc.database.port>
-				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				<jdbc.database.name>dbpiloto</jdbc.database.name>
 				
 				<jdbc.user>postgres</jdbc.user>
 				<jdbc.password>postgres</jdbc.password>
-				<jdbc.schema></jdbc.schema>
+				<jdbc.schema>dbpiloto01</jdbc.schema>
 				<jdbc.catalog></jdbc.catalog>
 				
 				<jdbc.url>jdbc:postgresql://${jdbc.database.host}:${jdbc.database.port}/${jdbc.database.name}</jdbc.url>
@@ -199,23 +199,16 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<keycloak.realm>master</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4nVr2+PU47it5DBOXftYmw9g9kr5TWPYrZuUaTefSj2v24s6XMiFdaKdwEXrmjPdw9/RRdE3tDp/W/FFJ+fmE5iEtKa+4w1mdtj5Qhzsj2uB368sneMcM8+/MdokCnpRmthBNpWSmwhTzq0N65cSYTRXXFjiiH+nlQTvpXhVUFcDP43LoHlmkyl53nfkA9aGLwF3ZvcIGkwGXTbrmc1W4LeeoPQ1bMNmIMFATg6jM4FNr+5Ixf3wFR3ZIm6Uns8BKhzOoLl1UtBurx6vhDownewZNSj8PyVuXk3t/cGtAXySUApezCSRn74KshUxxCdZrmIgLAQ6C40sn7X12+RCaQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
-				
-				<jdbc.database.host>localhost</jdbc.database.host>
-				<jdbc.database.port>5432</jdbc.database.port>
-				<jdbc.database.name>igrejariodb</jdbc.database.name>
-				<jdbc.user>postgres</jdbc.user>
-				<jdbc.password>postgres</jdbc.password>
-				
+				<keycloak.realm>tjpeconnect</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://homologacao.tjpe.gov.br/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://homologacao.tjpe.gov.br</keycloak.rootUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>teste</id>
 			<properties>
-				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.realm>tjpeconnect</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://teste.tjpe.gov.br/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>https://teste.tjpe.gov.br</keycloak.rootUrl>
@@ -224,25 +217,19 @@
 		<profile>
 			<id>homologacao</id>
 			<properties>
-				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.realm>tjpeconnect</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.auth-server-url>https://homologacao.tjpe.gov.br/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>https://homologacao.tjpe.gov.br</keycloak.rootUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>producao</id>
 			<properties>
-				<keycloak.realm>pilotojee7-realm</keycloak.realm>
+				<keycloak.realm>tjpeconnect</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://www.tjpe.gov.br/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>https://www.tjpe.gov.br</keycloak.rootUrl>
-				
-				<jdbc.database.host>207.180.198.112</jdbc.database.host>
-				<jdbc.database.port>5432</jdbc.database.port>
-				<jdbc.database.name>igrejariodb</jdbc.database.name>
-				<jdbc.user>igrejario</jdbc.user>
-				<jdbc.password>Igreja1234</jdbc.password>
 			</properties>
 		</profile>
 

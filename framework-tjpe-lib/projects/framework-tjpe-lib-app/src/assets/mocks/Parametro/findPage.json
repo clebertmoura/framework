@@ -1,0 +1,15 @@
+{
+    "results":[
+        {"id":1,"version":0,"descricao":"Teste 1","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":2,"version":0,"descricao":"Teste 2","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":3,"version":0,"descricao":"Teste 3","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":4,"version":0,"descricao":"Teste 4","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":5,"version":0,"descricao":"Teste 5","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":6,"version":0,"descricao":"Teste 6","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":7,"version":0,"descricao":"Teste 7","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":8,"version":0,"descricao":"Teste 8","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":9,"version":0,"descricao":"Teste 9","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"},
+        {"id":10,"version":0,"descricao":"Teste 10","valor":"1","chave":"PARAM_TESTE","dataHoraAlteracao":null,"tipoParametro":"INTEIRO"}
+    ],
+    "totalRegisters":10
+}

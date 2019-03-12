@@ -341,32 +341,6 @@
 		
 		<plugins>
 			<plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>5.0.7</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>migrate</goal>
-                        </goals>
-                        <id>migrate-database</id>
-                        <phase>pre-integration-test</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <url>${jdbc.url}</url>
-                    <user>${jdbc.user}</user>
-                    <password>${jdbc.password}</password>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>${jdbc.groupId}</groupId>
-                        <artifactId>${jdbc.artifactId}</artifactId>
-                        <version>${jdbc.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>native2ascii-maven-plugin</artifactId>
 				<version>1.0-alpha-1</version>

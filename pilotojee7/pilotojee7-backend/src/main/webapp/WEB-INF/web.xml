@@ -44,36 +44,24 @@
 	</listener>
  -->
  
- 	<!-- <listener>
-	    <listener-class>
-	        org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
-	    </listener-class>
-	</listener> -->
-
-
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>API REST Protegida</web-resource-name>
-			<url-pattern>/*</url-pattern>
+			<url-pattern>/api/*</url-pattern>
 		</web-resource-collection>
+		<auth-constraint>
+			<role-name>pilotojee7-backend.acesso.api</role-name>
+		</auth-constraint>
 	</security-constraint>
 	
-	<!-- <login-config>
+	<login-config>
 		<auth-method>KEYCLOAK</auth-method>
-		<realm-name>pilotojee7-realm</realm-name>
-	</login-config> -->
+		<realm-name>tjpeconnect</realm-name>
+	</login-config>
 
 	<!-- specify all the roles defined for this web app -->
 	<security-role>
-		<role-name>admin</role-name>
+		<role-name>pilotojee7-backend.acesso.api</role-name>
 	</security-role>
-	<security-role>
-		<role-name>user</role-name>
-	</security-role>
-	<security-role>
-		<role-name>monitoring</role-name>
-	</security-role>
-	
-
 	
 </web-app>

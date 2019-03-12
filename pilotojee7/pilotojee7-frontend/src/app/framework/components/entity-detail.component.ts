@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { isArray } from 'util';
 import { Error } from '../service/error/error';
 import { ErrorLayer } from '../service/error/errorlayer';
+import { Observable } from 'rxjs';
 
 export abstract class EntityDetailComponent<E extends BaseEntity, S extends EntityService<E>> implements OnInit, OnDestroy {
 
@@ -59,28 +60,37 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
         if (this.sub) {
             return;
         }
-        this.params_subscription = this.route.url.subscribe(segments => {
-            const routeAction = segments[0].path;
-            if (routeAction === 'new') {
-                this.entity = this.entityService.newEntity(null);
-            } else {
-                this.editMode = segments[0].path === 'edit';
-                this.viewMode = segments[0].path === 'view';
-                const id = segments[1].path;
-                this.entityService.getEntity(id)
-                    .subscribe(
-                        entity => {
-                            this.entity = entity;
-                        },
-                        error => {
-                            this.messageService.error('ngOnInit error', error);
-                        }
-                    );
-            }
+        const obs = Observable.create(observer => {
+            this.params_subscription = this.route.url.subscribe(segments => {
+                const routeAction = segments[0].path;
+                if (routeAction === 'new') {
+                    this.entity = this.entityService.newEntity(null);
+                    observer.next(this.entity);
+                } else {
+                    this.editMode = segments[0].path === 'edit';
+                    this.viewMode = segments[0].path === 'view';
+                    const id = segments[1].path;
+                    this.entityService.getEntity(id)
+                        .subscribe(
+                            entity => {
+                                this.entity = entity;
+                                observer.next(this.entity);
+                            },
+                            error => {
+                                this.messageService.error('ngOnInit error', error);
+                                observer.error(error);
+                            }
+                        );
+                }
+            });
         });
-        // Load Enum Values
-        this.loadEnumValues();
-        this.loadEntityRelations();
+        obs.subscribe(entity => {
+            // Load Enum Values
+            this.loadEnumValues();
+            this.loadEntityRelations();
+        }, error => {
+            this.messageService.error('ngOnInit error', error);
+        });
     }
 
     ngOnDestroy() {

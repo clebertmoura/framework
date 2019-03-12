@@ -6,7 +6,7 @@
 	<version>3.0.3</version>
 	<packaging>pom</packaging>
 	<name>framework-parent</name>
-	<description>Projeto raiz do Framework-TJPE</description>
+	<description>Projeto raiz do Framework</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		

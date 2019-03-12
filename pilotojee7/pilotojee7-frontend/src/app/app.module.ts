@@ -42,25 +42,38 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { ConfirmDeleteDialogComponent } from './shared/confirm-delete-dialog/confirm-delete-dialog.component';
 import { initializer } from './keycloak/app.init';
-import { KeycloakService } from 'keycloak-angular';
-import { RequestInterceptor } from './util/interceptor/request.interceptor';
+import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { SpinnerService } from './util/spinner/spinner.service';
 import { SpinnerComponent } from './util/spinner/spinner.component';
 
-import { DesafioModule } from './entities/desafio/desafio.module';
-import { DesafioService } from './entities/desafio/desafio.service';
-import { HabitoModule } from './entities/habito/habito.module';
-import { HabitoService } from './entities/habito/habito.service';
-import { RoleModule } from './entities/role/role.module';
-import { RoleService } from './entities/role/role.service';
-import { UserModule } from './entities/user/user.module';
-import { UserService } from './entities/user/user.service';
-import { UserDiaDesafioModule } from './entities/userdiadesafio/userdiadesafio.module';
-import { UserDiaDesafioService } from './entities/userdiadesafio/userdiadesafio.service';
-import { UserDiaHabitoModule } from './entities/userdiahabito/userdiahabito.module';
-import { UserDiaHabitoService } from './entities/userdiahabito/userdiahabito.service';
-import { UserDiaTestemunhoModule } from './entities/userdiatestemunho/userdiatestemunho.module';
-import { UserDiaTestemunhoService } from './entities/userdiatestemunho/userdiatestemunho.service';
+import { AgendaModule } from './entities/agenda/agenda.module';
+import { AgendaService } from './entities/agenda/agenda.service';
+import { AgendaDetalheModule } from './entities/agendadetalhe/agendadetalhe.module';
+import { AgendaDetalheService } from './entities/agendadetalhe/agendadetalhe.service';
+import { AgendaPeriodoModule } from './entities/agendaperiodo/agendaperiodo.module';
+import { AgendaPeriodoService } from './entities/agendaperiodo/agendaperiodo.service';
+import { AreaModule } from './entities/area/area.module';
+import { AreaService } from './entities/area/area.service';
+import { BloqueioModule } from './entities/bloqueio/bloqueio.module';
+import { BloqueioService } from './entities/bloqueio/bloqueio.service';
+import { ConsultaModule } from './entities/consulta/consulta.module';
+import { ConsultaService } from './entities/consulta/consulta.service';
+import { EspecialidadeModule } from './entities/especialidade/especialidade.module';
+import { EspecialidadeService } from './entities/especialidade/especialidade.service';
+import { PacienteModule } from './entities/paciente/paciente.module';
+import { PacienteService } from './entities/paciente/paciente.service';
+import { ParametroModule } from './entities/parametro/parametro.module';
+import { ParametroService } from './entities/parametro/parametro.service';
+import { ProfissionalSaudeModule } from './entities/profissionalsaude/profissionalsaude.module';
+import { ProfissionalSaudeService } from './entities/profissionalsaude/profissionalsaude.service';
+import { QualificacaoProfissionalModule } from './entities/qualificacaoprofissional/qualificacaoprofissional.module';
+import { QualificacaoProfissionalService } from './entities/qualificacaoprofissional/qualificacaoprofissional.service';
+import { StatusModule } from './entities/status/status.module';
+import { StatusService } from './entities/status/status.service';
+import { TipoAgendaModule } from './entities/tipoagenda/tipoagenda.module';
+import { TipoAgendaService } from './entities/tipoagenda/tipoagenda.service';
+import { TipoConsultaModule } from './entities/tipoconsulta/tipoconsulta.module';
+import { TipoConsultaService } from './entities/tipoconsulta/tipoconsulta.service';
 
 @NgModule({
   declarations: [
@@ -94,27 +107,40 @@ import { UserDiaTestemunhoService } from './entities/userdiatestemunho/userdiate
     MatFormFieldModule,
     MatDialogModule,
 
-    DesafioModule,
-    HabitoModule,
-    RoleModule,
-    UserModule,
-    UserDiaDesafioModule,
-    UserDiaHabitoModule,
-    UserDiaTestemunhoModule,
-    
+    AgendaModule,
+    AgendaDetalheModule,
+    AgendaPeriodoModule,
+    AreaModule,
+    BloqueioModule,
+    ConsultaModule,
+    EspecialidadeModule,
+    PacienteModule,
+    ParametroModule,
+    ProfissionalSaudeModule,
+    QualificacaoProfissionalModule,
+    StatusModule,
+    TipoAgendaModule,
+    TipoConsultaModule,
+    KeycloakAngularModule,
     SharedModule
   ],
   providers: [
-    DesafioService,
-    HabitoService,
-    RoleService,
-    UserService,
-    UserDiaDesafioService,
-    UserDiaHabitoService,
-    UserDiaTestemunhoService,
+    AgendaService,
+    AgendaDetalheService,
+    AgendaPeriodoService,
+    AreaService,
+    BloqueioService,
+    ConsultaService,
+    EspecialidadeService,
+    PacienteService,
+    ParametroService,
+    ProfissionalSaudeService,
+    QualificacaoProfissionalService,
+    StatusService,
+    TipoAgendaService,
+    TipoConsultaService,
 	EnumeratorsService,
 	MessageService,
-    KeycloakService,
     SpinnerService,
     {provide: OWL_DATE_TIME_LOCALE, useValue: 'pt'},
     {
@@ -122,11 +148,6 @@ import { UserDiaTestemunhoService } from './entities/userdiatestemunho/userdiate
       useFactory: initializer,
       multi: true,
       deps: [KeycloakService]
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: RequestInterceptor,
-      multi: true
     }
   ],
   entryComponents: [
