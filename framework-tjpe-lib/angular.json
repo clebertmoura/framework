@@ -3,33 +3,33 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "framework-tjpe-lib": {
-      "root": "projects/framework-tjpe-lib",
-      "sourceRoot": "projects/framework-tjpe-lib/src",
+    "framework-lib": {
+      "root": "projects/framework-lib",
+      "sourceRoot": "projects/framework-lib/src",
       "projectType": "library",
-      "prefix": "ftjpe",
+      "prefix": "flib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/framework-tjpe-lib/tsconfig.lib.json",
-            "project": "projects/framework-tjpe-lib/ng-package.json"
+            "tsConfig": "projects/framework-lib/tsconfig.lib.json",
+            "project": "projects/framework-lib/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/framework-tjpe-lib/src/test.ts",
-            "tsConfig": "projects/framework-tjpe-lib/tsconfig.spec.json",
-            "karmaConfig": "projects/framework-tjpe-lib/karma.conf.js"
+            "main": "projects/framework-lib/src/test.ts",
+            "tsConfig": "projects/framework-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/framework-lib/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/framework-tjpe-lib/tsconfig.lib.json",
-              "projects/framework-tjpe-lib/tsconfig.spec.json"
+              "projects/framework-lib/tsconfig.lib.json",
+              "projects/framework-lib/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -38,9 +38,9 @@
         }
       }
     },
-    "framework-tjpe-lib-app": {
-      "root": "projects/framework-tjpe-lib-app/",
-      "sourceRoot": "projects/framework-tjpe-lib-app/src",
+    "framework-lib-app": {
+      "root": "projects/framework-lib-app/",
+      "sourceRoot": "projects/framework-lib-app/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -48,17 +48,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/framework-tjpe-lib-app",
-            "index": "projects/framework-tjpe-lib-app/src/index.html",
-            "main": "projects/framework-tjpe-lib-app/src/main.ts",
-            "polyfills": "projects/framework-tjpe-lib-app/src/polyfills.ts",
-            "tsConfig": "projects/framework-tjpe-lib-app/tsconfig.app.json",
+            "outputPath": "dist/framework-lib-app",
+            "index": "projects/framework-lib-app/src/index.html",
+            "main": "projects/framework-lib-app/src/main.ts",
+            "polyfills": "projects/framework-lib-app/src/polyfills.ts",
+            "tsConfig": "projects/framework-lib-app/tsconfig.app.json",
             "assets": [
-              "projects/framework-tjpe-lib-app/src/favicon.ico",
-              "projects/framework-tjpe-lib-app/src/assets"
+              "projects/framework-lib-app/src/favicon.ico",
+              "projects/framework-lib-app/src/assets"
             ],
             "styles": [
-              "projects/framework-tjpe-lib-app/src/styles.scss",
+              "projects/framework-lib-app/src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ng-pick-datetime/assets/style/picker.min.css",
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -71,8 +71,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/framework-tjpe-lib-app/src/environments/environment.ts",
-                  "with": "projects/framework-tjpe-lib-app/src/environments/environment.prod.ts"
+                  "replace": "projects/framework-lib-app/src/environments/environment.ts",
+                  "with": "projects/framework-lib-app/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -97,34 +97,34 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "framework-tjpe-lib-app:build"
+            "browserTarget": "framework-lib-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "framework-tjpe-lib-app:build:production"
+              "browserTarget": "framework-lib-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "framework-tjpe-lib-app:build"
+            "browserTarget": "framework-lib-app:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/framework-tjpe-lib-app/src/test.ts",
-            "polyfills": "projects/framework-tjpe-lib-app/src/polyfills.ts",
-            "tsConfig": "projects/framework-tjpe-lib-app/tsconfig.spec.json",
-            "karmaConfig": "projects/framework-tjpe-lib-app/karma.conf.js",
+            "main": "projects/framework-lib-app/src/test.ts",
+            "polyfills": "projects/framework-lib-app/src/polyfills.ts",
+            "tsConfig": "projects/framework-lib-app/tsconfig.spec.json",
+            "karmaConfig": "projects/framework-lib-app/karma.conf.js",
             "styles": [
-              "projects/framework-tjpe-lib-app/src/styles.scss"
+              "projects/framework-lib-app/src/styles.scss"
             ],
             "scripts": [],
             "assets": [
-              "projects/framework-tjpe-lib-app/src/favicon.ico",
-              "projects/framework-tjpe-lib-app/src/assets"
+              "projects/framework-lib-app/src/favicon.ico",
+              "projects/framework-lib-app/src/assets"
             ]
           }
         },
@@ -132,8 +132,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/framework-tjpe-lib-app/tsconfig.app.json",
-              "projects/framework-tjpe-lib-app/tsconfig.spec.json"
+              "projects/framework-lib-app/tsconfig.app.json",
+              "projects/framework-lib-app/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -142,27 +142,27 @@
         }
       }
     },
-    "framework-tjpe-lib-app-e2e": {
-      "root": "projects/framework-tjpe-lib-app-e2e/",
+    "framework-lib-app-e2e": {
+      "root": "projects/framework-lib-app-e2e/",
       "projectType": "application",
       "prefix": "",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "projects/framework-tjpe-lib-app-e2e/protractor.conf.js",
-            "devServerTarget": "framework-tjpe-lib-app:serve"
+            "protractorConfig": "projects/framework-lib-app-e2e/protractor.conf.js",
+            "devServerTarget": "framework-lib-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "framework-tjpe-lib-app:serve:production"
+              "devServerTarget": "framework-lib-app:serve:production"
             }
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "projects/framework-tjpe-lib-app-e2e/tsconfig.e2e.json",
+            "tsConfig": "projects/framework-lib-app-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
@@ -171,5 +171,5 @@
       }
     }
   },
-  "defaultProject": "framework-tjpe-lib"
+  "defaultProject": "framework-lib"
 }

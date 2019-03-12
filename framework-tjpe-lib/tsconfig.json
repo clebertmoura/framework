@@ -19,11 +19,11 @@
       "dom"
     ],
     "paths": {
-      "framework-tjpe-lib": [
-        "dist/framework-tjpe-lib"
+      "framework-lib": [
+        "dist/framework-lib"
       ],
-      "framework-tjpe-lib/*": [
-        "dist/framework-tjpe-lib/*"
+      "framework-lib/*": [
+        "dist/framework-lib/*"
       ]
     }
   }
