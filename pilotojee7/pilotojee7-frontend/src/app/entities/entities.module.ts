@@ -7,221 +7,132 @@
 // Template is part of Open Source Project: https://github.com/jaxio/javaee-lab
 //
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import {
-  MatToolbarModule,
-  MatSelectModule,
-  MatCheckboxModule,
-  MatButtonModule,
-  MatSidenavModule,
-  MatIconModule,
-  MatListModule,
-  MatGridListModule,
-  MatCardModule,
-  MatMenuModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatInputModule,
-  MatProgressSpinnerModule,
-  MatFormFieldModule,
-  MatAutocompleteModule,
-  MatTabsModule,
-} from '@angular/material';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MatSortModule } from '@angular/material';
+import { CdkTableModule } from '@angular/cdk/table';
 import { FileUploadModule } from 'primeng/fileupload';
-import { PickListModule } from 'primeng/picklist';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
-import { CalendarModule } from 'primeng/calendar';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { SharedModule } from '../shared/shared.module';
+import { EntitiesRoutingModule } from './entities-routing.module';
+import { EntitiesComponent } from './entities.component';
 
-import { AgendaListComponent } from './agenda/agenda-list/agenda-list.component';
-import { AgendaDetailComponent } from './agenda/agenda-detail/agenda-detail.component';
-import { AgendaLineComponent } from './agenda/agenda-line/agenda-line.component';
-import { AgendaAutocompleteComponent } from './agenda/agenda-autocomplete/agenda-autocomplete.component';
-import { AgendaDetalheListComponent } from './agendadetalhe/agendadetalhe-list/agendadetalhe-list.component';
-import { AgendaDetalheDetailComponent } from './agendadetalhe/agendadetalhe-detail/agendadetalhe-detail.component';
-import { AgendaDetalheLineComponent } from './agendadetalhe/agendadetalhe-line/agendadetalhe-line.component';
-import { AgendaDetalheAutocompleteComponent } from './agendadetalhe/agendadetalhe-autocomplete/agendadetalhe-autocomplete.component';
-import { AgendaPeriodoListComponent } from './agendaperiodo/agendaperiodo-list/agendaperiodo-list.component';
-import { AgendaPeriodoDetailComponent } from './agendaperiodo/agendaperiodo-detail/agendaperiodo-detail.component';
-import { AgendaPeriodoLineComponent } from './agendaperiodo/agendaperiodo-line/agendaperiodo-line.component';
-import { AgendaPeriodoAutocompleteComponent } from './agendaperiodo/agendaperiodo-autocomplete/agendaperiodo-autocomplete.component';
-import { AreaListComponent } from './area/area-list/area-list.component';
-import { AreaDetailComponent } from './area/area-detail/area-detail.component';
-import { AreaLineComponent } from './area/area-line/area-line.component';
-import { AreaAutocompleteComponent } from './area/area-autocomplete/area-autocomplete.component';
-import { BloqueioListComponent } from './bloqueio/bloqueio-list/bloqueio-list.component';
-import { BloqueioDetailComponent } from './bloqueio/bloqueio-detail/bloqueio-detail.component';
-import { BloqueioLineComponent } from './bloqueio/bloqueio-line/bloqueio-line.component';
-import { BloqueioAutocompleteComponent } from './bloqueio/bloqueio-autocomplete/bloqueio-autocomplete.component';
-import { ConsultaListComponent } from './consulta/consulta-list/consulta-list.component';
-import { ConsultaDetailComponent } from './consulta/consulta-detail/consulta-detail.component';
-import { ConsultaLineComponent } from './consulta/consulta-line/consulta-line.component';
-import { ConsultaAutocompleteComponent } from './consulta/consulta-autocomplete/consulta-autocomplete.component';
-import { EspecialidadeListComponent } from './especialidade/especialidade-list/especialidade-list.component';
-import { EspecialidadeDetailComponent } from './especialidade/especialidade-detail/especialidade-detail.component';
-import { EspecialidadeLineComponent } from './especialidade/especialidade-line/especialidade-line.component';
-import { EspecialidadeAutocompleteComponent } from './especialidade/especialidade-autocomplete/especialidade-autocomplete.component';
-import { PacienteListComponent } from './paciente/paciente-list/paciente-list.component';
-import { PacienteDetailComponent } from './paciente/paciente-detail/paciente-detail.component';
-import { PacienteLineComponent } from './paciente/paciente-line/paciente-line.component';
-import { PacienteAutocompleteComponent } from './paciente/paciente-autocomplete/paciente-autocomplete.component';
-import { ParametroListComponent } from './parametro/parametro-list/parametro-list.component';
-import { ParametroDetailComponent } from './parametro/parametro-detail/parametro-detail.component';
-import { ParametroLineComponent } from './parametro/parametro-line/parametro-line.component';
-import { ParametroAutocompleteComponent } from './parametro/parametro-autocomplete/parametro-autocomplete.component';
-import { ProfissionalSaudeListComponent } from './profissionalsaude/profissionalsaude-list/profissionalsaude-list.component';
-import { ProfissionalSaudeDetailComponent } from './profissionalsaude/profissionalsaude-detail/profissionalsaude-detail.component';
-import { ProfissionalSaudeLineComponent } from './profissionalsaude/profissionalsaude-line/profissionalsaude-line.component';
-import { ProfissionalSaudeAutocompleteComponent } from './profissionalsaude/profissionalsaude-autocomplete/profissionalsaude-autocomplete.component';
-import { QualificacaoProfissionalListComponent } from './qualificacaoprofissional/qualificacaoprofissional-list/qualificacaoprofissional-list.component';
-import { QualificacaoProfissionalDetailComponent } from './qualificacaoprofissional/qualificacaoprofissional-detail/qualificacaoprofissional-detail.component';
-import { QualificacaoProfissionalLineComponent } from './qualificacaoprofissional/qualificacaoprofissional-line/qualificacaoprofissional-line.component';
-import { QualificacaoProfissionalAutocompleteComponent } from './qualificacaoprofissional/qualificacaoprofissional-autocomplete/qualificacaoprofissional-autocomplete.component';
-import { StatusListComponent } from './status/status-list/status-list.component';
-import { StatusDetailComponent } from './status/status-detail/status-detail.component';
-import { StatusLineComponent } from './status/status-line/status-line.component';
-import { StatusAutocompleteComponent } from './status/status-autocomplete/status-autocomplete.component';
-import { TipoAgendaListComponent } from './tipoagenda/tipoagenda-list/tipoagenda-list.component';
-import { TipoAgendaDetailComponent } from './tipoagenda/tipoagenda-detail/tipoagenda-detail.component';
-import { TipoAgendaLineComponent } from './tipoagenda/tipoagenda-line/tipoagenda-line.component';
-import { TipoAgendaAutocompleteComponent } from './tipoagenda/tipoagenda-autocomplete/tipoagenda-autocomplete.component';
-import { TipoConsultaListComponent } from './tipoconsulta/tipoconsulta-list/tipoconsulta-list.component';
-import { TipoConsultaDetailComponent } from './tipoconsulta/tipoconsulta-detail/tipoconsulta-detail.component';
-import { TipoConsultaLineComponent } from './tipoconsulta/tipoconsulta-line/tipoconsulta-line.component';
-import { TipoConsultaAutocompleteComponent } from './tipoconsulta/tipoconsulta-autocomplete/tipoconsulta-autocomplete.component';
+import { DesafioListComponent } from './desafio/desafio-list/desafio-list.component';
+import { DesafioDetailComponent } from './desafio/desafio-detail/desafio-detail.component';
+import { DesafioLineComponent } from './desafio/desafio-line/desafio-line.component';
+import { DesafioAutocompleteComponent } from './desafio/desafio-autocomplete/desafio-autocomplete.component';
+import { HabitoListComponent } from './habito/habito-list/habito-list.component';
+import { HabitoDetailComponent } from './habito/habito-detail/habito-detail.component';
+import { HabitoLineComponent } from './habito/habito-line/habito-line.component';
+import { HabitoAutocompleteComponent } from './habito/habito-autocomplete/habito-autocomplete.component';
+import { RoleListComponent } from './role/role-list/role-list.component';
+import { RoleDetailComponent } from './role/role-detail/role-detail.component';
+import { RoleLineComponent } from './role/role-line/role-line.component';
+import { RoleAutocompleteComponent } from './role/role-autocomplete/role-autocomplete.component';
+import { UserListComponent } from './user/user-list/user-list.component';
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
+import { UserLineComponent } from './user/user-line/user-line.component';
+import { UserAutocompleteComponent } from './user/user-autocomplete/user-autocomplete.component';
+import { UserDiaDesafioListComponent } from './userdiadesafio/userdiadesafio-list/userdiadesafio-list.component';
+import { UserDiaDesafioDetailComponent } from './userdiadesafio/userdiadesafio-detail/userdiadesafio-detail.component';
+import { UserDiaDesafioLineComponent } from './userdiadesafio/userdiadesafio-line/userdiadesafio-line.component';
+import { UserDiaDesafioAutocompleteComponent } from './userdiadesafio/userdiadesafio-autocomplete/userdiadesafio-autocomplete.component';
+import { UserDiaHabitoListComponent } from './userdiahabito/userdiahabito-list/userdiahabito-list.component';
+import { UserDiaHabitoDetailComponent } from './userdiahabito/userdiahabito-detail/userdiahabito-detail.component';
+import { UserDiaHabitoLineComponent } from './userdiahabito/userdiahabito-line/userdiahabito-line.component';
+import { UserDiaHabitoAutocompleteComponent } from './userdiahabito/userdiahabito-autocomplete/userdiahabito-autocomplete.component';
+import { UserDiaTestemunhoListComponent } from './userdiatestemunho/userdiatestemunho-list/userdiatestemunho-list.component';
+import { UserDiaTestemunhoDetailComponent } from './userdiatestemunho/userdiatestemunho-detail/userdiatestemunho-detail.component';
+import { UserDiaTestemunhoLineComponent } from './userdiatestemunho/userdiatestemunho-line/userdiatestemunho-line.component';
+import { UserDiaTestemunhoAutocompleteComponent } from './userdiatestemunho/userdiatestemunho-autocomplete/userdiatestemunho-autocomplete.component';
 
 @NgModule({
   imports: [
+    NgbModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    EntitiesRoutingModule,
 
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
+    NgSelectModule,
+    NgxMaskModule.forChild(),
 
-    // Angular Material
-    MatToolbarModule,
-    MatTabsModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatTableModule,
-    MatPaginatorModule,
     MatSortModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
+
+    CdkTableModule,
 
     // Primeng
-    AutoCompleteModule,
     FileUploadModule,
-    PickListModule,
-    TriStateCheckboxModule,
-    CalendarModule,
 
     SharedModule
   ],
   declarations: [
-    AgendaListComponent,
-    AgendaDetailComponent,
-    AgendaLineComponent,
-    AgendaAutocompleteComponent,    AgendaDetalheListComponent,
-    AgendaDetalheDetailComponent,
-    AgendaDetalheLineComponent,
-    AgendaDetalheAutocompleteComponent,    AgendaPeriodoListComponent,
-    AgendaPeriodoDetailComponent,
-    AgendaPeriodoLineComponent,
-    AgendaPeriodoAutocompleteComponent,    AreaListComponent,
-    AreaDetailComponent,
-    AreaLineComponent,
-    AreaAutocompleteComponent,    BloqueioListComponent,
-    BloqueioDetailComponent,
-    BloqueioLineComponent,
-    BloqueioAutocompleteComponent,    ConsultaListComponent,
-    ConsultaDetailComponent,
-    ConsultaLineComponent,
-    ConsultaAutocompleteComponent,    EspecialidadeListComponent,
-    EspecialidadeDetailComponent,
-    EspecialidadeLineComponent,
-    EspecialidadeAutocompleteComponent,    PacienteListComponent,
-    PacienteDetailComponent,
-    PacienteLineComponent,
-    PacienteAutocompleteComponent,    ParametroListComponent,
-    ParametroDetailComponent,
-    ParametroLineComponent,
-    ParametroAutocompleteComponent,    ProfissionalSaudeListComponent,
-    ProfissionalSaudeDetailComponent,
-    ProfissionalSaudeLineComponent,
-    ProfissionalSaudeAutocompleteComponent,    QualificacaoProfissionalListComponent,
-    QualificacaoProfissionalDetailComponent,
-    QualificacaoProfissionalLineComponent,
-    QualificacaoProfissionalAutocompleteComponent,    StatusListComponent,
-    StatusDetailComponent,
-    StatusLineComponent,
-    StatusAutocompleteComponent,    TipoAgendaListComponent,
-    TipoAgendaDetailComponent,
-    TipoAgendaLineComponent,
-    TipoAgendaAutocompleteComponent,    TipoConsultaListComponent,
-    TipoConsultaDetailComponent,
-    TipoConsultaLineComponent,
-    TipoConsultaAutocompleteComponent  ],
+    EntitiesComponent,
+
+    DesafioListComponent,
+    DesafioDetailComponent,
+    DesafioLineComponent,
+    DesafioAutocompleteComponent,
+    HabitoListComponent,
+    HabitoDetailComponent,
+    HabitoLineComponent,
+    HabitoAutocompleteComponent,
+    RoleListComponent,
+    RoleDetailComponent,
+    RoleLineComponent,
+    RoleAutocompleteComponent,
+    UserListComponent,
+    UserDetailComponent,
+    UserLineComponent,
+    UserAutocompleteComponent,
+    UserDiaDesafioListComponent,
+    UserDiaDesafioDetailComponent,
+    UserDiaDesafioLineComponent,
+    UserDiaDesafioAutocompleteComponent,
+    UserDiaHabitoListComponent,
+    UserDiaHabitoDetailComponent,
+    UserDiaHabitoLineComponent,
+    UserDiaHabitoAutocompleteComponent,
+    UserDiaTestemunhoListComponent,
+    UserDiaTestemunhoDetailComponent,
+    UserDiaTestemunhoLineComponent,
+    UserDiaTestemunhoAutocompleteComponent,
+  ],
   exports: [
-    AgendaListComponent,
-    AgendaDetailComponent,
-    AgendaLineComponent,
-    AgendaAutocompleteComponent,    AgendaDetalheListComponent,
-    AgendaDetalheDetailComponent,
-    AgendaDetalheLineComponent,
-    AgendaDetalheAutocompleteComponent,    AgendaPeriodoListComponent,
-    AgendaPeriodoDetailComponent,
-    AgendaPeriodoLineComponent,
-    AgendaPeriodoAutocompleteComponent,    AreaListComponent,
-    AreaDetailComponent,
-    AreaLineComponent,
-    AreaAutocompleteComponent,    BloqueioListComponent,
-    BloqueioDetailComponent,
-    BloqueioLineComponent,
-    BloqueioAutocompleteComponent,    ConsultaListComponent,
-    ConsultaDetailComponent,
-    ConsultaLineComponent,
-    ConsultaAutocompleteComponent,    EspecialidadeListComponent,
-    EspecialidadeDetailComponent,
-    EspecialidadeLineComponent,
-    EspecialidadeAutocompleteComponent,    PacienteListComponent,
-    PacienteDetailComponent,
-    PacienteLineComponent,
-    PacienteAutocompleteComponent,    ParametroListComponent,
-    ParametroDetailComponent,
-    ParametroLineComponent,
-    ParametroAutocompleteComponent,    ProfissionalSaudeListComponent,
-    ProfissionalSaudeDetailComponent,
-    ProfissionalSaudeLineComponent,
-    ProfissionalSaudeAutocompleteComponent,    QualificacaoProfissionalListComponent,
-    QualificacaoProfissionalDetailComponent,
-    QualificacaoProfissionalLineComponent,
-    QualificacaoProfissionalAutocompleteComponent,    StatusListComponent,
-    StatusDetailComponent,
-    StatusLineComponent,
-    StatusAutocompleteComponent,    TipoAgendaListComponent,
-    TipoAgendaDetailComponent,
-    TipoAgendaLineComponent,
-    TipoAgendaAutocompleteComponent,    TipoConsultaListComponent,
-    TipoConsultaDetailComponent,
-    TipoConsultaLineComponent,
-    TipoConsultaAutocompleteComponent  ]
+    DesafioListComponent,
+    DesafioDetailComponent,
+    DesafioLineComponent,
+    DesafioAutocompleteComponent,
+    HabitoListComponent,
+    HabitoDetailComponent,
+    HabitoLineComponent,
+    HabitoAutocompleteComponent,
+    RoleListComponent,
+    RoleDetailComponent,
+    RoleLineComponent,
+    RoleAutocompleteComponent,
+    UserListComponent,
+    UserDetailComponent,
+    UserLineComponent,
+    UserAutocompleteComponent,
+    UserDiaDesafioListComponent,
+    UserDiaDesafioDetailComponent,
+    UserDiaDesafioLineComponent,
+    UserDiaDesafioAutocompleteComponent,
+    UserDiaHabitoListComponent,
+    UserDiaHabitoDetailComponent,
+    UserDiaHabitoLineComponent,
+    UserDiaHabitoAutocompleteComponent,
+    UserDiaTestemunhoListComponent,
+    UserDiaTestemunhoDetailComponent,
+    UserDiaTestemunhoLineComponent,
+    UserDiaTestemunhoAutocompleteComponent,
+  ]
 })
 export class EntitiesModule {}

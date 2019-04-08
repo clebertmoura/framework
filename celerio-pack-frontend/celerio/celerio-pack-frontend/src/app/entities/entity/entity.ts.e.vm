@@ -30,9 +30,9 @@ import { ${relation.to.type} } from '../${relation.toEntity.model.type.toLowerCa
 #end
 
 #if ($entity.isEntityAudited()) 
-import { BaseEntityAudited } from '../../framework/entity/baseEntityAudited';
+import { BaseEntityAudited } from 'framework-lib';
 #else
-import { BaseEntity } from '../../framework/entity/baseEntity';
+import { BaseEntity } from 'framework-lib';
 #end
 
 export class $entity.model.type extends#if($entity.isEntityAudited()) BaseEntityAudited#else BaseEntity#end {

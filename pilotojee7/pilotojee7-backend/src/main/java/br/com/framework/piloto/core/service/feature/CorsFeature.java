@@ -12,7 +12,7 @@ import org.jboss.resteasy.plugins.interceptors.CorsFilter;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
-/*@Provider*/
+@Provider
 public class CorsFeature implements Feature {
 
     @Override

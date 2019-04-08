@@ -1,36 +1,19 @@
 $output.file("src/app/entities/entities.module.ts")##
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import {
-  MatToolbarModule,
-  MatSelectModule,
-  MatCheckboxModule,
-  MatButtonModule,
-  MatSidenavModule,
-  MatIconModule,
-  MatListModule,
-  MatGridListModule,
-  MatCardModule,
-  MatMenuModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatInputModule,
-  MatProgressSpinnerModule,
-  MatFormFieldModule,
-  MatAutocompleteModule,
-  MatTabsModule,
-} from '@angular/material';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MatSortModule } from '@angular/material';
+import { CdkTableModule } from '@angular/cdk/table';
 import { FileUploadModule } from 'primeng/fileupload';
-import { PickListModule } from 'primeng/picklist';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
-import { CalendarModule } from 'primeng/calendar';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { SharedModule } from '../shared/shared.module';
+import { EntitiesRoutingModule } from './entities-routing.module';
+import { EntitiesComponent } from './entities.component';
 
 #foreach($entity in $project.withoutManyToManyJoinEntities.list)
 import { ${entity.model.type}ListComponent } from './${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-list/${entity.model.type.toLowerCase()}-list.component';
@@ -41,49 +24,33 @@ import { ${entity.model.type}AutocompleteComponent } from './${entity.model.type
 
 @NgModule({
   imports: [
+    NgbModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    EntitiesRoutingModule,
 
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
+    NgSelectModule,
+    NgxMaskModule.forChild(),
 
-    // Angular Material
-    MatToolbarModule,
-    MatTabsModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatTableModule,
-    MatPaginatorModule,
     MatSortModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
+
+    CdkTableModule,
 
     // Primeng
-    AutoCompleteModule,
     FileUploadModule,
-    PickListModule,
-    TriStateCheckboxModule,
-    CalendarModule,
 
     SharedModule
   ],
   declarations: [
+    EntitiesComponent,
+
 #foreach($entity in $project.withoutManyToManyJoinEntities.list)
     ${entity.model.type}ListComponent,
     ${entity.model.type}DetailComponent,
     ${entity.model.type}LineComponent,
-    ${entity.model.type}AutocompleteComponent#{if}( $velocityHasNext ),#{end}
+    ${entity.model.type}AutocompleteComponent,
 #end
   ],
   exports: [
@@ -91,7 +58,7 @@ import { ${entity.model.type}AutocompleteComponent } from './${entity.model.type
     ${entity.model.type}ListComponent,
     ${entity.model.type}DetailComponent,
     ${entity.model.type}LineComponent,
-    ${entity.model.type}AutocompleteComponent#{if}( $velocityHasNext ),#{end}
+    ${entity.model.type}AutocompleteComponent,
 #end
   ]
 })

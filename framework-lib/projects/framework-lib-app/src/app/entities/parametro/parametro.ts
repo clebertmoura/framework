@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../../../framework-lib/src/lib/framework/entity/baseEntity';
+import { BaseEntity } from 'framework-lib';
 
 export class Parametro extends BaseEntity {
     // Raw attributes

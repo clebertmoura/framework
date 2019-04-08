@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AbstractEnumeratorsService } from '../../../../framework-lib/src/lib/framework/service/enumerators.service';
-
+import { AbstractEnumeratorsService } from 'framework-lib';
+import { environment } from '../../environments/environment';
 @Injectable({
     providedIn: 'root'
 })
 export class EnumeratorsService extends AbstractEnumeratorsService {
 
-    constructor(protected http: HttpClient) {
+    constructor(http: HttpClient) {
         super(http);
     }
 
     public getApiUrl(): string {
-        return '/v1/enums/';
+        return environment.baseUrl + '/v1/enums/';
     }
 
     /**

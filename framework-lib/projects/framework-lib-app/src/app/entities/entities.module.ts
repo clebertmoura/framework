@@ -29,6 +29,7 @@ import { ParametroLineComponent } from './parametro/parametro-line/parametro-lin
 import { ParametroAutocompleteComponent } from './parametro/parametro-autocomplete/parametro-autocomplete.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MessageService } from 'framework-lib';
 
 @NgModule({
   imports: [
@@ -73,6 +74,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ParametroDetailComponent,
     ParametroLineComponent,
     ParametroAutocompleteComponent
-  ]
+  ],
+  providers: [MessageService]
 })
 export class EntitiesModule {}

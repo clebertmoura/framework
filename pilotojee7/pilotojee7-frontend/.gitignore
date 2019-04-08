@@ -2,6 +2,12 @@
 # Created by https://www.gitignore.io/api/node,angular,eclipse,visualstudiocode,maven
 # Edit at https://www.gitignore.io/?templates=node,angular,eclipse,visualstudiocode,maven
 
+
+# REMOVER OS SEGUINTES IGNORES APOS GERAR O PROJETO!
+**/app/entities/
+**/app/pages/pages.component.html
+
+
 ### Angular ###
 ## Angular ##
 # compiled output
@@ -9,22 +15,6 @@
 /tmp
 /app/**/*.js
 /app/**/*.js.map
-
-**/app/entities/agenda/
-**/app/entities/agendadetalhe/
-**/app/entities/agendaperiodo/
-**/app/entities/area/
-**/app/entities/bloqueio/
-**/app/entities/consulta/
-**/app/entities/especialidade/
-**/app/entities/paciente/
-**/app/entities/parametro/
-**/app/entities/profissionalsaude/
-**/app/entities/qualificacaoprofissional/
-**/app/entities/status/
-**/app/entities/tipoagenda/
-**/app/entities/tipoconsulta/
-
 
 # dependencies
 /node_modules

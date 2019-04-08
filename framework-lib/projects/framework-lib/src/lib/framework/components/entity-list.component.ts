@@ -10,32 +10,35 @@ import {
   OnInit
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
+import { MessageService } from '../util/message.service';
+import { MatSort } from '@angular/material';
 import { EntityService } from '../service/entity.service';
 import { BaseEntity } from '../entity/baseEntity';
-import { PageResponse } from '../service/dto/paging';
+import { PageResponse } from '../service/paging/pageresponse';
 import { EntityDataSource } from '../service/entity.datasource';
 import { FilterMetadata } from '../service/paging/filtermetadata';
+import { Paginator } from '../service/paging/paginator';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { EntityDeleteDialogComponent } from './entity-delete-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
 import { isArray } from 'util';
 import { ErrorLayer } from '../service/error/errorlayer';
 import { Error } from '../service/error/error';
-import { MessageService } from '../util/message.service';
-import { EntityDeleteDialogComponent } from './entity-delete-dialog.component';
+import { AbstractEnumeratorsService } from '../service/enumerators.service';
 
 export abstract class EntityListComponent<E extends BaseEntity, S extends EntityService<E>> implements OnChanges, OnInit, AfterViewInit {
 
   @Input()
   public header: string;
 
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
   @ViewChild(MatSort)
   sort: MatSort;
   @ViewChild('searchInput')
   searchInput: ElementRef;
+
+  protected cacheEnums: any[] = [];
 
   public dataSource: EntityDataSource<E, S>;
 
@@ -60,21 +63,18 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
   public filters: { [s: string]: FilterMetadata } = {};
 
   // list is paginated
-  public currentPage: PageResponse<E> = new PageResponse<E>(0, 0, []);
+  public currentPage: PageResponse<E> = new PageResponse<E>();
+
+  public paginator: Paginator = new Paginator();
 
   constructor(
     protected router: Router,
     protected messageService: MessageService,
-    protected confirmDeleteDialog: MatDialog,
+    protected confirmDeleteDialog: NgbModal,
+    protected enumeratorsService: AbstractEnumeratorsService,
     protected entityService: S,
     protected entityName: string
   ) {}
-
-  /**
-   * Responsável por fazer o carregamento dos campos enumerados.
-   */
-  protected loadEnumValues(): void {
-  }
 
   /**
    * Retorna o campo padrão de ordenação.
@@ -110,6 +110,8 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
       0,
       this.paginator.pageSize
     );
+    // Load Enum Values
+    this.loadEnumValues();
   }
 
   /**
@@ -128,9 +130,18 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
       )
       .subscribe();
 
-    merge(this.sort.sortChange, this.paginator.page)
+    /*merge(this.sort.sortChange, this.paginator.page)
+      .pipe(tap(() => this.loadPage()))
+      .subscribe();*/
+
+      this.sort.sortChange
       .pipe(tap(() => this.loadPage()))
       .subscribe();
+  }
+
+  public onPageChanges(page: number) {
+    this.paginator.pageIndex = page - 1;
+    this.loadPage();
   }
 
   /**
@@ -145,6 +156,23 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
       this.paginator.pageIndex,
       this.paginator.pageSize
     );
+  }
+
+  /**
+   * Responsável por fazer o carregamento dos campos enumerados.
+   */
+  protected loadEnumValues(): void {
+  }
+
+  /**
+   * Retorna a label de um enum.
+   * 
+   * @param enumName Nome do enum
+   * @param enumValue Valor do enum.
+   */
+  public getEnumLabel(enumName: string, enumValue: string): string {
+      const values = this.cacheEnums[enumName].filter(e => e.key === enumValue);
+      return values.length > 0 ? values[0].label : enumValue;
   }
 
   /**
@@ -191,13 +219,13 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
    */
   public onClickRemove(entity: E): void {
     console.log('onClickRemove: ', entity);
-    const dialogRef = this.confirmDeleteDialog.open(
-      EntityDeleteDialogComponent
-    );
-    dialogRef.afterClosed().subscribe(result => {
+    const dialogRef = this.confirmDeleteDialog.open(EntityDeleteDialogComponent);
+    dialogRef.result.then((result) => {
       if (result === 'delete') {
         this.delete(entity);
       }
+    }).catch((error) => {
+      console.log(error);
     });
   }
 
@@ -239,7 +267,7 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
     this.entityService.delete(id).subscribe(
       response => {
         this.currentPage.remove(entity);
-        this.messageService.info('Sucesso!', 'O registro foi removido.');
+        this.messageService.info('O registro foi removido.', 'Sucesso!');
         this.loadPage();
       },
       error => this.handleErrorOnDelete(error)
@@ -250,18 +278,19 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
     if (httpError.status === 400) {
         if (httpError.error && isArray(httpError.error)) {
             const errors = Error.toArray(httpError.error);
-            for (const e of errors) {
-              switch (e.layer) {
-                case ErrorLayer.BEAN_VALIDATION:
-                  this.messageService.warning(e.propertyPath + ': ' + e.message);
-                  break;
-                case ErrorLayer.BUSINESS:
-                  this.messageService.warning(e.message);
-                  break;
-                default:
-                  this.messageService.error(e.message);
-                  break;
-              }
+            for (let i = 0; i < errors.length; i++) {
+                const e = errors[i];
+                switch (e.layer) {
+                    case ErrorLayer.BEAN_VALIDATION:
+                        this.messageService.warning(e.propertyPath + ': ' + e.message);
+                        break;
+                    case ErrorLayer.BUSINESS:
+                        this.messageService.warning(e.message);
+                        break;
+                    default:
+                        this.messageService.error(e.message);
+                    break;
+                }
             }
         } else {
             this.messageService.error('Erro ao salvar!');

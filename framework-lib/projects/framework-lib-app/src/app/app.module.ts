@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NbThemeModule, NbMenuModule, NbLayoutModule, NbActionsModule, NbSidebarModule, NbSidebarService } from '@nebular/theme';
 
 import { AppComponent } from './app.component';
-import { LibFrameworkModule } from '../../../framework-lib/src/lib/framework-lib.module';
+import { LibFrameworkModule } from 'framework-lib';
 import { ParametroModule } from './entities/parametro/parametro.module';
 
 import {
@@ -31,7 +31,7 @@ import {
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MessageService } from '../../../framework-lib/src/lib/framework/util/message.service';
+import { MessageService } from 'framework-lib';
 import { NbMenuInternalService, NbMenuService } from '@nebular/theme/components/menu/menu.service';
 
 

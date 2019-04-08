@@ -1,14 +1,13 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-list/${entity.model.type.toLowerCase()}-list.component.ts")##
 import { Component, Input } from '@angular/core';
-import { EntityListComponent } from '../../../framework/components/entity-list.component';
+import { AppEntityListComponent } from '../../../core/components/app-entity-list.component';
 import { Router } from '@angular/router';
-import { MessageService } from '../../../util/message.service';
-import { MatDialog } from '@angular/material';
-import { FilterMetadata } from '../../../framework/service/paging/filtermetadata';
-import { Operator } from '../../../framework/service/paging/operator';
+import { MessageService, FilterMetadata, Operator } from 'framework-lib';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { $entity.model.type } from '../${entity.model.type.toLowerCase()}';
 import { $entity.service.type } from '../${entity.model.type.toLowerCase()}.service';
 import { ${entity.model.type}DataSource } from '../${entity.model.type.toLowerCase()}.datasource';
+import { EnumeratorsService } from '../../enumerators.service';
 #set($imports = [])
 #foreach ($relation in $entity.xToOne.list)
 #if(!$imports.contains($relation.to.type))
@@ -24,7 +23,7 @@ import { $relation.to.type } from '../../$relation.toEntity.model.type.toLowerCa
   templateUrl: './${entity.model.type.toLowerCase()}-list.component.html',
   styleUrls: ['./${entity.model.type.toLowerCase()}-list.component.scss']
 })
-export class ${entity.model.type}ListComponent extends EntityListComponent<${entity.model.type}, ${entity.service.type}> {
+export class ${entity.model.type}ListComponent extends AppEntityListComponent<${entity.model.type}, ${entity.service.type}> {
 
 ## --------------- Many to One
 #foreach ($relation in $entity.forwardXToOne.list)
@@ -37,9 +36,10 @@ export class ${entity.model.type}ListComponent extends EntityListComponent<${ent
 
     constructor(protected router: Router,
         protected messageService: MessageService,
-        protected confirmDeleteDialog: MatDialog,
+        protected confirmDeleteDialog: NgbModal,
+        protected enumeratorsService: EnumeratorsService,
         protected entityService: $entity.service.type) {
-        super(router, messageService, confirmDeleteDialog, entityService, '${entity.model.type}');
+        super(router, messageService, confirmDeleteDialog, enumeratorsService, entityService, '${entity.model.type}');
         // inicialização do dataSource
         this.dataSource = new ${entity.model.type}DataSource(this.paginator, this.sort, this.entityService);
         // configura as colunas exibidas no datatable.
@@ -68,6 +68,16 @@ export class ${entity.model.type}ListComponent extends EntityListComponent<${ent
         this.filters['${attr.var}'] = new FilterMetadata(null, Operator.EQ);
 #end	
 #end
+#end
+    }
+    
+    protected loadEnumValues(): void {
+#foreach($attr in $entity.enumAttributes.list)
+        this.enumeratorsService.get${attr.enumModel.type}Values().subscribe(
+            enumItems => {this.cacheEnums['${attr.enumModel.type}'] = enumItems; },
+            error => this.messageService.error('', 'Não foi possível carregar os valores do campo ${attr.name}')
+        );
+
 #end
     }
 

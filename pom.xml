@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.framework</groupId>
 	<artifactId>framework-parent</artifactId>
-	<version>3.0.3</version>
+	<version>3.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>framework-parent</name>
-	<description>Projeto raiz do Framework</description>
+	<description>Projeto raiz do Framework-TJPE</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		

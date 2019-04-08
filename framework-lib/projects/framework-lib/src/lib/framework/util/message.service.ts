@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Message } from './message';
+
+export interface Message {
+  severity?: string;
+  title?: string;
+  message?: string;
+}
 
 @Injectable()
 export class MessageService {
@@ -14,7 +19,7 @@ export class MessageService {
 
     /**
      * Exibe uma mensagem de informação
-     * 
+     *
      * @param message mensagem
      * @param title titulo
      */
@@ -25,7 +30,7 @@ export class MessageService {
 
     /**
      * Exibe uma mensagem de alerta
-     * 
+     *
      * @param message mensagem
      * @param title titulo
      */
@@ -36,7 +41,7 @@ export class MessageService {
 
     /**
      * Exibe uma mensagem de erro
-     * 
+     *
      * @param message mensagem
      * @param title titulo
      */

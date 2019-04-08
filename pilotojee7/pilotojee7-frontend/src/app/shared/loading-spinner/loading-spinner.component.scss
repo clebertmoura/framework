@@ -1,0 +1,33 @@
+.app-spinner-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    position: fixed;
+    z-index: 9999;
+    text-align: right;
+}
+
+.app-spinner-flex {
+    padding-top: 80px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.app-spinner-spacer {
+    width: 320px;
+    height: 3rem;
+}
+
+.app-spinner-main {
+    width: 3rem;
+    height: 3rem;
+}
+
+.app-spinner-label {
+    max-width: 320px;
+}

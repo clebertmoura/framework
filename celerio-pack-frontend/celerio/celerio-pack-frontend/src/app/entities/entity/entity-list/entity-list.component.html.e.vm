@@ -1,25 +1,26 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-list/${entity.model.type.toLowerCase()}-list.component.html")##
-<div class="content-wrapper-form">
+<app-loading-spinner-overlay label="Carregando..." *ngIf="dataSource.loading${dollar} | async"></app-loading-spinner-overlay>
+<div>
 
     <!-- Main content -->
     <section class="content">
-        <button mat-raised-button color="primary" (click)="onClickNew()"><mat-icon>add</mat-icon>Adicionar</button>
-        <p></p>
 
-        <mat-card *ngIf="!sub" class="mat-card-search">
-            <mat-card-header>
-                <mat-card-title>Filtros de Pesquisa</mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="form-fields">
+        <h2>Gerenciar ${entity.labels.label}</h2>
+
+        <div *ngIf="!sub" class="card mt-3 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Filtros de Pesquisa</h4>
 
 ## -- [MACRO]
 #macro(listXToOneEdit $relation)
-			<div class="form-group">
-				<app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [(ngModel)]="filters['${relation.to.var}.id'].value" id="$relation.to.var" name="$relation.to.var" 
-        			label="${relation.labels.label}" displayfield="#foreach($attr in $relation.toEntity.printerAttributes.flatUp.list)${attr.var}#end"></app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
-            </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [dropdown]="true" [(ngModel)]="filters['${relation.to.var}.id'].value" [id]="'{$relation.to.var}'"
+                            name="{$relation.to.var}" label="${relation.labels.label}" displayfield="${relation.toEntity.printerAttributes.flatUp.list.get(0).var}">
+                        </app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
+                    </div>
+                </div>
 #end
-
 
 #foreach($attr in $entity.searchAttributes.flatUp.list)
 #if ($attr.isSimplePk() && !$attr.jpa.isManuallyAssigned())
@@ -33,104 +34,100 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #set( $valuePath = "${attr.var}")##
 #end
 
+                <div class="form-row">
+                    <div class="form-group col-md-12">
 #if($attr.isTextArea())
-                <mat-form-field>
-	                <textarea matInput [(ngModel)]="filters['$valuePath'].value" autoResize="true" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-	                	placeholder="$attr.labels.label"></textarea>
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <textarea class="form-control" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"></textarea>
 #elseif($attr.isEnum())
-				<mat-form-field>
-                	<mat-select [(ngModel)]="filters['$valuePath'].value" name="$attr.var" ${p}$attr.var="ngModel" placeholder="$attr.labels.label">
-	                    <mat-option *ngFor="let ${attr.var}Option of ${attr.var}Values" [value]="${attr.var}Option.key">{{ ${attr.var}Option.label }}</mat-option>
-	                </mat-select>
-				</mat-form-field>
+                        <label>$attr.labels.label</label>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
+                                <input type="radio" name="$attr.var" id="{{'${attr.var}Option' + i}}" class="custom-control-input" [value]="${attr.var}Option.key" [(ngModel)]="filters['$valuePath'].value">
+                                <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
+                            </div>
+                        </div>
 #elseif($attr.isEmail())
-				<mat-form-field>
-	                <input matInput type="email" [(ngModel)]="filters['$valuePath'].value" validateEmail name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-	                	placeholder="$attr.labels.label"/>
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="email" [(ngModel)]="filters['$valuePath'].value" validateEmail name="$attr.var" id="$attr.var"
+                            ${p}$attr.var="ngModel" />
 #elseif($attr.isUrl())
-				<mat-form-field>
-	                <input matInput type="url" [(ngModel)]="filters['$valuePath'].value" pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-	                	placeholder="$attr.labels.label"/>
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="url" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
+                            pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" ${p}$attr.var="ngModel" />
 #elseif($attr.isString())
-				<mat-form-field>
-	                <input matInput type="text" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-	                	placeholder="$attr.labels.label"/>
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="text" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
+                            ${p}$attr.var="ngModel" />
 #elseif($attr.isNumeric())
-				<mat-form-field>
-	                <input matInput type="number" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-	                	placeholder="$attr.labels.label"/>
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="number" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
+                            ${p}$attr.var="ngModel" />
 #elseif($attr.isDate() && !$attr.isVersion())
 #if($attr.isJavaUtilOnlyDate() || $attr.isLocalDate())
-				<mat-form-field>
-					<input matInput [matDatepicker]="${attr.var}Picker" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-	                	placeholder="$attr.labels.label"/>
-					<mat-datepicker-toggle matSuffix [for]="${attr.var}Picker"></mat-datepicker-toggle>
-					<mat-datepicker touchUi ${p}${attr.var}Picker></mat-datepicker>
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <app-datetime-picker [(ngModel)]="filters['$valuePath'].value" #required($attr) name="$attr.var" [id]="'$attr.var'"
+                            placement="bottom-left"></app-datetime-picker>
 #elseif($attr.isLocalDateTime() || $attr.isInstant())
-				<mat-form-field>
-                    <input matInput [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-                    	[owlDateTime]="$attr.var" [owlDateTimeTrigger]="$attr.var" placeholder="$attr.labels.label" />
-                    <owl-date-time ${p}$attr.var></owl-date-time>
-                </mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <app-datetime-picker [(ngModel)]="filters['$valuePath'].value" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
+                            placement="bottom-left"></app-datetime-picker>
 #else
-                <mat-form-field>
-                    <input matInput [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-                    	[owlDateTime]="$attr.var" [owlDateTimeTrigger]="$attr.var" placeholder="$attr.labels.label" />
-                    <owl-date-time ${p}$attr.var></owl-date-time>
-                </mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <app-datetime-picker [(ngModel)]="filters['$valuePath'].value" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
+                            placement="bottom-left"></app-datetime-picker>
 #end
 #elseif($attr.isBoolean())
-				<mat-checkbox [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel">${attr.labels.label}</mat-checkbox>
+
+                        <input class="custom-control-input" type="checkbox" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
+                            ${p}$attr.var="ngModel" />
+                        <label for="$attr.var">$attr.labels.label</label>
 #else
-				<mat-form-field>
-	                <input matInput type="text" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"
-	                	placeholder="$attr.labels.label"/>
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="text" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
+                            ${p}$attr.var="ngModel" />
 #end
+                    </div>
+                </div>
 
 #end ##---------- [/NON VERSION]
 #end ## foreach(....
-            
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-raised-button color="basic" (click)="onClickSearch()"><mat-icon>search</mat-icon>Pesquisar</button>
-            </mat-card-actions>
-        </mat-card>
 
-        <p></p>
-        <mat-divider></mat-divider>
+                <button class="btn btn-primary" (click)="onClickSearch()">
+                    <i class="fas fas fa-search"></i> Pesquisar
+                </button>
 
-        <div class="search-results">
-        	<!--
-            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
-                <mat-spinner></mat-spinner>
             </div>
-            -->
+        </div>
 
-            <div class="mat-elevation-z8">
+        <div class="search-results card mt-4 shadow-sm">
+            <div class="card-body">
 
-                <mat-form-field class="globalFilter">
-                    <input matInput placeholder="Filtrar" #searchInput>
-                </mat-form-field>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <button class="btn btn-primary" (click)="onClickNew()">
+                            <i class="fas fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input class="form-control" type="text" placeholder="Filtrar" aria-label="Filtrar" #searchInput />
+                    </div>
+                </div>
 
-                <mat-table [dataSource]="dataSource" matSort matSortActive="nome" matSortDirection="asc" matSortDisableClear>
+                <div class="table-responsive">
+
+                    <table cdk-table class="table table-hover table-striped" [dataSource]="dataSource" matSort matSortActive="nome" matSortDirection="asc" matSortDisableClear>
 
 ## --- Result attributes
 #foreach ($attr in $entity.searchResultAttributes.flatUp.list)
 	#if(!$attr.isInPk() && !$attr.isFile())
 		#if ($attr.hasXToOneRelation())
-                	<ng-container matColumnDef="$attr.xToOneRelation.to.var">
-                		<mat-header-cell *matHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</mat-header-cell>
-                		<mat-cell *matCellDef="let entity">
-                			<app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line [entity]="entity"></app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line>
-                		</mat-cell>
-                	</ng-container>
+                        <ng-container cdkColumnDef="$attr.xToOneRelation.to.var">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <td cdk-cell *cdkCellDef="let entity">
+                                <app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line [entity]="entity"></app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line>
+                            </td>
+                        </ng-container>
 		#else
 			#### CPK support
 			#if($attr.isInCpk())
@@ -140,51 +137,47 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 			#end
 			#####
 			#if($attr.isLocalDate())
-			        <ng-container matColumnDef="$attr.var">
-			            <mat-header-cell *matHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</mat-header-cell>
-			            <mat-cell *matCellDef="let entity">{{$valuePath | date:"dd-MM-yyyy" }}</mat-cell>
-			        </ng-container>
+                        <ng-container cdkColumnDef="$attr.var">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd-MM-yyyy" }}</td>
+                        </ng-container>
 			#elseif($attr.isLocalDateTime())
-			    	<ng-container matColumnDef="$attr.var">
-			            <mat-header-cell *matHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</mat-header-cell>
-			            <mat-cell *matCellDef="let entity">{{$valuePath | date:"dd-MM-yyyy hh:mm" }}</mat-cell>
-			        </ng-container>
+                        <ng-container cdkColumnDef="$attr.var">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd-MM-yyyy hh:mm" }}</td>
+                        </ng-container>
 			#else
-					<ng-container matColumnDef="$attr.var">
-			            <mat-header-cell *matHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</mat-header-cell>
-			            <mat-cell *matCellDef="let entity">{{$valuePath}}</mat-cell>
-			        </ng-container>
+                        <ng-container cdkColumnDef="$attr.var">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{$valuePath}}</td>
+                        </ng-container>
 			#end
 		#end
 	#end
 #end
 
-                    <ng-container matColumnDef="actions" class="col-actions">
-                        <mat-header-cell *matHeaderCellDef>AÇÕES</mat-header-cell>
-                        <mat-cell *matCellDef="let entity">
-                            <button mat-raised-button color="primary" matTooltip="Ver o registro" (click)="onClickView(entity)">
-                                <i class="material-icons">pageview</i>
-                                <span class="d-none d-md-inline"> Ver</span>
-                            </button>
-                            &nbsp;
-                            <button mat-raised-button (click)="onClickEdit(entity)">
-                                <i class="material-icons">edit</i>
-                                <span class="d-none d-md-inline"> Editar</span>
-                            </button>
-                            &nbsp;
-                            <button mat-raised-button (click)="onClickRemove(entity)" color="warn">
-                                <i class="material-icons">delete</i>
-                                <span class="d-none d-md-inline"> Remover</span>
-                            </button>
-                        </mat-cell>
-                    </ng-container>
-                    
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                        <ng-container cdkColumnDef="actions">
+                            <th cdk-header-cell *cdkHeaderCellDef><span class="sr-only">Ações</span></th>
+                            <td cdk-cell *cdkCellDef="let entity" class="col-actions text-right">
+                                <button ngbTooltip="Detalhar" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickView(entity)" aria-label="Detalhar">
+                                    <i class="fas fa-fw fa-file"></i>
+                                </button>
+                                <button ngbTooltip="Editar" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickEdit(entity)" aria-label="Editar">
+                                    <i class="fas fa-fw fa-pen"></i>
+                                </button>
+                                <button ngbTooltip="Excluir" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickRemove(entity)" aria-label="Excluir">
+                                    <i class="fas fa-fw fa-trash"></i>
+                                </button>
+                            </td>
+                        </ng-container>
 
-                </mat-table>
+                        <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+                        <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
 
-                <mat-paginator [length]="dataSource.itemsCount$ | async" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                    </table>
+
+                </div>
+                <ngb-pagination class="d-flex justify-content-center" [collectionSize]="dataSource.itemsCount$ | async" [(page)]="paginator.page" [pageSize]="paginator.pageSize" (pageChange)="onPageChanges(${dollar}event)" [boundaryLinks]="true"></ngb-pagination>
             </div>
         </div>
 

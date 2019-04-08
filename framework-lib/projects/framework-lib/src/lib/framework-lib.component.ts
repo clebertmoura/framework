@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'flib-framework-lib',
+  selector: 'fapp-framework-lib',
   template: `
     <p>
       framework-lib works!

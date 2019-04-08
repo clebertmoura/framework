@@ -5,8 +5,8 @@ import { EnumeratorsService } from '../../enumerators.service';
 
 import { Parametro } from '../parametro';
 import { ParametroService } from '../parametro.service';
-import { EntityDetailComponent } from '../../../../../../framework-lib/src/lib/framework/components/entity-detail.component';
-import { MessageService } from '../../../../../../framework-lib/src/lib/framework/util/message.service';
+import { EntityDetailComponent } from 'framework-lib';
+import { MessageService } from 'framework-lib';
 
 @Component({
   selector: 'app-parametro-detail',

@@ -1,0 +1,17 @@
+**/target/
+**/bin/
+**/.settings/
+**/.project
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/.classpath
+**/node_modules/
+**/e2e/
+**/.externalToolBuilders/
+**/.celerio/
+**/src/main/generated-java
+**/src/main/resources/Mensagens_pt_BR.properties
+**/src/main/resources/ValidationMessages_pt_BR.properties
+**/src/main/resources/Enums_pt_BR.properties

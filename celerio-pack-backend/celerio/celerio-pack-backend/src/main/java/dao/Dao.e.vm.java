@@ -44,8 +44,12 @@ public class $output.currentClass extends AppBaseDaoImpl<${entity.root.primaryKe
 #if($attribute.isString())
 		globalFilterPredicates.add(this.createFieldPredicate("${attribute.var}", Operator.LI, globalFilter, mapFieldPaths, from, cBuilder));
 #else
+#if($attribute.hasXToOneRelation())
+		globalFilterPredicates.add(this.createFieldPredicate("${attribute.var}.id", Operator.EQ, globalFilter, mapFieldPaths, from, cBuilder));
+#else
 		globalFilterPredicates.add(this.createFieldPredicate("${attribute.var}", Operator.EQ, globalFilter, mapFieldPaths, from, cBuilder));
-#end		
+#end
+#end
 #end
 #end
 		if (!globalFilterPredicates.isEmpty()) {

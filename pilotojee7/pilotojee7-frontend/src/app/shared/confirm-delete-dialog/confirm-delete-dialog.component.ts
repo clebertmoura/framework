@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-confirm-delete-dialog',
@@ -8,6 +8,6 @@ import { MatDialogRef } from '@angular/material';
 })
 export class ConfirmDeleteDialogComponent {
 
-  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialogComponent>) { }
+  constructor(public dialogRef: NgbActiveModal) { }
 
 }

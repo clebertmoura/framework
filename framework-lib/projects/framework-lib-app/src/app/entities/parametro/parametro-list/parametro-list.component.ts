@@ -4,10 +4,7 @@ import { MatDialog } from '@angular/material';
 import { Parametro } from '../parametro';
 import { ParametroService } from '../parametro.service';
 import { ParametroDataSource } from '../parametro.datasource';
-import { EntityListComponent } from '../../../../../../framework-lib/src/lib/framework/components/entity-list.component';
-import { MessageService } from '../../../../../../framework-lib/src/lib/framework/util/message.service';
-import { FilterMetadata } from 'projects/framework-lib/src/lib/framework/service/paging/filtermetadata';
-import { Operator } from '../../../../../../framework-lib/src/lib/framework/service/paging/operator';
+import { EntityListComponent, MessageService, FilterMetadata, Operator } from 'framework-lib';
 
 @Component({
   selector: 'app-parametro-list',

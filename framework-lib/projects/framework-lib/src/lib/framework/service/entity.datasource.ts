@@ -2,10 +2,11 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { Observable, throwError } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { MatSort, MatPaginator } from '@angular/material';
+import { MatSort } from '@angular/material';
 import { BaseEntity } from '../entity/baseEntity';
 import { EntityService } from './entity.service';
 import { FilterMetadata } from './paging/filtermetadata';
+import { Paginator } from './paging/paginator';
 
 export class EntityDataSource<E extends BaseEntity, S extends EntityService<E>> implements DataSource<E> {
 
@@ -16,7 +17,7 @@ export class EntityDataSource<E extends BaseEntity, S extends EntityService<E>> 
   public loading$ = this.loadingSubject.asObservable();
   public itemsCount$ = this.itemsCountSubject.asObservable();
 
-  constructor(public paginator: MatPaginator, public sort: MatSort, public entityService: S) {
+  constructor(public paginator: Paginator, public sort: MatSort, public entityService: S) {
   }
 
   /**

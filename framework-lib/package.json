@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build_lib": "ng build framework-lib",
+    "npm_pack": "cd dist/framework-lib && npm pack",
+    "package": "npm run build_lib && npm run npm_pack"
   },
   "private": false,
   "dependencies": {
@@ -29,6 +32,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "nebular-icons": "^1.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^4.1.0",
     "ng-pick-datetime": "^7.0.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",

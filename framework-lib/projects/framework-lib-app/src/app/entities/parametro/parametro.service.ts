@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { Parametro } from './parametro';
-import { EntityService } from '../../../../../framework-lib/src/lib/framework/service/entity.service';
 import { environment } from '../../../environments/environment';
-import { PageRequest } from '../../../../../framework-lib/src/lib/framework/service/paging/pagerequest';
-import { PageResponse } from '../../../../../framework-lib/src/lib/framework/service/paging/pageresponse';
 import { map, catchError } from 'rxjs/operators';
+import { EntityService, PageRequest, PageResponse } from 'framework-lib';
 
 @Injectable({
   providedIn: 'root'
@@ -36,12 +34,18 @@ export class ParametroService extends EntityService<Parametro> {
     }
   }
 
+
   protected mapEntityRelations(entity: Parametro, response: any): Parametro {
     return entity;
   }
 
-  public findByPageRequest(pageRequest: PageRequest): Observable<PageResponse<Parametro>> {
-    return this.http.get(this.getApiUrl() + '/findPage.json', this.options)
+    /**
+    * ATENÇÃO: Este método foi criado para simular a resposta do backend. Não precisa implementá-lo no celerio.
+    * @param entity 
+    * @param response 
+    */
+    public findByPageRequest(pageRequest: PageRequest): Observable<PageResponse<Parametro>> {
+      return this.http.get(this.getApiUrl() + '/findPage.json', this.options)
       .pipe(
         map((response: any) => {
           const pageResponse = new PageResponse<Parametro>();
@@ -52,6 +56,10 @@ export class ParametroService extends EntityService<Parametro> {
     );
   }
 
+  /**
+   * ATENÇÃO: Este método foi criado para simular a resposta do backend. Não precisa implementá-lo no celerio.
+   * @param id 
+   */
   getEntity(id: any): Observable<Parametro> {
     return this.http.get(this.getApiUrl() + '/entity.json')
         .pipe(

@@ -1,4 +1,5 @@
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from '../../environments/environment';
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
   return (): Promise<any> => {
@@ -6,9 +7,9 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
       try {
         await keycloak.init({
           config: {
-            url: 'https://homologacao.tjpe.gov.br/auth', // .ie: http://localhost:8080/auth/
-            realm: 'tjpeconnect', // .ie: master
-            clientId: 'pilotojee7-frontend' // .ie: account
+            url: environment.keycloakServerUrl,
+            realm: environment.keycloakRealm,
+            clientId: environment.clientId
           },
           initOptions: {
             onLoad: 'login-required',

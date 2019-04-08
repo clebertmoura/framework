@@ -27,11 +27,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeng/resources/themes/omega/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/ngx-toastr/toastr.css",
-              "src/tjpe-app-theme.scss",
               "src/styles.scss"              
             ],
             "scripts": []
@@ -54,11 +49,11 @@
               "vendorChunk": false,
               "buildOptimizer": true
             },
-            "homolog": {
+            "qa": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.homolog.ts"
+                  "with": "src/environments/environment.qa.ts"
                 }
               ],
               "optimization": true,
@@ -69,13 +64,20 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             },
-            "test": {
+            "staging": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
+                  "with": "src/environments/environment.staging.ts"
                 }
               ],
               "optimization": true,
@@ -86,7 +88,14 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             }
           }
         },
@@ -98,12 +107,6 @@
           "configurations": {
             "production": {
               "browserTarget": "pilotojee7-frontend:build:production"
-            },
-            "homolog": {
-              "browserTarget": "pilotojee7-frontend:build:homolog"
-            },
-            "test": {
-              "browserTarget": "pilotojee7-frontend:build:test"
             }
           }
         },
@@ -121,11 +124,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "node_modules/primeng/resources/themes/omega/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css",
-              "src/styles.scss",
-              "src/tjpe-theme.scss"
+              "src/styles.scss"
             ],
             "scripts": [],
             "assets": [

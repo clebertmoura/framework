@@ -7,7 +7,7 @@
       "root": "projects/framework-lib",
       "sourceRoot": "projects/framework-lib/src",
       "projectType": "library",
-      "prefix": "flib",
+      "prefix": "fapp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",

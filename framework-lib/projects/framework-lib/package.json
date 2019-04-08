@@ -15,6 +15,5 @@
     "@fortawesome/free-regular-svg-icons": "^5.7.2",
     "rxjs": "~6.3.3"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

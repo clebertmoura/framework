@@ -1,32 +1,8 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}.module.ts")##
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  MatToolbarModule,
-  MatTabsModule,
-  MatSelectModule,
-  MatCheckboxModule,
-  MatButtonModule,
-  MatSidenavModule,
-  MatIconModule,
-  MatListModule,
-  MatGridListModule,
-  MatCardModule,
-  MatMenuModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatInputModule,
-  MatProgressSpinnerModule,
-  MatFormFieldModule,
-  MatAutocompleteModule,
-} from '@angular/material';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MatSortModule } from '@angular/material';
 import { FileUploadModule } from 'primeng/fileupload';
-import { PickListModule } from 'primeng/picklist';
-import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
-import { CalendarModule } from 'primeng/calendar';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
@@ -48,36 +24,11 @@ import { ${entity.model.type}RoutingModule } from './${entity.model.type.toLower
     ReactiveFormsModule,
     RouterModule,
 
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
-
-    // Angular Material
-    MatToolbarModule,
-    MatTabsModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatTableModule,
-    MatPaginatorModule,
     MatSortModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
 
 	// Primeng
-    AutoCompleteModule,
     FileUploadModule,
-    PickListModule,
-    TriStateCheckboxModule,
-    CalendarModule,
-    
+
     EntitiesModule,
     
     SharedModule

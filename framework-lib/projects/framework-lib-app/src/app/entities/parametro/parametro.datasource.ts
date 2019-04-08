@@ -1,7 +1,7 @@
 import { Parametro } from './parametro';
 import { ParametroService } from './parametro.service';
 import { MatPaginator, MatSort } from '@angular/material';
-import { EntityDataSource } from '../../../../../framework-lib/src/lib/framework/service/entity.datasource';
+import { EntityDataSource } from 'framework-lib';
 
 /**
  * Implementação da classe de serviço da entidade Parametro.

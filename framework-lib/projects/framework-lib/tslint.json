@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "flib",
+      "fapp",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "flib",
+      "fapp",
       "kebab-case"
     ]
   }

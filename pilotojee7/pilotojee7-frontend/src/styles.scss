@@ -1,78 +1,129 @@
-/* You can add global styles to this file, and also import other style files */
+/* Variaveis Bootstrap */
 
-// Imports functions, variables, and mixins that are needed by other Bootstrap files
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import '~bootstrap/scss/bootstrap-reboot';
-@import '~bootstrap/scss/bootstrap-grid';
-@import "~bootstrap/scss/type";
-@import "~bootstrap/scss/images";
-@import "~bootstrap/scss/code";
+$primary: #42A5F5;
+$secondary: #757575;
+$success: #32c466;
+$info: #3e71e6;
+$warning: #ecb655;
+$danger: #E57373;
+$dark: #1565C0;
+$light: #fff;
+$black: #000;
+
+$body-bg: #F5F5F5;
+
+// Breadcrumbs
+$breadcrumb-padding-y: 0;
+$breadcrumb-padding-x: 0;
+$breadcrumb-bg: transparent;
+$breadcrumb-divider-color: #757575;
+$breadcrumb-active-color: #757575;
+$breadcrumb-divider: quote(">");
+$breadcrumb-border-radius: 0;
+
+// Fontes
+$font-size-base: 0.9rem;
+$font-family-sans-serif: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+
+// Tabelas
+$table-bg: $light;
+$table-dark-bg: $dark;
+$table-dark-border-color: lighten($dark, 7.5%);
+$table-striped-order: even;
+$table-accent-bg: rgba($black, .015);
+$table-hover-bg:  rgba($black, .05);
+
+// Outros
+$enable-rounded: true;
+
+$cdk-z-index-overlay-container: 1200;
+$cdk-z-index-overlay: 1200;
+$cdk-z-index-overlay-backdrop: 1200;
+
+/* Variaveis FontAwesome */
+
+$fa-font-path: "../node_modules/@fortawesome/fontawesome-free/webfonts";
+
+
+/* Imports */
+
+@import "~bootstrap/scss/bootstrap";
 @import '~ngx-toastr/toastr-bs4-alert';
-@import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "./assets/scss/ng-select/default.theme.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
+@import "./assets/scss/nav";
+@import "./assets/scss/sidebar";
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import "./assets/scss/ng-pick-datetime/picker.scss";
 
-html,
-body {
-    height: 100%;
+/* Outras Customizacoes */
+
+.mat-sidenav-content {
+  min-height: 100vh;
+  padding-top: 80px;
 }
 
-body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+.mat-drawer-backdrop.mat-drawer-shown {
+  background-color: rgba(0, 0, 0, .6)
 }
 
-.content-wrapper-form {
-    padding: 1em;
+*::-webkit-scrollbar {
+  width: 0.5em;
 }
 
-.mat-card.mat-card-detail {
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 0px;
+*::-webkit-scrollbar-track {
+  background-color: #E0E0E0;
+}
 
-    .mat-card-header {
-        color: rgba(0, 0, 0, 0.54);
-        background: linear-gradient(to bottom, #f6f7f9 0%, #ebedf0 100%);
-        height: 3em;
-        display: flex;
-        align-items: center;
-    }
+*::-webkit-scrollbar-thumb {
+  background-color:#9E9E9E;
+  outline: 1px solid #E0E0E0;
+}
 
-    .mat-card-title {
-        margin-bottom: 0px;
-        margin-left: 1em;
-    }
+.userbox {
+  border-left: 6px solid $primary;
+}
 
-    .mat-card-content {
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
-        margin: 1.5em;
-    }
+label:not(.custom-control-label) {
+  color: $gray-600;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  @extend .mb-1;
+}
 
-    .mat-card-actions {
-        padding-top: 0em;
-        padding-bottom: 0em;
-        margin-left: 1em;
-    }
+th {
+  color: $primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  @extend .mb-1;
+}
 
-    .mat-form-field {
-        width: 100%;
-    }
-    
-    .form-fields {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .form-fields>* {
-        width: 100%;
-    }
-    
-    .mat-column-actions {
-        justify-content: center;
-    }
-    
+.custom-checkbox {
+  label {
+    padding-top: 0.2rem;
+  }
+}
+
+.card-title {
+  @extend .pb-2;
+  @extend .mb-4;
+  @extend .border-bottom;
+}
+
+.grid-button {
+  @extend .ml-1;
+}
+
+.col-actions {
+  white-space: nowrap;
+  @extend .py-2;
+}
+
+.toast-top-right {
+  top: 80px;
+  right: 12px;
 }

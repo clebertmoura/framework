@@ -1,14 +1,14 @@
 import { OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService} from '../util/message.service';
 import { EntityService } from '../service/entity.service';
 import { BaseEntity } from '../entity/baseEntity';
+import { AbstractEnumeratorsService } from '../service/enumerators.service';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { isArray } from 'util';
 import { Error } from '../service/error/error';
 import { ErrorLayer } from '../service/error/errorlayer';
-import { MessageService } from '../util/message.service';
-import { AbstractEnumeratorsService } from '../service/enumerators.service';
 import { Observable } from 'rxjs';
 
 export abstract class EntityDetailComponent<E extends BaseEntity, S extends EntityService<E>> implements OnInit, OnDestroy {
@@ -22,6 +22,8 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
     public viewMode = false;
 
     public params_subscription: any;
+
+    protected cacheEnums: any[] = [];
 
     @Input() public sub = false;
 
@@ -99,6 +101,17 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
         }
     }
 
+    /**
+     * Retorna a label de um enum.
+     *
+     * @param enumName Nome do enum
+     * @param enumValue Valor do enum.
+     */
+    public getEnumLabel(enumName: string, enumValue: string): string {
+        const values = this.cacheEnums[enumName].filter(e => e.key === enumValue);
+        return values.length > 0 ? values[0].label : enumValue;
+    }
+
     protected getModulePath(): string {
         return '';
     }
@@ -156,7 +169,7 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
                     this.saveClicked.emit(this.entity);
                     this.messageService.info('Saved OK and msg emitted', 'Angular Rocks!');
                 } else {
-                    this.messageService.info('Sucesso', 'Registro salvo com sucesso!');
+                    this.messageService.info('Registro salvo com sucesso!', 'Sucesso');
                     this.openList();
                 }
             },

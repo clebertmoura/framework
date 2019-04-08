@@ -8,16 +8,21 @@
 //
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MessageService } from '../util/message.service';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AbstractEnumeratorsService } from 'framework-lib';
 
-@Injectable()
-export class EnumeratorsService {
+@Injectable({
+    providedIn: 'root'
+})
+export class EnumeratorsService extends AbstractEnumeratorsService {
 
-    protected apiUrl: string = environment.baseUrl + '/v1/enums/';
+    constructor(protected http: HttpClient) {
+        super(http);
+    }
 
-    constructor(protected http: HttpClient, protected messageService: MessageService) {
+    public getApiUrl(): string {
+        return environment.baseUrl + '/v1/enums/';
     }
 
     /**
@@ -25,7 +30,21 @@ export class EnumeratorsService {
      * @param enumType
      */
     public getEnumValues(enumType: string): Observable<any[]> {
-        return this.http.get<any[]>(this.apiUrl + enumType);
+        return this.http.get<any[]>(this.getApiUrl() + enumType);
+    }
+
+    /**
+     * Retorna a coleção de valores do enumerator: Genero
+     */
+    public getGeneroValues(): Observable<any[]> {
+        return this.getEnumValues('Genero');
+    }
+
+    /**
+     * Retorna a coleção de valores do enumerator: Ocorrencia
+     */
+    public getOcorrenciaValues(): Observable<any[]> {
+        return this.getEnumValues('Ocorrencia');
     }
 
     /**
@@ -40,13 +59,6 @@ export class EnumeratorsService {
      */
     public getStatusValues(): Observable<any[]> {
         return this.getEnumValues('Status');
-    }
-
-    /**
-     * Retorna a coleção de valores do enumerator: TipoParametro
-     */
-    public getTipoParametroValues(): Observable<any[]> {
-        return this.getEnumValues('TipoParametro');
     }
 
 }
