@@ -1,5 +1,5 @@
 {
-  "realm": "tjpeconnect",
+  "realm": "pilotojee7",
   "auth-server-url": "https://homologacao.tjpe.gov.br/auth",
   "ssl-required": "external",
   "bearer-only": true,

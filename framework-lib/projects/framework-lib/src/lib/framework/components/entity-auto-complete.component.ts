@@ -1,12 +1,18 @@
-import { Input } from '@angular/core';
+import { Input, OnInit, OnDestroy } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { MessageService } from '../util/message.service';
 import { EntityService } from '../service/entity.service';
 import { BaseEntity } from '../entity/baseEntity';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { throwError, of, Subject } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
+import { FilterMetadata } from '../service/paging/filtermetadata';
+import { HttpErrorResponse } from '@angular/common/http';
+import { isArray } from 'util';
+import { Error } from '../service/error/error';
+import { ErrorLayer } from '../service/error/errorlayer';
 
 export abstract class EntityCompleteComponent<E extends BaseEntity, S extends EntityService<E>>
-    implements ControlValueAccessor {
+    implements ControlValueAccessor, OnInit, OnDestroy {
 
   @Input() disabled = false;
   @Input() required = false;
@@ -17,32 +23,96 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
   @Input() displayfield: string;
   @Input() sortField: string;
   @Input() sortOrder: string;
-  @Input() maxItems = 10;
+  @Input() maxItems = -1;
   @Input() dropdown = false;
+  @Input() loadOnInit = true;
   @Input() multiple = false;
 
   // The internal data model
-  private _value: E = null;
-  private _values: E[] = [];
+  private internalValue: E = null;
+  private internalValues: E[] = [];
+  private internalFilters: { [s: string]: FilterMetadata } = {};
 
   public suggestions: E[] = [];
 
+  public loading;
+
+  public searchInput$ = new Subject<string>();
+
   // Placeholders for the callbacks
-  private _onTouchedCallback: () => void = () => {};
-  private _onChangeCallback: (_: any) => void = () => {};
+  private onTouchedCallback: () => void = () => {};
+  private onChangeCallback: (_: any) => void = () => {};
 
   constructor(
-    protected entityService: S
+    protected entityService: S,
+    protected messageService: MessageService
   ) {}
+
+  ngOnInit() {
+    if (this.dropdown && this.loadOnInit) {
+      this.fetchByFilter();
+    }
+
+    this.searchInput$.pipe(
+      distinctUntilChanged(),
+      debounceTime(200),
+      tap(() => this.loading = true),
+      switchMap(
+        term => this.entityService
+        .findPage(term, null, this.sortField, this.sortOrder, 0, this.maxItems).pipe(
+            map(response =>  response.results),
+            tap(() => this.loading = false),
+            catchError(() => {
+              this.loading = false;
+              return of([]);
+            }))
+      )
+    ).subscribe(items => {
+      this.suggestions = items;
+    }, (err) => {
+      this.suggestions = [];
+      this.handleError(err);
+    });
+
+  }
+
+  public handleError(httpError: HttpErrorResponse) {
+    if (httpError.status === 400) {
+        if (httpError.error && isArray(httpError.error)) {
+          const errors = Error.toArray(httpError.error);
+          for (const e of errors) {
+            switch (e.layer) {
+              case ErrorLayer.BEAN_VALIDATION:
+                  this.messageService.warning(e.propertyPath + ': ' + e.message);
+                  break;
+              case ErrorLayer.BUSINESS:
+                  this.messageService.warning(e.message);
+                  break;
+              default:
+                  this.messageService.error(e.message);
+                  break;
+            }
+          }
+        } else {
+          this.messageService.error('Erro ao consultar!');
+        }
+    } else {
+      this.messageService.error('Erro ao consultar!');
+    }
+  }
+
+  ngOnDestroy() {
+    this.searchInput$.unsubscribe();
+  }
 
   @Input()
   get value(): any {
-    return this._value;
+    return this.internalValue;
   }
 
   // set accessor including call the onchange callback
   set value(v: any) {
-    if (this._value != null && (v == null || v === '')) {
+    if (this.internalValue != null && (v == null || v === '')) {
       this.select(null);
     }
     // nop, see writeValue and select method
@@ -50,23 +120,48 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
 
   @Input()
   get values(): any {
-    return this._values;
+    return this.internalValues;
   }
 
   // set accessor including call the onchange callback
   set values(v: any) {
-    if (this._values != null && (v == null || v === '')) {
+    if (this.internalValues != null && (v == null || v === '')) {
       this.select(null);
+    }
+    // nop, see writeValue and select method
+  }
+
+  @Input()
+  get filters(): any {
+    return this.internalFilters;
+  }
+
+  // set accessor including call the onchange callback
+  set filters(filters: any) {
+    this.suggestions = [];
+    this.internalFilters = filters;
+    if (this.internalFilters != null && Object.keys(filters).length > 0) {
+      // fetch by filter
+      this.fetchByFilter();
     }
     // nop, see writeValue and select method
   }
 
   // Set touched on blur
   onTouched() {
-    this._onTouchedCallback();
+    this.onTouchedCallback();
   }
 
-  private isMultiple(): boolean {
+  private fetchByFilter(): void {
+    this.entityService
+      .findPage('', this.internalFilters, this.sortField, this.sortOrder, 0, this.maxItems)
+      .pipe(catchError(error => throwError(error)))
+      .subscribe(response => {
+        this.suggestions = response.results;
+      });
+  }
+
+  public isMultiple(): boolean {
     return (this.multiple && this.multiple.toString() === 'true');
   }
 
@@ -76,25 +171,25 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
       if (value != null) {
         if (Array.isArray(value)) {
           value.map(item => {
-            this._values.push(<E> item);
+            this.internalValues.push(item as E);
           });
         } else {
-          this._values.push(<E> value);
+          this.internalValues.push(value as E);
         }
       }
     } else {
-      this._value = <E> value;
+      this.internalValue = value as E;
     }
   }
 
   // From ControlValueAccessor interface
   registerOnChange(fn: any) {
-    this._onChangeCallback = fn;
+    this.onChangeCallback = fn;
   }
 
   // From ControlValueAccessor interface
   registerOnTouched(fn: any) {
-    this._onTouchedCallback = fn;
+    this.onTouchedCallback = fn;
   }
 
   // From ControlValueAccessor interface
@@ -111,7 +206,7 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
 
   select(value: any) {
     this.writeValue(value);
-    this._onChangeCallback(value);
+    this.onChangeCallback(value);
   }
-
 }
+

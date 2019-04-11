@@ -5,11 +5,11 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<jaxb:globalBindings>
 		<jaxb:serializable uid="1" />
-		<xjc:javaType adapter="br.jus.framework.service.adapter.DateTimeAdapter"
+		<xjc:javaType adapter="br.com.framework.service.adapter.DateTimeAdapter"
 			name="java.util.Date" xmlType="xs:dateTime" />
-		<xjc:javaType adapter="br.jus.framework.service.adapter.DateAdapter"
+		<xjc:javaType adapter="br.com.framework.service.adapter.DateAdapter"
 			name="java.util.Date" xmlType="xs:date" />
-		<xjc:javaType adapter="br.jus.framework.service.adapter.TimeAdapter"
+		<xjc:javaType adapter="br.com.framework.service.adapter.TimeAdapter"
 			name="java.util.Date" xmlType="xs:time" />
 	</jaxb:globalBindings>
 	<jaxb:bindings schemaLocation="./TiposSimples.xsd"

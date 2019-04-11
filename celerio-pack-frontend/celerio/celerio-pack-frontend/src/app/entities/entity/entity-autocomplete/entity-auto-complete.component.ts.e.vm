@@ -1,6 +1,6 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-autocomplete/${entity.model.type.toLowerCase()}-autocomplete.component.ts")##
 import { Component, OnInit, forwardRef } from '@angular/core';
-import { EntityCompleteComponent } from 'framework-lib';
+import { EntityCompleteComponent, MessageService } from 'framework-lib';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ${entity.model.type} } from '../${entity.model.type.toLowerCase()}';
 import { ${entity.service.type} } from '../${entity.model.type.toLowerCase()}.service';
@@ -19,8 +19,8 @@ export const ${entity.model.type.toUpperCase()}_AUTO_COMPLETE_CONTROL_VALUE_ACCE
 })
 export class ${entity.model.type}AutocompleteComponent extends EntityCompleteComponent<${entity.model.type}, ${entity.model.type}Service> {
 
-  constructor(protected entityService: ${entity.model.type}Service) {
-    super(entityService);
+  constructor(protected entityService: ${entity.model.type}Service, protected messageService: MessageService) {
+    super(entityService, messageService);
   }
 
 }

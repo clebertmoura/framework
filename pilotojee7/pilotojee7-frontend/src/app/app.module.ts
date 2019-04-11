@@ -52,14 +52,13 @@ import { NgxMaskModule } from 'ngx-mask';
   EnumeratorsService,
   MessageService,
     KeycloakService,
-    SpinnerService
-    // ,
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initializer,
-    //   multi: true,
-    //   deps: [KeycloakService]
-    // }
+    SpinnerService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService]
+    }
   ],
   entryComponents: [
     ConfirmDeleteDialogComponent

@@ -18,7 +18,7 @@ import { PageResponse } from '../service/paging/pageresponse';
 import { EntityDataSource } from '../service/entity.datasource';
 import { FilterMetadata } from '../service/paging/filtermetadata';
 import { Paginator } from '../service/paging/paginator';
-import { fromEvent, merge } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { EntityDeleteDialogComponent } from './entity-delete-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -298,5 +298,5 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
     } else {
         this.messageService.error('Erro ao salvar!');
     }
-}
+  }
 }

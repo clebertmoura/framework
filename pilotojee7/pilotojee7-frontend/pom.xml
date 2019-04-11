@@ -11,19 +11,84 @@
 	<name>pilotojee7-frontend</name>
 	
 	<properties>
-		<keycloak.resource>pilotojee7-frontend</keycloak.resource>
-		<context-root>pilotojee7</context-root>
+		<keycloak.resource>${project.artifactId}</keycloak.resource>
+		<context-root>${project.parent.artifactId}</context-root>
 	</properties>
 	
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>${version.wildfly.maven.plugin}</version>
+			</plugin>
+			<!-- os plugins frontend-maven-plugin e maven-war-plugin devem ser desabilitados no piloto -->
+			<!-- <plugin>
+		        <groupId>com.github.eirslett</groupId>
+		        <artifactId>frontend-maven-plugin</artifactId>
+		        <version>1.7.5</version>
+		        <executions>
+		        	<execution>
+				        <id>install node and npm</id>
+				        <goals>
+				            <goal>install-node-and-npm</goal>
+				        </goals>
+				        <phase>generate-resources</phase>
+				    </execution>
+					<execution>
+					    <id>npm install</id>
+					    <goals>
+					        <goal>npm</goal>
+					    </goals>
+					    <phase>generate-resources</phase>
+					    <configuration>
+					        <arguments>install</arguments>
+					    </configuration>
+					</execution>
+					<execution>
+					    <id>npm package</id>
+					    <goals>
+					        <goal>npm</goal>
+					    </goals>
+					    <phase>generate-resources</phase>
+					    <configuration>
+					        <arguments>run-script build-maven-${ambiente}</arguments>
+					    </configuration>
+					</execution>
+		        </executions>
+		        <configuration>
+			        <nodeVersion>v10.15.1</nodeVersion>
+			        <workingDirectory>${project.basedir}</workingDirectory>
+			        <installDirectory>${project.build.outputDirectory}</installDirectory>
+			        <npmRegistryURL>http://www.tjpe.jus.br/nexus/repository/npm-group/</npmRegistryURL>
+			    </configuration>
+		    </plugin>
+			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${version.war.plugin}</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+					<webResources>
+						<resource>
+							<directory>dist/pilotojee7-frontend</directory>
+							<filtering>false</filtering>
+							<includes>
+								<include>**/*.*</include>
+							</includes>
+						</resource>
+						<resource>
+							<directory>src/main/webapp/WEB-INF</directory>
+							<targetPath>/WEB-INF</targetPath>
+							<filtering>true</filtering>
+							<includes>
+								<include>**/*.xml</include>
+								<include>**/*.conf</include>
+							</includes>
+						</resource>
+					</webResources>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 	<profiles>

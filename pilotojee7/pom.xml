@@ -58,6 +58,8 @@
 		<jpaProvider.class>org.hibernate.jpa.HibernatePersistenceProvider</jpaProvider.class>
 		<jtaPlatform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</jtaPlatform>
 		<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
+		
+		<server-group-name>srg-${project.artifactId}</server-group-name>
 
 		<!-- Celerio -->
 		<celerio-maven-plugin.version>4.0.23</celerio-maven-plugin.version>
@@ -199,6 +201,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<ambiente>desenvolvimento</ambiente>
 				<keycloak.realm>pilotojee7</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://homologacao.tjpe.gov.br/auth</keycloak.auth-server-url>
@@ -208,6 +211,7 @@
 		<profile>
 			<id>teste</id>
 			<properties>
+				<ambiente>teste</ambiente>
 				<keycloak.realm>pilotojee7</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://teste.tjpe.gov.br/auth</keycloak.auth-server-url>
@@ -217,6 +221,7 @@
 		<profile>
 			<id>homologacao</id>
 			<properties>
+				<ambiente>homologacao</ambiente>
 				<keycloak.realm>pilotojee7</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://homologacao.tjpe.gov.br/auth</keycloak.auth-server-url>
@@ -226,6 +231,7 @@
 		<profile>
 			<id>producao</id>
 			<properties>
+				<ambiente>producao</ambiente>
 				<keycloak.realm>pilotojee7</keycloak.realm>
 				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://www.tjpe.gov.br/auth</keycloak.auth-server-url>
