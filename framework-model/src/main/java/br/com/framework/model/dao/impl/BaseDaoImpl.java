@@ -925,6 +925,25 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		}
 	}
 	
+	/**
+	 * Adiciona o predicado criado na lista de predicados informada.
+	 * 
+	 * @param predicates
+	 * @param fieldName
+	 * @param operator
+	 * @param filterValue
+	 * @param mapFieldPaths
+	 * @param from
+	 * @param cBuilder
+	 */
+	protected void addGlobalFilterPredicate(List<Predicate> predicates, String fieldName, Operator operator, String filterValue, Map<String, Path<?>> mapFieldPaths, 
+    		Root<E> from, CriteriaBuilder cBuilder) {
+    	Predicate predicate = this.createFieldPredicate(fieldName, operator, filterValue, mapFieldPaths, from, cBuilder);
+    	if (predicate != null) {
+    		predicates.add(predicate);
+    	}
+    }
+	
 	
 	/**
 	 * Cria um {@link Predicate} para o campo/operador/valor informados.

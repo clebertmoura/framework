@@ -266,7 +266,7 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
     const id = this.getEntityId(entity);
     this.entityService.delete(id).subscribe(
       response => {
-        this.currentPage.remove(entity);
+        //this.currentPage.remove(entity);
         this.messageService.info('O registro foi removido.', 'Sucesso!');
         this.loadPage();
       },

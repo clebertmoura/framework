@@ -42,12 +42,12 @@ public class $output.currentClass extends AppBaseDaoImpl<${entity.root.primaryKe
 #foreach($attribute in $entity.searchResultAttributes.flatUp.list)
 #if(!$attribute.isInPk() && !$attribute.isFile())
 #if($attribute.isString())
-		globalFilterPredicates.add(this.createFieldPredicate("${attribute.var}", Operator.LI, globalFilter, mapFieldPaths, from, cBuilder));
+		addGlobalFilterPredicate(globalFilterPredicates, "${attribute.var}", Operator.LI, globalFilter, mapFieldPaths, from, cBuilder);
 #else
 #if($attribute.hasXToOneRelation())
-		globalFilterPredicates.add(this.createFieldPredicate("${attribute.var}.id", Operator.EQ, globalFilter, mapFieldPaths, from, cBuilder));
+		addGlobalFilterPredicate(globalFilterPredicates, "${attribute.var}.id", Operator.EQ, globalFilter, mapFieldPaths, from, cBuilder);
 #else
-		globalFilterPredicates.add(this.createFieldPredicate("${attribute.var}", Operator.EQ, globalFilter, mapFieldPaths, from, cBuilder));
+		addGlobalFilterPredicate(globalFilterPredicates, "${attribute.var}", Operator.EQ, globalFilter, mapFieldPaths, from, cBuilder);
 #end
 #end
 #end

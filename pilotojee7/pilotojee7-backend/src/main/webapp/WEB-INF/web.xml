@@ -44,7 +44,7 @@
 	</listener>
  -->
  
-	<security-constraint>
+	<!-- <security-constraint>
 		<web-resource-collection>
 			<web-resource-name>API REST Protegida</web-resource-name>
 			<url-pattern>/api/*</url-pattern>
@@ -52,11 +52,11 @@
 		<auth-constraint>
 			<role-name>pilotojee7-backend.acesso.api</role-name>
 		</auth-constraint>
-	</security-constraint>
+	</security-constraint> -->
 	
 	<login-config>
 		<auth-method>KEYCLOAK</auth-method>
-		<realm-name>pilotojee7</realm-name>
+		<realm-name>${keycloak.realm}</realm-name>
 	</login-config>
 
 	<!-- specify all the roles defined for this web app -->

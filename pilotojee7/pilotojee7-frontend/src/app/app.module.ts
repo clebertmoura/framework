@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSidenavModule, MatSortModule } from '@angular/material';
 import { MessageService } from 'framework-lib';
 import { EnumeratorsService } from './entities/enumerators.service';
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +17,7 @@ import { initializer } from './keycloak/app.init';
 import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { SpinnerService } from './util/spinner/spinner.service';
 import { SpinnerComponent } from './util/spinner/spinner.component';
+import { ToastMessageService } from './util/toast-message.service';
 import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
@@ -31,8 +32,6 @@ import { NgxMaskModule } from 'ngx-mask';
     ToastrModule.forRoot({
       closeButton: true,
       positionClass: 'toast-top-right',
-      timeOut: 0,
-      extendedTimeOut: 0,
       maxOpened: 5,
       autoDismiss: true,
     }),
@@ -45,14 +44,15 @@ import { NgxMaskModule } from 'ngx-mask';
     MatSidenavModule,
     MatSortModule,
 
-    SharedModule,
-    // MainModule
+    SharedModule
   ],
   providers: [
-  EnumeratorsService,
-  MessageService,
+  	EnumeratorsService,
+  	MessageService,
     KeycloakService,
     SpinnerService,
+    ToastrService,
+    ToastMessageService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializer,

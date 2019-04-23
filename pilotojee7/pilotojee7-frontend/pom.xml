@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>pilotojee7</artifactId>
-		<version>3.0.4-SNAPSHOT</version>
+		<version>3.0.6</version>
 	</parent>
 	<artifactId>pilotojee7-frontend</artifactId>
 	<packaging>war</packaging>
@@ -60,7 +60,7 @@
 			        <nodeVersion>v10.15.1</nodeVersion>
 			        <workingDirectory>${project.basedir}</workingDirectory>
 			        <installDirectory>${project.build.outputDirectory}</installDirectory>
-			        <npmRegistryURL>http://www.tjpe.jus.br/nexus/repository/npm-group/</npmRegistryURL>
+			        <npmRegistryURL>http://nexus.trinitysolucoes.com.br:8081/repository/npm-group/</npmRegistryURL>
 			    </configuration>
 		    </plugin>
 			<plugin>

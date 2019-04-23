@@ -1,7 +1,9 @@
 export const environment = {
   production: true,
-  keycloakServerUrl: 'http://localhost:8080/auth',
-  keycloakRealm: 'pilotojee7',
-  clientId: 'pilotojee7-frontend',
-  baseUrl: 'http://localhost:8080/pilotojee7-backend/api'
+  baseUrl: 'http://localhost:8080/pilotojee7-backend/api',
+  keycloakConfig: {
+    url: 'http://localhost:8080/auth',
+    realm: 'pilotojee7', // .ie: master
+    clientId: 'pilotojee7-frontend' // .ie: account
+  }
 };

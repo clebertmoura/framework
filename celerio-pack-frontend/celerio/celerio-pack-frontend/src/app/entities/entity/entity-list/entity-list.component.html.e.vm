@@ -116,7 +116,7 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 
                 <div class="table-responsive">
 
-                    <table cdk-table class="table table-hover table-striped" [dataSource]="dataSource" matSort matSortActive="nome" matSortDirection="asc" matSortDisableClear>
+                    <table cdk-table class="table table-hover table-striped" [dataSource]="dataSource" matSort matSortDirection="asc" matSortDisableClear>
 
 ## --- Result attributes
 #foreach ($attr in $entity.searchResultAttributes.flatUp.list)
@@ -139,12 +139,12 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 			#if($attr.isLocalDate())
                         <ng-container cdkColumnDef="$attr.var">
                             <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
-                            <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd-MM-yyyy" }}</td>
+                            <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd/MM/yyyy" }}</td>
                         </ng-container>
 			#elseif($attr.isLocalDateTime())
                         <ng-container cdkColumnDef="$attr.var">
                             <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
-                            <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd-MM-yyyy hh:mm" }}</td>
+                            <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd/MM/yyyy HH:mm" }}</td>
                         </ng-container>
 			#else
                         <ng-container cdkColumnDef="$attr.var">

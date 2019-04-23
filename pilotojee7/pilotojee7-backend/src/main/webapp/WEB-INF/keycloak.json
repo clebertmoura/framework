@@ -1,9 +1,12 @@
 {
-  "realm": "pilotojee7",
-  "auth-server-url": "https://homologacao.tjpe.gov.br/auth",
-  "ssl-required": "external",
+  "realm": "${keycloak.realm}",
   "bearer-only": true,
-  "use-resource-role-mappings" : true,
+  "auth-server-url": "${keycloak.auth-server-url}",
+  "ssl-required": "external",
+  "resource": "pilotojee7-backend",
+  "verify-token-audience": true,
+  "use-resource-role-mappings": true,
   "enable-cors": true,
-  "resource": "pilotojee7-backend"
+  "confidential-port": 0,
+  "realm-public-key": "${keycloak.realm-public-key}"
 }

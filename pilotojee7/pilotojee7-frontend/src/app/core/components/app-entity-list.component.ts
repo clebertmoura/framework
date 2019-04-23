@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BaseEntity, EntityService, MessageService, EntityListComponent } from 'framework-lib';
 import { EnumeratorsService } from 'src/app/entities/enumerators.service';
+import { ConfirmDeleteDialogComponent } from '../../shared/confirm-delete-dialog/confirm-delete-dialog.component';
 
 export abstract class AppEntityListComponent<
   E extends BaseEntity,
@@ -27,5 +28,21 @@ export abstract class AppEntityListComponent<
 
   protected getModulePath(): string {
     return '/pages/entities';
+  }
+  
+  /**
+   * Executado ao clicar no botão Edit
+   * @param entity registro selecionado.
+   */
+  public onClickRemove(entity: E): void {
+    console.log('sobrecarga onClickRemove: ', entity);
+    const dialogRef = this.confirmDeleteDialog.open(ConfirmDeleteDialogComponent);
+    dialogRef.result.then((result) => {
+      if (result === 'delete') {
+        this.delete(entity);
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 }

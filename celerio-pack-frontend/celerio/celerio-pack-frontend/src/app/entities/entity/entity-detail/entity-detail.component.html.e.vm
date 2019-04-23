@@ -100,11 +100,13 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #elseif($attr.isEnum())
                         <label>$attr.labels.label</label>
                         <div>
-                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
-                                <input type="radio" name="$attr.var" id="{{'${attr.var}Option' + i}}" class="custom-control-input"
-                                    [value]="${attr.var}Option.key" [(ngModel)]="$valuePath" [attr.disabled]="viewMode">
-                                <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
-                            </div>
+                        	<fieldset [disabled]="viewMode">
+	                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
+	                                <input type="radio" name="$attr.var" id="{{'${attr.var}Option' + i}}" class="custom-control-input"
+	                                    [value]="${attr.var}Option.key" [(ngModel)]="$valuePath">
+	                                <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
+	                            </div>
+                            </fieldset>
                         </div>
                         <!--
                         #mderror($attr)

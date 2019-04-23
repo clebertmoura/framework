@@ -10,7 +10,7 @@
         
         <!-- default global sequence mapping (optional). initialValue can be set and defaults to 1 when is not set. -->
         <sequences>
-            <sequence tableNamePattern="*" sequenceName="*" allocationSize="1" />
+            <sequence tableNamePattern="*" sequenceName="*" allocationSize="1" schema="cadastro" />
         </sequences>
 
         <!-- global number mapping (optional) -->
@@ -83,211 +83,97 @@
 
     <entityConfigs>
 
-        <entityConfig tableName="desafio" entityName="Desafio" sequenceName="seq_desafio">
+        <entityConfig tableName="driver" entityName="Driver" sequenceName="seq_driver" schema="cadastro">
             <columnConfigs>
             
-	            <columnConfig columnName="id" fieldName="id" formField="false" />
-	            <columnConfig columnName="nome" fieldName="nome" formField="true" searchField="true" searchResult="true" displayOrder="1"/>
-	            <columnConfig columnName="descricao" fieldName="descricao" formField="true" searchField="false" searchResult="false" displayOrder="2"/>
-	            <columnConfig columnName="ordem" fieldName="ordem" formField="true" searchField="false" searchResult="false" displayOrder="3"/>
-	            <columnConfig columnName="is_enabled" formField="true" searchField="false" searchResult="false" displayOrder="4"/>
-                <columnConfig columnName="ocorrencia" fieldName="ocorrencia" sharedEnumName="Ocorrencia" formField="true" searchField="true" searchResult="true" displayOrder="5"/>
-                <columnConfig columnName="link_video" fieldName="linkVideo" formField="true" searchField="false" searchResult="false" displayOrder="6"/>
-                <columnConfig columnName="dia_1" fieldName="dia1" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="7"/>
-                <columnConfig columnName="dia_2" fieldName="dia2" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="8"/>
-                <columnConfig columnName="dia_3" fieldName="dia3" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="9"/>
-                <columnConfig columnName="dia_4" fieldName="dia4" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="10"/>
-                <columnConfig columnName="dia_5" fieldName="dia5" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="11"/>
-                <columnConfig columnName="dia_6" fieldName="dia6" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="12"/>
-                <columnConfig columnName="dia_7" fieldName="dia7" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="13"/>
-                <columnConfig columnName="dia_8" fieldName="dia8" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="14"/>
-                <columnConfig columnName="dia_9" fieldName="dia9" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="15"/>
-                <columnConfig columnName="dia_10" fieldName="dia10" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="16"/>
-                <columnConfig columnName="dia_11" fieldName="dia11" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="17"/>
-                <columnConfig columnName="dia_12" fieldName="dia12" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="18"/>
-                <columnConfig columnName="dia_13" fieldName="dia13" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="19"/>
-                <columnConfig columnName="dia_14" fieldName="dia14" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="20"/>
-                <columnConfig columnName="dia_15" fieldName="dia15" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="21"/>
-                <columnConfig columnName="dia_16" fieldName="dia16" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="22"/>
-                <columnConfig columnName="dia_17" fieldName="dia17" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="23"/>
-                <columnConfig columnName="dia_18" fieldName="dia18" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="24"/>
-                <columnConfig columnName="dia_19" fieldName="dia19" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="25"/>
-                <columnConfig columnName="dia_20" fieldName="dia20" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="26"/>
-                <columnConfig columnName="dia_21" fieldName="dia21" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="27"/>
-                <columnConfig columnName="dia_22" fieldName="dia22" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="28"/>
-                <columnConfig columnName="dia_23" fieldName="dia23" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="29"/>
-                <columnConfig columnName="dia_24" fieldName="dia24" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="30"/>
-                <columnConfig columnName="dia_25" fieldName="dia25" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="31"/>
-                <columnConfig columnName="dia_26" fieldName="dia26" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="32"/>
-                <columnConfig columnName="dia_27" fieldName="dia27" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="33"/>
-                <columnConfig columnName="dia_28" fieldName="dia28" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="34"/>
-                <columnConfig columnName="dia_29" fieldName="dia29" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="35"/>
-                <columnConfig columnName="dia_30" fieldName="dia30" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="36"/>
-                
-                <columnConfig columnName="capa_content_type" fieldName="capaContentType" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="capa_size" fieldName="capaSize" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="capa_file_name" fieldName="capaFileName" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="capa_binary" fieldName="capaBinary" formField="true" searchField="false" searchResult="false" />
+	            <columnConfig columnName="id_driver" formField="false" fieldName="id" />
+	            <columnConfig columnName="name" fieldName="name" searchField="true" searchResult="true" displayOrder="1"/>
+                <columnConfig columnName="cpf" fieldName="cpf" searchField="true" searchResult="true" displayOrder="2"/>
+                <columnConfig columnName="driver_key" fieldName="driverKey" searchField="false" searchResult="false" displayOrder="3"/>
                 
 				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
             	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="fl_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+        <entityConfig tableName="device" entityName="Device" sequenceName="seq_device" schema="cadastro">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_device" formField="false" fieldName="id" />
+	            <columnConfig columnName="id_driver">
+					<manyToOneConfig var="driver"/>
+				</columnConfig>
+	            
+	            <columnConfig columnName="uuid" fieldName="uuid" searchField="false" searchResult="false" displayOrder="1"/>
+                <columnConfig columnName="model" fieldName="model" searchField="true" searchResult="true" displayOrder="2"/>
+                <columnConfig columnName="platform" fieldName="platform" searchField="true" searchResult="true" displayOrder="3"/>
+                <columnConfig columnName="device_version" fieldName="deviceVersion" searchField="false" searchResult="false" displayOrder="4"/>
+                <columnConfig columnName="mobile_number" fieldName="mobileNumber" searchField="true" searchResult="true" displayOrder="5"/>
+                <columnConfig columnName="fl_mobnumber_verified" fieldName="mobileNumberVerified" sharedEnumName="SimNao" searchField="true" searchResult="true" displayOrder="6"/>
+                <columnConfig columnName="pin_verification" fieldName="pinVerification" searchField="true" searchResult="false" displayOrder="7"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="fl_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+        <entityConfig tableName="access_log" entityName="AccessLog" sequenceName="seq_access_log" schema="cadastro">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_access_log" formField="false" fieldName="id" />
+	            <columnConfig columnName="id_driver">
+					<manyToOneConfig var="driver"/>
+				</columnConfig>
+	            <columnConfig columnName="id_device">
+					<manyToOneConfig var="device"/>
+				</columnConfig>
+	            
+	            <columnConfig columnName="access_date" fieldName="accesDate" searchField="false" searchResult="false" displayOrder="1"/>
+                <columnConfig columnName="api_url" fieldName="apiUrl" searchField="true" searchResult="true" displayOrder="2"/>
+                <columnConfig columnName="api_request_data" fieldName="apiRequestData" searchField="false" searchResult="false" displayOrder="3"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+        <entityConfig tableName="station" entityName="Station" sequenceName="seq_station" schema="cadastro">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_station" formField="false" fieldName="id" />
+	            
+	            <columnConfig columnName="name" fieldName="name" searchField="true" searchResult="true" displayOrder="1"/>
+                <columnConfig columnName="company_name" fieldName="companyName" formField="true" searchField="true" searchResult="true" displayOrder="2"/>
+                <columnConfig columnName="cnpj" fieldName="cnpj" formField="true" searchField="true" searchResult="true" displayOrder="3"/>
+                <columnConfig columnName="ie" fieldName="ie" formField="true" searchField="true" searchResult="true" displayOrder="4"/>
+                <columnConfig columnName="phones" fieldName="phones" formField="true" searchField="true" searchResult="true" displayOrder="5"/>
+                <columnConfig columnName="address" fieldName="address" formField="true" searchField="false" searchResult="false" displayOrder="6"/>
+                <columnConfig columnName="zipcode" fieldName="zipcode" formField="true" searchField="true" searchResult="false" displayOrder="7"/>
+                <columnConfig columnName="city" fieldName="city" formField="true" searchField="true" searchResult="true" displayOrder="8"/>
+                <columnConfig columnName="state" fieldName="state" formField="true" searchField="true" searchResult="true" displayOrder="9"/>
+                <columnConfig columnName="lat" fieldName="lat" formField="true" searchField="false" searchResult="false" displayOrder="10"/>
+                <columnConfig columnName="lng" fieldName="lat" formField="true" searchField="false" searchResult="false" displayOrder="11"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="true" searchField="false" searchResult="false" />
             	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
                 <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="false" />
                 <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="habilitado" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
+                <columnConfig columnName="fl_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
                 
-            </columnConfigs>
-        </entityConfig>
-        
-        <entityConfig tableName="habito" entityName="Habito" sequenceName="seq_habito">
-            <columnConfigs>
-            
-	            <columnConfig columnName="id" fieldName="id" formField="false" />
-	            <columnConfig columnName="nome" fieldName="nome" formField="true" searchField="true" searchResult="true" displayOrder="1"/>
-	            <columnConfig columnName="descricao" fieldName="descricao" formField="true" searchField="false" searchResult="false" displayOrder="2"/>
-	            <columnConfig columnName="ordem" fieldName="ordem" formField="true" searchField="false" searchResult="false" displayOrder="3"/>
-	            <columnConfig columnName="is_enabled" formField="true" searchField="false" searchResult="false" displayOrder="4"/>
-                <columnConfig columnName="ocorrencia" fieldName="ocorrencia" sharedEnumName="Ocorrencia" formField="true" searchField="true" searchResult="true" displayOrder="5"/>
-                <columnConfig columnName="link_video" fieldName="linkVideo" formField="true" searchField="false" searchResult="false" displayOrder="6"/>
-                <columnConfig columnName="dia_1" fieldName="dia1" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="7"/>
-                <columnConfig columnName="dia_2" fieldName="dia2" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="8"/>
-                <columnConfig columnName="dia_3" fieldName="dia3" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="9"/>
-                <columnConfig columnName="dia_4" fieldName="dia4" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="10"/>
-                <columnConfig columnName="dia_5" fieldName="dia5" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="11"/>
-                <columnConfig columnName="dia_6" fieldName="dia6" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="12"/>
-                <columnConfig columnName="dia_7" fieldName="dia7" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="13"/>
-                <columnConfig columnName="dia_8" fieldName="dia8" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="14"/>
-                <columnConfig columnName="dia_9" fieldName="dia9" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="15"/>
-                <columnConfig columnName="dia_10" fieldName="dia10" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="16"/>
-                <columnConfig columnName="dia_11" fieldName="dia11" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="17"/>
-                <columnConfig columnName="dia_12" fieldName="dia12" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="18"/>
-                <columnConfig columnName="dia_13" fieldName="dia13" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="19"/>
-                <columnConfig columnName="dia_14" fieldName="dia14" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="20"/>
-                <columnConfig columnName="dia_15" fieldName="dia15" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="21"/>
-                <columnConfig columnName="dia_16" fieldName="dia16" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="22"/>
-                <columnConfig columnName="dia_17" fieldName="dia17" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="23"/>
-                <columnConfig columnName="dia_18" fieldName="dia18" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="24"/>
-                <columnConfig columnName="dia_19" fieldName="dia19" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="25"/>
-                <columnConfig columnName="dia_20" fieldName="dia20" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="26"/>
-                <columnConfig columnName="dia_21" fieldName="dia21" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="27"/>
-                <columnConfig columnName="dia_22" fieldName="dia22" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="28"/>
-                <columnConfig columnName="dia_23" fieldName="dia23" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="29"/>
-                <columnConfig columnName="dia_24" fieldName="dia24" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="30"/>
-                <columnConfig columnName="dia_25" fieldName="dia25" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="31"/>
-                <columnConfig columnName="dia_26" fieldName="dia26" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="32"/>
-                <columnConfig columnName="dia_27" fieldName="dia27" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="33"/>
-                <columnConfig columnName="dia_28" fieldName="dia28" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="34"/>
-                <columnConfig columnName="dia_29" fieldName="dia29" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="35"/>
-                <columnConfig columnName="dia_30" fieldName="dia30" sharedEnumName="SimNao" formField="true" searchField="false" searchResult="false" displayOrder="36"/>
-                
-                <columnConfig columnName="capa_content_type" fieldName="capaContentType" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="capa_size" fieldName="capaSize" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="capa_file_name" fieldName="capaFileName" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="capa_binary" fieldName="capaBinary" formField="true" searchField="false" searchResult="false" />
-                
-				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="habilitado" sharedEnumName="Status" fieldName="status" formField="true" searchField="false" searchResult="false" />
-                
-            </columnConfigs>
-        </entityConfig>
-        
-        <entityConfig tableName="user" entityName="User" sequenceName="seq_user">
-            <columnConfigs>
-            
-	            <columnConfig columnName="id" fieldName="id" formField="false" />
-	            <columnConfig columnName="nome" fieldName="nome" formField="true" searchField="true" searchResult="true" displayOrder="1"/>
-	            <columnConfig columnName="login" fieldName="login" formField="true" searchField="true" searchResult="true" displayOrder="2"/>
-	            <columnConfig columnName="email" fieldName="email" formField="true" searchField="true" searchResult="true" displayOrder="3"/>
-	            <columnConfig columnName="is_enabled" formField="true" searchField="false" searchResult="false" displayOrder="4"/>
-                <columnConfig columnName="password" fieldName="password" password="true" formField="true" searchField="false" searchResult="false" displayOrder="5"/>
-                <columnConfig columnName="peso" fieldName="peso" formField="true" searchField="false" searchResult="false" displayOrder="6"/>
-                <columnConfig columnName="idade" fieldName="idade" formField="true" searchField="false" searchResult="false" displayOrder="7"/>
-                <columnConfig columnName="altura" fieldName="altura" formField="true" searchField="false" searchResult="false" displayOrder="8"/>
-                <columnConfig columnName="data_inicio" fieldName="dataInicio" formField="true" searchField="false" searchResult="false" displayOrder="9"/>
-                <columnConfig columnName="horario_oracao_1" fieldName="horarioOracao1" formField="true" searchField="false" searchResult="false" displayOrder="10"/>
-                <columnConfig columnName="horario_oracao_2" fieldName="horarioOracao2" formField="true" searchField="false" searchResult="false" displayOrder="11"/>
-                <columnConfig columnName="horario_oracao_3" fieldName="horarioOracao3" formField="true" searchField="false" searchResult="false" displayOrder="12"/>
-                <columnConfig columnName="pessoa_oracao_1" fieldName="pessoaOracao1" formField="true" searchField="false" searchResult="false" displayOrder="13"/>
-                <columnConfig columnName="pessoa_oracao_2" fieldName="pessoaOracao2" formField="true" searchField="false" searchResult="false" displayOrder="14"/>
-                <columnConfig columnName="pessoa_oracao_3" fieldName="pessoaOracao3" formField="true" searchField="false" searchResult="false" displayOrder="15"/>
-                <columnConfig columnName="alimento_1" fieldName="alimento1" formField="true" searchField="false" searchResult="false" displayOrder="16"/>
-                <columnConfig columnName="alimento_2" fieldName="alimento2" formField="true" searchField="false" searchResult="false" displayOrder="17"/>
-                <columnConfig columnName="alimento_3" fieldName="alimento3" formField="true" searchField="false" searchResult="false" displayOrder="18"/>
-                <columnConfig columnName="is_email_confirmado" formField="true" searchField="true" searchResult="false" displayOrder="19" />
-                <columnConfig columnName="codigo_confirmacao" fieldName="codigoConfirmacao" formField="true" searchField="false" searchResult="false" displayOrder="20"/>
-                <columnConfig columnName="genero" fieldName="genero" sharedEnumName="Genero" formField="true" searchField="false" searchResult="false" displayOrder="21"/>
-                
-                <columnConfig columnName="avatar_content_type" fieldName="avatarContentType" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="avatar_size" fieldName="avatarSize" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="avatar_file_name" fieldName="avatarFileName" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="avatar_binary" fieldName="avatarBinary" formField="true" searchField="false" searchResult="false" />
-                
-				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="habilitado" sharedEnumName="Status" fieldName="status" formField="true" searchField="false" searchResult="false" />
-                
-            </columnConfigs>
-        </entityConfig>
-        
-        <entityConfig tableName="user_dia_desafio" entityName="UserDiaDesafio" sequenceName="seq_user_dia_desafio">
-            <columnConfigs>
-	            <columnConfig columnName="id" fieldName="id" formField="false" />
-	            <columnConfig columnName="user_id" formField="true" searchField="true" searchResult="true" displayOrder="1"/>
-	            <columnConfig columnName="desafio_id" formField="true" searchField="false" searchResult="false" displayOrder="2" />
-	            <columnConfig columnName="dia" fieldName="dia" formField="true" searchField="true" searchResult="true" displayOrder="3"/>
-	            
-            	<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="true" searchField="true" searchResult="true" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="true" searchField="true" searchResult="true" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="habilitado" sharedEnumName="Status" fieldName="status" formField="true" searchField="false" searchResult="false" />
-            </columnConfigs>
-        </entityConfig>
-        
-        <entityConfig tableName="user_dia_habito" entityName="UserDiaHabito" sequenceName="seq_user_dia_habito">
-            <columnConfigs>
-	            <columnConfig columnName="id" fieldName="id" formField="false" />
-	            <columnConfig columnName="user_id" formField="true" searchField="true" searchResult="true" displayOrder="1"/>
-	            <columnConfig columnName="habito_id" formField="true" searchField="false" searchResult="false" displayOrder="2" />
-	            <columnConfig columnName="dia" fieldName="dia" formField="true" searchField="true" searchResult="true" displayOrder="3"/>
-	            
-            	<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="true" searchField="true" searchResult="true" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="true" searchField="true" searchResult="true" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="habilitado" sharedEnumName="Status" fieldName="status" formField="true" searchField="false" searchResult="false" />
-            </columnConfigs>
-        </entityConfig>
-        
-        <entityConfig tableName="user_dia_testemunho" entityName="UserDiaTestemunho" sequenceName="seq_user_dia_testemunho">
-            <columnConfigs>
-	            <columnConfig columnName="id" fieldName="id" formField="false" />
-	            <columnConfig columnName="user_id" formField="true" searchField="true" searchResult="true" displayOrder="1"/>
-	            <columnConfig columnName="dia" fieldName="dia" formField="true" searchField="true" searchResult="true" displayOrder="3"/>
-	            <columnConfig columnName="titulo" fieldName="titulo" formField="true" searchField="true" searchResult="false" displayOrder="4"/>
-	            <columnConfig columnName="testemunho" fieldName="testemunho" formField="true" searchField="false" searchResult="false" displayOrder="5"/>
-	            <columnConfig columnName="aprovado" fieldName="aprovado" formField="true" searchField="true" searchResult="true" displayOrder="6"/>
-	            
-	            <columnConfig columnName="arquivo_content_type" fieldName="arquivoContentType" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="arquivo_size" fieldName="arquivoSize" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="arquivo_file_name" fieldName="arquivoFileName" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="arquivo_binary" fieldName="arquivoBinary" formField="true" searchField="false" searchResult="false" />
-	            
-            	<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="true" searchField="true" searchResult="true" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="true" searchField="true" searchResult="true" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="habilitado" sharedEnumName="Status" fieldName="status" formField="true" searchField="false" searchResult="false" />
             </columnConfigs>
         </entityConfig>
         
@@ -296,29 +182,16 @@
     <!-- CHANGE IT OR COMMENT IT IF YOU USE YOUR OWN DATABASE -->
     <!-- Generate enums used by the entities above -->
     <sharedEnumConfigs>
-        <sharedEnumConfig name="Status" type="ORDINAL">
+        <sharedEnumConfig userType="br.com.framework.domain.enums.Status" name="Status" type="ORDINAL">
             <enumValues>
                 <enumValue value="INACTIVE" label="Inativo" />
                 <enumValue value="ACTIVE" label="Ativo" />
             </enumValues>
         </sharedEnumConfig>
-        <sharedEnumConfig name="SimNao" type="ORDINAL">
+        <sharedEnumConfig name="SimNao" type="STRING">
             <enumValues>
-                <enumValue value="N" label="Não" />
                 <enumValue value="S" label="Sim" />
-            </enumValues>
-        </sharedEnumConfig>
-        <sharedEnumConfig name="Genero" type="STRING">
-            <enumValues>
-                <enumValue value="M" label="Masculino" />
-                <enumValue value="F" label="Feminino" />
-            </enumValues>
-        </sharedEnumConfig>
-        <sharedEnumConfig name="Ocorrencia" type="ORDINAL">
-            <enumValues>
-                <enumValue value="DIARIA" label="Diária" />
-                <enumValue value="SEMANAL" label="Semanal" />
-                <enumValue value="MENSAL" label="Mensal" />
+                <enumValue value="N" label="Não" />
             </enumValues>
         </sharedEnumConfig>
     </sharedEnumConfigs>
