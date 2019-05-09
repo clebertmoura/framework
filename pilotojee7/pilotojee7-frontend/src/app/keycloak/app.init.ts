@@ -1,15 +1,12 @@
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from '../../environments/environment';
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
   return (): Promise<any> => {
     return new Promise(async (resolve, reject) => {
       try {
         await keycloak.init({
-          config: {
-            url: 'https://localhost:8443/auth/', // .ie: http://localhost:8080/auth/
-            realm: 'master', // .ie: master
-            clientId: 'pilotojee7-frontend' // .ie: account
-          },
+          config: environment.keycloakConfig,
           initOptions: {
             onLoad: 'login-required',
             checkLoginIframe: false

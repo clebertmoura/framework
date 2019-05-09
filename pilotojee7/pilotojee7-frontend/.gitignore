@@ -2,6 +2,18 @@
 # Created by https://www.gitignore.io/api/node,angular,eclipse,visualstudiocode,maven
 # Edit at https://www.gitignore.io/?templates=node,angular,eclipse,visualstudiocode,maven
 
+
+# REMOVER OS SEGUINTES IGNORES APOS GERAR O PROJETO!
+**/app/entities/station/
+**/app/entities/accesslog/
+**/app/entities/device/
+**/app/entities/driver/
+**/app/entities/entities-routing.module.ts
+**/app/entities/enumerators.service.ts
+**/app/entities/entities.module.ts          
+**/app/pages/pages.component.html
+
+
 ### Angular ###
 ## Angular ##
 # compiled output
@@ -9,22 +21,6 @@
 /tmp
 /app/**/*.js
 /app/**/*.js.map
-
-**/app/entities/agenda/
-**/app/entities/agendadetalhe/
-**/app/entities/agendaperiodo/
-**/app/entities/area/
-**/app/entities/bloqueio/
-**/app/entities/consulta/
-**/app/entities/especialidade/
-**/app/entities/paciente/
-**/app/entities/parametro/
-**/app/entities/profissionalsaude/
-**/app/entities/qualificacaoprofissional/
-**/app/entities/status/
-**/app/entities/tipoagenda/
-**/app/entities/tipoconsulta/
-
 
 # dependencies
 /node_modules
@@ -221,3 +217,4 @@ typings/
 .history
 
 # End of https://www.gitignore.io/api/node,angular,eclipse,visualstudiocode,maven
+/package-lock.json

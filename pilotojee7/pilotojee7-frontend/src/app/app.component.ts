@@ -1,23 +1,25 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { MessageService, Message } from 'framework-lib';
+import { ToastMessageService } from './util/toast-message.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: '<router-outlet></router-outlet>'
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 
-  title = 'pilotojee7-frontend';
+  private messageSubscription: Subscription;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+  constructor(private messageService: MessageService, private toastMessageService: ToastMessageService) {
+    this.messageSubscription = this.messageService.messageSource$.subscribe((message: Message) => {
+        // exibe a mensagem via toast
+        this.toastMessageService.show(message);
+    });
+  }
 
-    constructor(private breakpointObserver: BreakpointObserver) {
-    }
+  ngOnDestroy() {
+    this.messageSubscription.unsubscribe();
+  }
 
 }

@@ -1,10 +1,10 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-detail/${entity.model.type.toLowerCase()}-detail.component.ts")##
 import { Component, Input } from '@angular/core';
-import { EntityDetailComponent } from '../../../framework/components/entity-detail.component';
+import { AppEntityDetailComponent } from '../../../core/components/app-entity-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { MessageService } from '../../../util/message.service';
 import { EnumeratorsService } from '../../enumerators.service';
+import { EntityDetailComponent, MessageService } from 'framework-lib';
 
 import { ${entity.model.type} } from '../${entity.model.type.toLowerCase()}';
 import { ${entity.service.type} } from '../${entity.model.type.toLowerCase()}.service';
@@ -29,7 +29,7 @@ import { ${relation.to.type}Service } from '../../$relation.toEntity.model.type.
   templateUrl: './${entity.model.type.toLowerCase()}-detail.component.html',
   styleUrls: ['./${entity.model.type.toLowerCase()}-detail.component.scss']
 })
-export class ${entity.model.type}DetailComponent extends EntityDetailComponent<${entity.model.type}, ${entity.service.type}> {
+export class ${entity.model.type}DetailComponent extends AppEntityDetailComponent<${entity.model.type}, ${entity.service.type}> {
 
 #foreach ($relation in $entity.oneToMany.flatUp.list)
     show${relation.to.varsUp} = true;
@@ -66,8 +66,8 @@ export class ${entity.model.type}DetailComponent extends EntityDetailComponent<$
 #foreach($attr in $entity.enumAttributes.list)
         this.${attr.var}Values = [];
         this.enumeratorsService.get${attr.enumModel.type}Values().subscribe(
-            enumItems => this.${attr.var}Values = enumItems,
-            error => this.messageService.error('Não foi possível carregar os valores do campo ${attr.name}', error)
+            enumItems => {this.cacheEnums['${attr.enumModel.type}'] = enumItems; },
+            error => this.messageService.error('', 'Não foi possível carregar os valores do campo ${attr.name}')
         );
 
 #end
@@ -78,7 +78,7 @@ export class ${entity.model.type}DetailComponent extends EntityDetailComponent<$
         this.${relation.toEntity.service.var}.complete(null).
             subscribe(
                 $relation.to.vars => this.source$relation.to.varsUp = $relation.to.vars,
-                error =>  this.messageService.error('Erro ao carregar ${relation.to.vars}', error));
+                error =>  this.messageService.error('', 'Erro ao carregar ${relation.to.vars}'));
 #end
     }
 
@@ -116,7 +116,7 @@ export class ${entity.model.type}DetailComponent extends EntityDetailComponent<$
         this.entityService.getEntity(this.entity.id)
             .subscribe(
                 entity => this.entity = entity,
-                error =>  this.messageService.error('on${attr.varUp}Upload error', error)
+                error =>  this.messageService.error('', 'on${attr.varUp}Upload error')
             );
     }
 

@@ -6,4 +6,3 @@ javax.faces.validator.BeanValidator.MESSAGE_detail={0}
 br.com.framework.model.business.violation=Esta operação violou regra de negócio.
 br.com.framework.model.beanValidation.violation=Esta operação violou validações.
 
-parametro.validation.chave.uniqueViolation=Já existe um registro cadastrado com chave: {0}.

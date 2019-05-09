@@ -1,0 +1,11 @@
+<div class="app-spinner-container">
+  <div class="app-spinner-flex d-flex justify-content-center">
+      <div class="app-spinner-spacer d-none d-md-inline"></div>
+      <div class="text-center">
+        <div class="app-spinner-main spinner-border text-primary" role="status">
+        </div>
+        <div *ngIf="label" class="app-spinner-label p-3">{{ label }}</div>
+        <span *ngIf="!label" class="sr-only">Carregando...</span>
+      </div>
+  </div>
+</div>

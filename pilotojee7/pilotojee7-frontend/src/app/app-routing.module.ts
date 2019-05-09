@@ -1,18 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AppAuthGuard } from './keycloak/app.authguard';
 
 const routes: Routes = [
-  { path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
-  { path: 'dashboard',
-    component: DashboardComponent,
-    data: {
-      breadcrumb: 'dashboard'
-    }
-  }
+  { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },
+  { path: '', redirectTo: 'pages', pathMatch: 'full',  canActivate: [AppAuthGuard] },
+  { path: '**', redirectTo: 'pages' },
 ];
 
 @NgModule({

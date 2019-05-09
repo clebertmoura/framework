@@ -1,20 +1,17 @@
-<h2 mat-dialog-title>Confirmação</h2>
-<mat-dialog-content>
-  Você gostaria de remover este item?
-</mat-dialog-content>
-<mat-dialog-actions>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <button class="mat-raised-button mat-primary" (click)="dialogRef.close('delete')">
-          Sim
-        </button>
-      </div>
-      <div class="col">
-        <button class="mat-raised-button mat-accent" mat-dialog-close>
-          Fechar
-        </button>
-      </div>
-    </div>
-  </div>
-</mat-dialog-actions>
+<div class="modal-header">
+  <h4 class="modal-title">Confirmação</h4>
+  <button type="button" class="close" aria-describedby="modal-title" (click)="dialogRef.dismiss('close')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p class="text-center mt-4">Você gostaria de remover este item?</p>
+</div>
+<div class="modal-footer border-top-0">
+  <button class="btn btn-primary" ngbAutofocus (click)="dialogRef.close('delete')">
+    Confirmar
+  </button>
+  <button class="btn btn-outline-secondary" (click)="dialogRef.dismiss('cancel')">
+    Cancelar
+  </button>
+</div>

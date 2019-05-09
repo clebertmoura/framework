@@ -6,7 +6,7 @@ import { ${entity.model.type}DetailComponent } from './${entity.model.type.toLow
 
 const routes: Routes = [
   {
-    path: '${entity.model.type.toLowerCase()}',
+    path: '',
     data: {
       breadcrumb: '${entity.labels.label}'
     },

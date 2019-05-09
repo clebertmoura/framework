@@ -1,35 +1,28 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-detail/${entity.model.type.toLowerCase()}-detail.component.html")##
-<div class="content-wrapper-form">
+<div>
 
   <!-- Main content -->
   <section class="content">
+  <h2>{{ viewMode ? 'Detalhamento de ${entity.labels.label}' : 'Cadastro de ${entity.labels.label}' }}</h2>
   
 ## -- [MACRO]
 #macro(xToOneEdit $relation)
-			<div class="form-group">
-				<div class="row">
-				    <div class="col">
-						<app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [(ngModel)]="entity.${relation.to.var}" id="$relation.to.var" name="$relation.to.var" 
-                			label="${relation.labels.label}" displayfield="#foreach($attr in $entity.printerAttributes.flatUp.list)${attr.var}#end" [disabled]="sub" #{if}($relation.isMandatory()) required="true"#{end}></app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
-				    </div>
-				    <div class="col">
-				    	<button mat-icon-button id="goto${relation.to.varUp}" (click)="goto${relation.to.varUp}()" *ngIf="!sub && entity.${relation.to.var}" label="Edit">
-						    <mat-icon aria-label="Edit">edit</mat-icon>
-						</button>
-				    </div>
-				    <div class="col">
-				    	<button mat-icon-button id="clear${relation.to.varUp}" (click)="clear${relation.to.varUp}()" *ngIf="!sub && entity.${relation.to.var}" label="Clear">
-						    <mat-icon aria-label="Clear">clear</mat-icon>
-						</button>
-				    </div>
-				</div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [dropdown]="true" [(ngModel)]="entity.${relation.to.var}" id="$relation.to.var"
+                            name="$relation.to.var" label="${relation.labels.label}" displayfield="${relation.toEntity.printerAttributes.flatUp.list.get(0).var}"
+                            [disabled]="viewMode">
+                        </app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
+                    </div>
+                </div>
                 #if($relation.isMandatory())
-                <mat-error *ngIf="!${relation.to.var}.valid && ${relation.to.var}.dirty && ${relation.to.var}.errors['required']">
+                <!--
+                <div class="text-danger mt-1" *ngIf="!${relation.to.var}.valid && ${relation.to.var}.dirty && ${relation.to.var}.errors['required']">
                     $relation.labels.label é obrigatório.
-                </mat-error>
-				#end
-            </div>
-            
+                </div>
+                -->
+                #end
 #end
 #macro(required $attribute)
 #if($attribute.isRequired()) required #end
@@ -46,39 +39,37 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #macro(mderror $attribute)
 
 #if($attribute.isRequired())
-                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['required']">
+                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['required']">
                         $attribute.labels.label é obrigatório.
-                    </mat-error>
+                    </div>
 #end
 #if($attribute.columnConfig.hasMin() && $attribute.isString())
-                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['minlength']">
+                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['minlength']">
                         $attribute.labels.label deve conter no mínimo $attribute.columnConfig.min caractere(s).
-                    </mat-error>
+                    </div>
 #end
 #if($attribute.isString() && $attribute.columnConfig.getSize() > 0)
-                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['maxlength']">
+                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['maxlength']">
                         $attribute.labels.label deve conter no máximo $attribute.columnConfig.size caractere(s).
-                    </mat-error>
+                    </div>
 #end
 #if($attribute.isEmail())
-                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['validateEmail']">
+                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['validateEmail']">
                         $attribute.labels.label valor é inválido para um e-mail.
-                    </mat-error>
+                    </div>
 #end
 #if($attribute.isUrl())
-                    <mat-error *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['pattern']">
+                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['pattern']">
                         $attribute.labels.label valor é inválido para uma URL.
-                    </mat-error>
+                    </div>
 #end
 #end
 ## -- [/MACROS]
   
-    <form ngForm #${entity.model.var}Form="ngForm" *ngIf="entity">
-      <mat-card class="mat-card-detail">
-        <mat-card-header>
-          <mat-card-title>Detalhes de ${entity.labels.label}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="form-fields">
+    <form class="needs-validation" ngForm #${entity.model.var}Form="ngForm" *ngIf="entity">
+        <div class="card mt-3 shadow-sm">
+            <div class="card-body">
+
 ## ---------------------------------------------------------
 #foreach($attr in $entity.formAttributes.flatUp.list)
 #if ($attr.isSimplePk() && !$attr.jpa.isManuallyAssigned())
@@ -91,78 +82,76 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #else
 #set( $valuePath = "entity.${attr.var}")##
 #end
-			<div class="row">
-				<div class="col-12">
+                <div class="row">
+                    <div class="form-group col-md-12">
 #if($attr.isPassword())
-		            <mat-form-field>
-		                <input matInput type="password" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
-		                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
-		                #mderror($attr)
-					</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="password" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
+                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        #mderror($attr)
 #elseif($attr.isHtml())
+					<!-- TODO -->
                 todo html
 #elseif($attr.isTextArea() && $attr.getSize() > 255)
-                <mat-form-field>
-	                <textarea matInput [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) autoResize="true" name="$attr.var" id="$attr.var" ${p}$attr.var
-	                	[disabled]="viewMode" placeholder="$attr.labels.label"></textarea>
-	                #mderror($attr)
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <textarea class="form-control" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
+                            autoResize="true" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"></textarea>
+                        #mderror($attr)
 #elseif($attr.isEnum())
-				<mat-form-field>
-                	<mat-select [(ngModel)]="$valuePath" name="$attr.var" ${p}$attr.var [disabled]="viewMode" placeholder="$attr.labels.label">
-	                    <mat-option *ngFor="let ${attr.var}Option of ${attr.var}Values" [value]="${attr.var}Option.key">{{ ${attr.var}Option.label }}</mat-option>
-	                </mat-select>
-	                #mderror($attr)
-				</mat-form-field>
+                        <label>$attr.labels.label</label>
+                        <div>
+                        	<fieldset [disabled]="viewMode">
+	                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
+	                                <input type="radio" name="$attr.var" id="{{'${attr.var}Option' + i}}" class="custom-control-input"
+	                                    [value]="${attr.var}Option.key" [(ngModel)]="$valuePath">
+	                                <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
+	                            </div>
+                            </fieldset>
+                        </div>
+                        <!--
+                        #mderror($attr)
+                        -->
 #elseif($attr.isEmail())
-				<mat-form-field>
-	                <input matInput type="email" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) validateEmail name="$attr.var" id="$attr.var" ${p}$attr.var
-	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
-	                #mderror($attr)
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="email" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) validateEmail
+                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        #mderror($attr)
 #elseif($attr.isUrl())
-				<mat-form-field>
-	                <input matInput type="url" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" name="$attr.var" id="$attr.var" ${p}$attr.var
-	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
-	                #mderror($attr)
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="url" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
+                            pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"
+                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        #mderror($attr)
 #elseif($attr.isString())
-				<mat-form-field>
-	                <input matInput type="text" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
-	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
-	                #mderror($attr)
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="text" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
+                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        #mderror($attr)
 #elseif($attr.isNumeric())
-				<mat-form-field>
-	                <input matInput type="number" [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
-	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
-	                #mderror($attr)
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="number" [(ngModel)]="$valuePath" #required($attr)
+                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        #mderror($attr)
 #elseif($attr.isDate() && !$attr.isVersion())
 #if($attr.isJavaUtilOnlyDate() || $attr.isLocalDate())
-				<mat-form-field>
-					<input matInput [matDatepicker]="${attr.var}Picker" [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
-	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
-					<mat-datepicker-toggle matSuffix [for]="${attr.var}Picker"></mat-datepicker-toggle>
-					<mat-datepicker touchUi ${p}${attr.var}Picker></mat-datepicker>
-	                #mderror($attr)
-				</mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <app-datetime-picker [(ngModel)]="$valuePath" #required($attr) name="$attr.var" [id]="'$attr.var'"
+                            placement="bottom-left" [disabled]="viewMode"></app-datetime-picker>
 #elseif($attr.isLocalDateTime() || $attr.isInstant())
-				<mat-form-field>
-                    <input matInput [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
-                    	[owlDateTime]="$attr.var" [owlDateTimeTrigger]="$attr.var" [disabled]="viewMode" placeholder="$attr.labels.label" />
-                    <owl-date-time ${p}$attr.var></owl-date-time>
-                </mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <app-datetime-picker [(ngModel)]="$valuePath" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
+                            placement="bottom-left" [disabled]="viewMode"></app-datetime-picker>
 #else
-                <mat-form-field>
-                    <input matInput [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
-                    	[owlDateTime]="$attr.var" [owlDateTimeTrigger]="$attr.var" [disabled]="viewMode" placeholder="$attr.labels.label" />
-                    <owl-date-time ${p}$attr.var></owl-date-time>
-                </mat-form-field>
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <app-datetime-picker [(ngModel)]="$valuePath" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
+                            placement="bottom-left" [disabled]="viewMode"></app-datetime-picker>
 #end
 #elseif($attr.isBoolean())
-                <mat-checkbox [(ngModel)]="$valuePath" name="$attr.var" ${p}$attr.var [disabled]="viewMode" >${attr.labels.label}</mat-checkbox>
+                        <input class="custom-control-input" type="checkbox" [(ngModel)]="$valuePath" name="$attr.var" id="$attr.var"
+                            ${p}$attr.var="ngModel" [disabled]="viewMode" />
+                        <label for="$attr.var">${attr.labels.label}</label>
 #elseif($attr.isFile() && $attr.filename)
+					<!-- TODO -->
                 <ul *ngIf="entity.${attr.filename.var}">
                     <li><a href="{{ getApiUrl() + '/' + entity.${identifiableProperty.var} + '/${attr.var}/download' }}">Download {{entity.${attr.filename.var}}}</a></li>
                     <li>Content-Type: {{entity.${attr.fileContentType.var}}}</li>
@@ -175,72 +164,68 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
                 	O registro deve ser salvo para que o upload seja habilitado
                 </p>
 #else
-				<mat-form-field>
-	                <input matInput type="text" [(ngModel)]="$valuePath" #required($attr) name="$attr.var" id="$attr.var" ${p}$attr.var
-	                	[disabled]="viewMode" placeholder="$attr.labels.label"/>
-	                #mderror($attr)
-				</mat-form-field>
+
+                        <label for="$attr.var">$attr.labels.label</label>
+                        <input class="form-control" type="text" [(ngModel)]="$valuePath" #required($attr)
+                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        #mderror($attr)
 #end
-				</div>
-			</div>
+                    </div>
+                </div>
 #end ##---------- [/NON VERSION]
 #end ## foreach(....
 ## ---------------------------------------------------------
-        </mat-card-content>
-        <mat-card-actions class="container">
-            <div class="row">
-                <div class="col align-self-start">
-                    <button mat-raised-button *ngIf="sub" (click)="onClickCancel()">
-                        <i class="material-icons">pageview</i>
-                        <span class="d-none d-md-inline">Cancelar</span>
-                    </button>
-                    <button mat-raised-button (click)="onClickSave()" [disabled]="!${entity.model.var}Form.form.valid && viewMode">
-                        <mat-icon>save</mat-icon>
-                        <span class="d-none d-md-inline">Salvar</span>
-                    </button>
-                    <button mat-raised-button *ngIf="!sub" (click)="onClickBack()">
-                        <mat-icon>cancel</mat-icon>
-                        <span class="d-none d-md-inline">Voltar</span>
-                    </button>
+                <div class="row mt-3">
+                    <div class="col align-self-start">
+                        <button class="btn btn-outline-secondary mr-2" *ngIf="sub" (click)="onClickCancel()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+    
+                        <button class="btn btn-primary mr-2" (click)="onClickSave()" [disabled]="!${entity.model.var}Form.form.valid && viewMode">
+                            <i class="fas fa-check"></i> Salvar
+                        </button>
+                        <button class="btn btn-outline-secondary mr-2" *ngIf="!sub" (click)="onClickBack()">
+                                <i class="fas fa-chevron-left"></i> Voltar
+                        </button>
+                    </div>
                 </div>
             </div>
-        </mat-card-actions>
-      </mat-card>
+        </div>
     </form>
 ##
 ## TABS FOR RELATIONS
 ##
 #if($entity.inverseOneToOne.flatUp.size > 0 || $entity.oneToMany.flatUp.size > 0 || $entity.manyToMany.flatUp.size > 0)
-    <mat-card *ngIf="entity && entity.$identifiableProperty.var">
-    	<mat-card-subtitle>$entity.model.type relacionamentos</mat-card-subtitle>
-    	<mat-card-content>
-    		<mat-tab-group>
+##    <mat-card *ngIf="entity && entity.$identifiableProperty.var">
+##    	<mat-card-subtitle>$entity.model.type relacionamentos</mat-card-subtitle>
+##    	<mat-card-content>
+##    		<mat-tab-group>
 #end
 #foreach ($relation in $entity.inverseOneToOne.flatUp.list)
-		        <mat-tab label="$relation.to.varsUp">
-		            <app-${relation.toEntity.model.type.toLowerCase()}-list [$relation.from.var]="entity" sub="true"></app-${relation.toEntity.model.type.toLowerCase()}-list>
-		        </mat-tab>
+##		        <mat-tab label="$relation.to.varsUp">
+##		            <app-${relation.toEntity.model.type.toLowerCase()}-list [$relation.from.var]="entity" sub="true"></app-${relation.toEntity.model.type.toLowerCase()}-list>
+##		        </mat-tab>
 #end
 #foreach ($relation in $entity.oneToMany.flatUp.list)
-		        <mat-tab label="$relation.to.varsUp">
-		            <app-${relation.toEntity.model.type.toLowerCase()}-list *ngIf="show$relation.to.varsUp" [$relation.from.var]="entity" sub="true" [header]="'$relation.to.varsUp of this $entity.model.var'" (addNewClicked)="show$relation.to.varsUp = false"></app-${relation.toEntity.model.type.toLowerCase()}-list>
-		            <app-${relation.toEntity.model.type.toLowerCase()}-detail *ngIf="!show$relation.to.varsUp" [$relation.from.var]="entity" sub="true" (saveClicked)="show$relation.to.varsUp = true" (cancelClicked)="show$relation.to.varsUp = true"></app-${relation.toEntity.model.type.toLowerCase()}-detail>
-		        </mat-tab>
+##		        <mat-tab label="$relation.to.varsUp">
+##		            <app-${relation.toEntity.model.type.toLowerCase()}-list *ngIf="show$relation.to.varsUp" [$relation.from.var]="entity" sub="true" [header]="'$relation.to.varsUp of this $entity.model.var'" (addNewClicked)="show$relation.to.varsUp = false"></app-${relation.toEntity.model.type.toLowerCase()}-list>
+##		            <app-${relation.toEntity.model.type.toLowerCase()}-detail *ngIf="!show$relation.to.varsUp" [$relation.from.var]="entity" sub="true" (saveClicked)="show$relation.to.varsUp = true" (cancelClicked)="show$relation.to.varsUp = true"></app-${relation.toEntity.model.type.toLowerCase()}-detail>
+##		        </mat-tab>
 #end
 #foreach ($relation in $entity.manyToMany.flatUp.list)
-		        <mat-tab label="$relation.to.varsUp">
-		            <p-pickList [source]="source$relation.to.varsUp" [target]="entity.$relation.to.vars" sourceHeader="Disponíveis" targetHeader="Selecionados" [responsive]="true">
-		                <ng-template let-$relation.to.var pTemplate="item">
+##		        <mat-tab label="$relation.to.varsUp">
+##		            <p-pickList [source]="source$relation.to.varsUp" [target]="entity.$relation.to.vars" sourceHeader="Disponíveis" targetHeader="Selecionados" [responsive]="true">
+##		                <ng-template let-$relation.to.var pTemplate="item">
 #foreach($attr in $relation.toEntity.printerAttributes.flatUp.list){{ ${relation.to.var}.${attr.var} }} #end
-		                </ng-template>
-		            </p-pickList>
-		        </mat-tab>
+##		                </ng-template>
+##		            </p-pickList>
+##		        </mat-tab>
 #end
 
 #if($entity.inverseOneToOne.flatUp.size > 0 || $entity.oneToMany.flatUp.size > 0 || $entity.manyToMany.flatUp.size > 0)
-    		</mat-tab-group>
-    	</mat-card-content>
-    </mat-card>
+##    		</mat-tab-group>
+##    	</mat-card-content>
+##    </mat-card>
 #end
   </section>
   <!-- /.content -->

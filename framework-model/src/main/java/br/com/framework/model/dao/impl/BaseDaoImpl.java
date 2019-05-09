@@ -30,6 +30,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -62,12 +63,12 @@ import br.com.framework.search.util.SearchUtil;
 import br.com.framework.util.reflection.ReflectionUtils;
 
 /**
- * ImplementaÃ§Ã£o base do {@link BaseDao} das entidades de domÃ­nio.
+ * Implementação base do {@link BaseDao} das entidades de domínio.
  * 
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
- * @param <PK> Tipo da chave primÃ¡ria.
- * @param <E> Entidade de domÃ­nio.
+ * @param <PK> Tipo da chave primária.
+ * @param <E> Entidade de domínio.
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -83,13 +84,12 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	
 	protected SearchUtil searchUtil = SearchUtil.newInstance();
 	
-	private static final String FETCH_GRAPH = "javax.persistence.fetchgraph";
+	protected static final String FETCH_GRAPH = "javax.persistence.fetchgraph";
 	
-	private static final String FETCH_GRAPH_MSG = "EntityGraph %s nÃ£o encontrado! O resultado serÃ¡ carregado de forma padrÃ£o.";
+	private static final String FETCH_GRAPH_MSG = "EntityGraph %s não encontrado! O resultado será carregado de forma padrão.";
 	
-	private static final String STATUS = "status";
-	
-	private static final String LAST_MODIFIED_DATE = "lastModifiedDate";
+	protected static final String FIELD_STATUS = "status";
+	protected static final String FIELD_LAST_MODIFIED_DATE = "lastModifiedDate";
 	
 	/**
 	 * @param entityClass
@@ -248,7 +248,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 	
 	/**
-	 * Adiciona uma restriÃ§Ã£o padrÃ£o para o campo status das entidades na hierarquia de {@link BaseEntityAudited}
+	 * Adiciona uma restrição padrão para o campo status das entidades na hierarquia de {@link BaseEntityAudited}
 	 * 
 	 * @param restrictions
 	 */
@@ -256,13 +256,13 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass()) && restrictions != null) {
 			boolean isStatusPresent = false;
 			for (Restriction restriction : restrictions) {
-				if (restriction.getField().equals(STATUS)) {
+				if (restriction.getField().equals(FIELD_STATUS)) {
 					isStatusPresent = true;
 					break;
 				}
 			}
 			if (!isStatusPresent) {
-				restrictions.add(searchUtil.restriction(STATUS, Operator.EQ, Status.ACTIVE));
+				restrictions.add(searchUtil.restriction(FIELD_STATUS, Operator.EQ, Status.ACTIVE));
 			}
 		}
 	}
@@ -501,7 +501,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 
 	/**
-	 * MÃ©todo recursivo para construÃ§Ã£o do mapa de filtros.
+	 * MÃ©todo recursivo para construção do mapa de filtros.
 	 * 
 	 * @param entityExample
 	 * @param restrictions
@@ -631,7 +631,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			if (referentialDateTime != null) {
 				restrictions.add(SearchUtil.instance().restriction("createDate", Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(FIELD_STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.getCountFindByRestrictions(restrictions);
 	}
@@ -644,7 +644,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			if (referentialDateTime != null) {
 				restrictions.add(SearchUtil.instance().restriction("createDate", Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(FIELD_STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.findByRestrictions(restrictions, first, max, orderings);
 	}
@@ -654,9 +654,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getDocumentClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(FIELD_LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(FIELD_STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.getCountFindByRestrictions(restrictions);
 	}
@@ -667,9 +667,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(FIELD_LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.ACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(FIELD_STATUS, Operator.EQ, Status.ACTIVE));
 		}
 		return this.findByRestrictions(restrictions, first, max, orderings);
 	}
@@ -679,9 +679,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(FIELD_LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.INACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(FIELD_STATUS, Operator.EQ, Status.INACTIVE));
 		}
 		return this.getCountFindByRestrictions(restrictions);
 	}
@@ -694,9 +694,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		List<Restriction> restrictions = new ArrayList<>();
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
 			if (referentialDateTime != null) {
-				restrictions.add(SearchUtil.instance().restriction(LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
+				restrictions.add(SearchUtil.instance().restriction(FIELD_LAST_MODIFIED_DATE, Operator.GE, referentialDateTime));
 			}
-			restrictions.add(SearchUtil.instance().restriction(STATUS, Operator.EQ, Status.INACTIVE));
+			restrictions.add(SearchUtil.instance().restriction(FIELD_STATUS, Operator.EQ, Status.INACTIVE));
 		}
 		SearchResult<E> findByRestrictions = this.findByRestrictions(restrictions, first, max, orderings);
 		List<PK> deletedIds = new ArrayList<>();
@@ -750,32 +750,23 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		criteriaQuery.distinct(true);
 		Root<E> from = criteriaQuery.from(getEntityClass());
 		from.alias(getEntityClass().getSimpleName().toLowerCase() + "Alias");
-		Map<String, Path<?>> mapFieldPaths = new HashMap<>();
 		// adiciona um predicado para registros ativos
 		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass()) && pageRequest.getFilters() != null) {
 			boolean isStatusPresent = false;
 			for (Entry<String, FilterMetadata> entry : pageRequest.getFilters().entrySet()) {
-				if (entry.getKey().equals(STATUS)) {
+				if (entry.getKey().equals(FIELD_STATUS)) {
 					isStatusPresent = true;
 					break;
 				}
 			}
 			if (!isStatusPresent) {
-				pageRequest.getFilters().put(STATUS, new FilterMetadata(Status.ACTIVE, Operator.EQ));
+				pageRequest.getFilters().put(FIELD_STATUS, new FilterMetadata(Status.ACTIVE, Operator.EQ));
 			}
 		}
-		List<Predicate> predicates = createQueryPagePredicates(pageRequest, cBuilder, criteriaQuery, from, mapFieldPaths);
-		if (StringUtils.isNoneEmpty(pageRequest.getGlobalFilter())) {
-			addGlobalFilterPredicates(pageRequest, predicates, cBuilder, from, mapFieldPaths);
-		}
-		if (!predicates.isEmpty()) {
-			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
-			if (pageRequest.isAndOperand()) {
-				criteriaQuery.where(cBuilder.and(predicatesArray));
-			} else {
-				criteriaQuery.where(cBuilder.or(predicatesArray));
-			}
-		}
+		
+		Map<String, Path<?>> mapFieldPaths = new HashMap<>();
+		setupQueryPredicates(pageRequest, cBuilder, criteriaQuery, from, mapFieldPaths);
+		
 		boolean hasSortField = (pageRequest.getSortField() != null && !pageRequest.getSortField().trim().isEmpty()) ;
 		if (hasSortField || !pageRequest.getMultiSortMeta().isEmpty()) {
 			List<javax.persistence.criteria.Order> orders = new ArrayList<>();
@@ -807,14 +798,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		Root<E> fromCount = criteriaCountQuery.from(getEntityClass());
 		fromCount.alias(getEntityClass().getSimpleName().toLowerCase() + "Alias");
 		criteriaCountQuery.select(cBuilder.count(fromCount));
-		if (!predicates.isEmpty()) {
-			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
-			if (pageRequest.isAndOperand()) {
-				criteriaCountQuery.where(cBuilder.and(predicatesArray));
-			} else {
-				criteriaCountQuery.where(cBuilder.or(predicatesArray));
-			}
-		}
+		
+		setupQueryPredicates(pageRequest, cBuilder, criteriaCountQuery, fromCount, null);
+		
 		TypedQuery<Long> countQuery = getEntityManager().createQuery(criteriaCountQuery);
 		Long result = countQuery.getSingleResult();
 		pageResponse.setTotalRegisters(result);
@@ -837,6 +823,35 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			pageResponse.setResults(resultList);
 		}
 		return pageResponse;
+	}
+
+	/**
+	 * Configura os {@link Predicate} no objeto {@link Query}
+	 * 
+	 * @param pageRequest
+	 * @param cBuilder
+	 * @param criteriaQuery
+	 * @param from
+	 * @param mapFieldPaths
+	 * @return
+	 */
+	protected void setupQueryPredicates(PageRequest pageRequest, CriteriaBuilder cBuilder, CriteriaQuery<?> criteriaQuery, 
+			Root<E> from, Map<String, Path<?>> mapFieldPaths) {
+		if (mapFieldPaths == null) {
+			mapFieldPaths = new HashMap<>();
+		}
+		List<Predicate> predicates = createQueryPagePredicates(pageRequest, cBuilder, criteriaQuery, from, mapFieldPaths);
+		if (StringUtils.isNoneEmpty(pageRequest.getGlobalFilter())) {
+			addGlobalFilterPredicates(pageRequest, predicates, cBuilder, from, mapFieldPaths);
+		}
+		if (!predicates.isEmpty()) {
+			Predicate[] predicatesArray = predicates.toArray(new Predicate[0]);
+			if (pageRequest.isAndOperand()) {
+				criteriaQuery.where(cBuilder.and(predicatesArray));
+			} else {
+				criteriaQuery.where(cBuilder.or(predicatesArray));
+			}
+		}
 	}
 	
 	
@@ -881,6 +896,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		}
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Predicate returnPredicateByOperatorFromPathAndNumber(CriteriaBuilder cBuilder, Operator operator, Path x, Number y) {
 		switch (operator) {
 		case LT:
@@ -897,8 +913,8 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Predicate returnInNotInPredicate(Operator operator, Path path, Collection lista) {
-		
 		switch (operator) {
 			case IN:
 				return path.in(lista);
@@ -907,8 +923,26 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 			default:
 				return null;
 		}
-		
 	}
+	
+	/**
+	 * Adiciona o predicado criado na lista de predicados informada.
+	 * 
+	 * @param predicates
+	 * @param fieldName
+	 * @param operator
+	 * @param filterValue
+	 * @param mapFieldPaths
+	 * @param from
+	 * @param cBuilder
+	 */
+	protected void addGlobalFilterPredicate(List<Predicate> predicates, String fieldName, Operator operator, String filterValue, Map<String, Path<?>> mapFieldPaths, 
+    		Root<E> from, CriteriaBuilder cBuilder) {
+    	Predicate predicate = this.createFieldPredicate(fieldName, operator, filterValue, mapFieldPaths, from, cBuilder);
+    	if (predicate != null) {
+    		predicates.add(predicate);
+    	}
+    }
 	
 	
 	/**
@@ -954,10 +988,10 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		Predicate predicate = null;
 		Field field = ReflectionUtils.getField(leaf, pathLeaf.getParentPath().getJavaType());
 		if (field == null) {
-			logger.error(String.format("Field %s nÃ£o encontrado na classe %s", leaf, pathLeaf.getParentPath().getJavaType().getSimpleName()));
+			logger.error(String.format("Field %s não encontrado na classe %s", leaf, pathLeaf.getParentPath().getJavaType().getSimpleName()));
 			return null;
 		}
-		// valor nulo, nÃ£o cria predicate
+		// valor nulo, não cria predicate
 		if (value == null) {
 			return null;
 		}

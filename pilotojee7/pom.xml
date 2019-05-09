@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>3.0.3</version>
+		<version>3.0.6</version>
 	</parent>
 	
 	<artifactId>pilotojee7</artifactId>
@@ -51,13 +51,16 @@
 		<version.gson>2.7</version.gson>
 		<version.hibernate-envers>5.0.1.Final</version.hibernate-envers>
 		<version.caelum-stella>2.1.2</version.caelum-stella>
-		<version.keycloak>3.1.0.Final</version.keycloak>
+		<version.keycloak>5.0.0</version.keycloak>
 
 		<!-- Aplication Properties -->
 		<dataSource.jndiName>java:jboss/datasources/pilotojee7DataSource</dataSource.jndiName>
 		<jpaProvider.class>org.hibernate.jpa.HibernatePersistenceProvider</jpaProvider.class>
+		<jpaProvider.dialect>org.hibernate.dialect.PostgreSQL94Dialect</jpaProvider.dialect>
 		<jtaPlatform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</jtaPlatform>
 		<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
+		
+		<server-group-name>srg-${project.artifactId}</server-group-name>
 
 		<!-- Celerio -->
 		<celerio-maven-plugin.version>4.0.23</celerio-maven-plugin.version>
@@ -154,13 +157,13 @@
 				<jdbc.driver>oracle.jdbc.OracleDriver</jdbc.driver>
 				
 				<!-- Database properties -->
-				<jdbc.database.host>sddboracle01.tjpe.gov.br</jdbc.database.host>
-				<jdbc.database.port>1521</jdbc.database.port>
-				<jdbc.database.name>orades</jdbc.database.name>
+				<jdbc.database.host></jdbc.database.host>
+				<jdbc.database.port></jdbc.database.port>
+				<jdbc.database.name></jdbc.database.name>
 				
-				<jdbc.user>dbsmarco</jdbc.user>
-				<jdbc.password>dbsmarco</jdbc.password>
-				<jdbc.schema>DBSMARCO01</jdbc.schema>
+				<jdbc.user></jdbc.user>
+				<jdbc.password></jdbc.password>
+				<jdbc.schema></jdbc.schema>
 				<jdbc.catalog></jdbc.catalog>
 				
 				<jdbc.url>jdbc:oracle:thin:@${jdbc.database.host}:${jdbc.database.port}:${jdbc.database.name}</jdbc.url>
@@ -180,12 +183,12 @@
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				
 				<!-- Database properties -->
-				<jdbc.database.host>localhost</jdbc.database.host>
-				<jdbc.database.port>5432</jdbc.database.port>
-				<jdbc.database.name>igrejariodb</jdbc.database.name>
+				<jdbc.database.host>192.168.25.127</jdbc.database.host>
+				<jdbc.database.port>5434</jdbc.database.port>
+				<jdbc.database.name>dbroadcard</jdbc.database.name>
 				
 				<jdbc.user>postgres</jdbc.user>
-				<jdbc.password>postgres</jdbc.password>
+				<jdbc.password>trinity123</jdbc.password>
 				<jdbc.schema></jdbc.schema>
 				<jdbc.catalog></jdbc.catalog>
 				
@@ -199,50 +202,41 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<keycloak.realm>master</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4nVr2+PU47it5DBOXftYmw9g9kr5TWPYrZuUaTefSj2v24s6XMiFdaKdwEXrmjPdw9/RRdE3tDp/W/FFJ+fmE5iEtKa+4w1mdtj5Qhzsj2uB368sneMcM8+/MdokCnpRmthBNpWSmwhTzq0N65cSYTRXXFjiiH+nlQTvpXhVUFcDP43LoHlmkyl53nfkA9aGLwF3ZvcIGkwGXTbrmc1W4LeeoPQ1bMNmIMFATg6jM4FNr+5Ixf3wFR3ZIm6Uns8BKhzOoLl1UtBurx6vhDownewZNSj8PyVuXk3t/cGtAXySUApezCSRn74KshUxxCdZrmIgLAQ6C40sn7X12+RCaQIDAQAB</keycloak.realm-public-key>
+				<ambiente>desenvolvimento</ambiente>
+				<keycloak.realm>pilotojee7</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtLimJXjsg/m2Nfrtq6Y36kjWxG/Xr/NFBk2wetYaCzzvAlKpNyqNyMj3smO0D1vs9LrFyExYbbAr0FO/IBdDmrhiBtGKlh11mDmLR00lVdS7q/C1EZuAYXlpr+e39ZiF4bF3OyUuP0gR2YBXMoDXDo0YXx+S4FM9XrDV7pDlM49MG8O40PdrV9zNZsffuf7uF8k4/bIfpzpzooaTkuJwwjFlG0muAGZWLqzigeoAFOQ1/7gF/2k7/DYjuyJmS3tPGV0XhrJriZpvuq1/Dtvrcac9uatrsWCjK7QIsaUye56nCfFRjTGYNWu5RhFBGKuK06CwjQmgjuDuXsFsSJJRGQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
 				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
-				
-				<jdbc.database.host>localhost</jdbc.database.host>
-				<jdbc.database.port>5432</jdbc.database.port>
-				<jdbc.database.name>igrejariodb</jdbc.database.name>
-				<jdbc.user>postgres</jdbc.user>
-				<jdbc.password>postgres</jdbc.password>
-				
 			</properties>
 		</profile>
 		<profile>
 			<id>teste</id>
 			<properties>
-				<keycloak.realm>pilotojee7-realm</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://teste.tjpe.gov.br/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://teste.tjpe.gov.br</keycloak.rootUrl>
+				<ambiente>teste</ambiente>
+				<keycloak.realm>pilotojee7</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtLimJXjsg/m2Nfrtq6Y36kjWxG/Xr/NFBk2wetYaCzzvAlKpNyqNyMj3smO0D1vs9LrFyExYbbAr0FO/IBdDmrhiBtGKlh11mDmLR00lVdS7q/C1EZuAYXlpr+e39ZiF4bF3OyUuP0gR2YBXMoDXDo0YXx+S4FM9XrDV7pDlM49MG8O40PdrV9zNZsffuf7uF8k4/bIfpzpzooaTkuJwwjFlG0muAGZWLqzigeoAFOQ1/7gF/2k7/DYjuyJmS3tPGV0XhrJriZpvuq1/Dtvrcac9uatrsWCjK7QIsaUye56nCfFRjTGYNWu5RhFBGKuK06CwjQmgjuDuXsFsSJJRGQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>homologacao</id>
 			<properties>
-				<keycloak.realm>pilotojee7-realm</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
+				<ambiente>homologacao</ambiente>
+				<keycloak.realm>pilotojee7</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtLimJXjsg/m2Nfrtq6Y36kjWxG/Xr/NFBk2wetYaCzzvAlKpNyqNyMj3smO0D1vs9LrFyExYbbAr0FO/IBdDmrhiBtGKlh11mDmLR00lVdS7q/C1EZuAYXlpr+e39ZiF4bF3OyUuP0gR2YBXMoDXDo0YXx+S4FM9XrDV7pDlM49MG8O40PdrV9zNZsffuf7uF8k4/bIfpzpzooaTkuJwwjFlG0muAGZWLqzigeoAFOQ1/7gF/2k7/DYjuyJmS3tPGV0XhrJriZpvuq1/Dtvrcac9uatrsWCjK7QIsaUye56nCfFRjTGYNWu5RhFBGKuK06CwjQmgjuDuXsFsSJJRGQIDAQAB</keycloak.realm-public-key>
 				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://homologacao.tjpe.gov.br</keycloak.rootUrl>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>producao</id>
 			<properties>
-				<keycloak.realm>pilotojee7-realm</keycloak.realm>
-				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyZkbJoa5FbKkvRrrlmmKnEG+28tvt4vzfT9dp8WMoM85u5PNwIhnuYJEhPEM+hKK8N+CqYId0tVH3Bnz3NRltyUzlPPIFG7tEJLZArkANGVeOVyUp2Q/H01m7jRx2ip5gJNfUs9lRDI+hbTPI58hVohds0bqRZiivMO1hGHusYdRjA0a6IsJfQ+btLiGKpe31EooA7Bil1iHNp6+b+XzDCscT7jRkoWIkpbfcomt0Dbz9tG892g9Qs3v3rtUqXJ7AZjxiki02DwC77EOjt/Y+tdg4OhbnENwr+hwTIXa/FGaCMq/vxQA6IiIizVSgDgme2m8laDdM+1T4mKGRKAJOQIDAQAB</keycloak.realm-public-key>
-				<keycloak.auth-server-url>https://www.tjpe.gov.br/auth</keycloak.auth-server-url>
-				<keycloak.rootUrl>https://www.tjpe.gov.br</keycloak.rootUrl>
-				
-				<jdbc.database.host>207.180.198.112</jdbc.database.host>
-				<jdbc.database.port>5432</jdbc.database.port>
-				<jdbc.database.name>igrejariodb</jdbc.database.name>
-				<jdbc.user>igrejario</jdbc.user>
-				<jdbc.password>Igreja1234</jdbc.password>
+				<ambiente>producao</ambiente>
+				<keycloak.realm>pilotojee7</keycloak.realm>
+				<keycloak.realm-public-key>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtLimJXjsg/m2Nfrtq6Y36kjWxG/Xr/NFBk2wetYaCzzvAlKpNyqNyMj3smO0D1vs9LrFyExYbbAr0FO/IBdDmrhiBtGKlh11mDmLR00lVdS7q/C1EZuAYXlpr+e39ZiF4bF3OyUuP0gR2YBXMoDXDo0YXx+S4FM9XrDV7pDlM49MG8O40PdrV9zNZsffuf7uF8k4/bIfpzpzooaTkuJwwjFlG0muAGZWLqzigeoAFOQ1/7gF/2k7/DYjuyJmS3tPGV0XhrJriZpvuq1/Dtvrcac9uatrsWCjK7QIsaUye56nCfFRjTGYNWu5RhFBGKuK06CwjQmgjuDuXsFsSJJRGQIDAQAB</keycloak.realm-public-key>
+				<keycloak.auth-server-url>https://localhost:8443/auth</keycloak.auth-server-url>
+				<keycloak.rootUrl>https://localhost:8443</keycloak.rootUrl>
 			</properties>
 		</profile>
 
@@ -369,14 +363,14 @@
 	
 	<distributionManagement>
 		<repository>
-			<id>nexus-tjpe</id>
+			<id>maven-releases</id>
 			<name>maven-releases</name>
-			<url>http://www.tjpe.jus.br/nexus/repository/maven-releases/</url>
+			<url>http://nexus.trinitysolucoes.com.br:8081/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>nexus-tjpe</id>
+			<id>maven-snapshots</id>
 			<name>maven-snapshots</name>
-			<url>http://www.tjpe.jus.br/nexus/repository/maven-snapshots/</url>
+			<url>http://nexus.trinitysolucoes.com.br:8081/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 	

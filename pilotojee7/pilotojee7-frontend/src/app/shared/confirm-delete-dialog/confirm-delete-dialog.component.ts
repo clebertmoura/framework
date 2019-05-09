@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { EntityDeleteDialogComponent } from 'framework-lib';
 
 @Component({
   selector: 'app-confirm-delete-dialog',
   templateUrl: './confirm-delete-dialog.component.html',
   styleUrls: ['./confirm-delete-dialog.component.scss']
 })
-export class ConfirmDeleteDialogComponent {
+export class ConfirmDeleteDialogComponent extends EntityDeleteDialogComponent {
 
-  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialogComponent>) { }
+  constructor(public dialogRef: NgbActiveModal) {
+  	super(dialogRef);
+  }
 
 }

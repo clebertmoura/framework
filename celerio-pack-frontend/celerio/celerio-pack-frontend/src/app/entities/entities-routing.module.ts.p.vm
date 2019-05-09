@@ -1,0 +1,30 @@
+$output.file("src/app/entities/entities-routing.module.ts")##
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { EntitiesComponent } from './entities.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: EntitiesComponent,
+    children: [
+#foreach($entity in $project.withoutManyToManyJoinEntities.list)
+      {
+        path: '${entity.model.type.toLowerCase()}',
+        loadChildren: './${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}.module#${entity.model.type}Module'
+      },
+#end
+    ],
+  }
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forChild(
+      routes
+    ),
+  ],
+  exports: [RouterModule],
+  declarations: []
+})
+export class EntitiesRoutingModule {}

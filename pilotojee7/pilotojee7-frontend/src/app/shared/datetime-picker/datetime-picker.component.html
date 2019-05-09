@@ -1,0 +1,23 @@
+<div ngbDropdown #dtpDropdown="ngbDropdown" autoClose="outside" (openChange)="dp.navigateTo(selectNgbDate())"
+    [placement]="placement">
+    <div class="input-group">
+        <input type="text" [id]="id" class="form-control" ngbDropdownAnchor [(ngModel)]="dateString"
+            [mask]="timePicker ? '00/00/0000 00:00' : '00/00/0000'"
+            [placeholder]="timePicker ? 'DD/MM/AAAA HH:MM' : 'DD/MM/AAAA'" [dropSpecialCharacters]="false"
+            [showMaskTyped]="showMaskTyped" [disabled]="disabled" (focus)="$event.stopPropagation(); dtpDropdown.close();" />
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" id="dropdownForm1"
+                (click)="$event.stopPropagation(); dtpDropdown.toggle();">
+                <i class="fas fa-fw fa-calendar-alt"></i>
+            </button>
+        </div>
+    </div>
+    <div class="p-1 shadow" ngbDropdownMenu aria-labelledby="dropdownForm1">
+        <div class="d-flex" [class.flex-column]="orientation == 'auto' || orientation == 'cols'"
+            [class.flex-row]="orientation == 'rows'" [class.flex-md-row]="orientation == 'auto'">
+            <ngb-datepicker [(ngModel)]="ngbDate" firstDayOfWeek="7" class="border-0" [disabled]="disabled" #dp></ngb-datepicker>
+            <ngb-timepicker *ngIf="timePicker" [(ngModel)]="ngbTime" [disabled]="disabled"
+                class="px-3 align-self-center"></ngb-timepicker>
+        </div>
+    </div>
+</div>

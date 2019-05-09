@@ -6,17 +6,19 @@ $output.require("${Root.packageName}.core.manager.AppBaseManagerImpl")##
 $output.require($entity.dao)##
 
 $output.require("javax.ejb.Stateless")##
-$output.require("javax.ejb.EJB")##
+$output.require("javax.inject.Inject")##
+
 
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.lang3.StringUtils;
 
 import br.com.framework.model.exception.ModelException;
-import br.com.framework.model.log.impl.ErrorBusiness;
+import br.com.framework.model.error.impl.ErrorBusiness;
 import br.com.framework.search.impl.Operator;
 
 
@@ -33,7 +35,7 @@ public class $output.currentClass extends AppBaseManagerImpl<${entity.root.prima
 	}
 	
 	@Override
-	@EJB
+	@Inject
 	protected void setSearch(${entity.dao.type} search) {
 		super.setSearch(search);
 	}

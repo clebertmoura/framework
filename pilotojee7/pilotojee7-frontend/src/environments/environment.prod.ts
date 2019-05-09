@@ -1,5 +1,9 @@
 export const environment = {
   production: true,
-  jparsapiUrl: 'http://localhost:8080/pilotojee7-backend/jparsapi/v2.0/primary',
-  baseUrl: 'http://localhost:8080/pilotojee7-backend/api'
+  baseUrl: 'http://localhost:8080/pilotojee7-backend/api',
+  keycloakConfig: {
+    url: 'http://localhost:8080/auth',
+    realm: 'pilotojee7', // .ie: master
+    clientId: 'pilotojee7-frontend' // .ie: account
+  }
 };

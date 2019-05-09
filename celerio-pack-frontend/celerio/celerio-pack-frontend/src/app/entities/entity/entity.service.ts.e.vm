@@ -1,16 +1,20 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}.service.ts")##
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MessageService } from '../../util/message.service';
-import { EntityService } from '../../framework/service/entity.service';
 import { Observable, forkJoin } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { map, catchError } from 'rxjs/operators';
+import { EntityService, PageRequest, PageResponse } from 'framework-lib';
 import { ${entity.model.type} } from './${entity.model.type.toLowerCase()}';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ${entity.service.type} extends EntityService<${entity.model.type}> {
 
-  constructor(protected http: HttpClient, protected messageService: MessageService) {
-    super(http, messageService, '${entity.model.type}');
+  constructor(protected http: HttpClient) {
+    super(http, '${entity.model.type}');
+    this.apiUrl = environment.baseUrl;
   }
 
   public newEntity(response?: any): ${entity.model.type} {

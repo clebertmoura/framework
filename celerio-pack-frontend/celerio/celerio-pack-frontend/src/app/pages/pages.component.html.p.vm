@@ -1,0 +1,74 @@
+$output.file("src/app/pages/pages.component.html")##
+<div class="app-container">
+
+  <header class="navbar fixed-top navbar-expand navbar-dark bg-dark app-navbar">
+    <button class="btn btn-link btn-lg text-white p-0 mr-3 d-md-none" type="button" (click)="sidenav.toggle()"
+      aria-label="Toggle navigation">
+      <i class="fas fa-bars fa-lg"></i>
+    </button>
+    <a class="navbar-brand" href="/">
+      <img src="/assets/img/brasao.png" height="36" class="d-inline-block align-content-center mr-2 my-0" alt="">
+      <span class="d-md-none">pilotojee7</span>
+      <span class="d-none d-md-inline">pilotojee7</span>
+    </a>
+  </header>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav class="sidenav p-0 bg-white border-right" fixedInViewport="true" [attr.role]="mobileQuery.matches ? 'dialog' : 'navigation'"
+      [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches" fixedTopGap="64">
+      <nav class="p-0">
+        <div class="m-0 p-3 border-bottom userbox text-center">
+          <div class="mb-0">
+            <i class="text-primary fas fa-user-circle fa-3x"></i>
+          </div>
+          <div class="d-block">
+            Nome do Usuário
+          </div>
+          <div><span class="badge badge-dark">Administrador</span></div>
+        </div>
+        <div class="nav-side-menu">
+          <div class="menu-list">
+            <ul id="menu-content" class="menu-content out">
+              <li>
+                <a (click)="closeSidenav()" routerLink="/pages/home" routerLinkActive="font-weight-bold">
+                  <i class="fas fa-fw fa-home"></i>
+                  <span>Início</span>
+                </a>
+              </li>
+              <li expandMenu class="collapsed">
+                <a>
+                  <i class="fas fa-fw fa-database"></i>
+                  <span>Cadastros</span>
+                  <i class="fas fa-angle-down"></i>
+                </a>
+              </li>
+              <ul class="submenu sub-menu collapse">
+#foreach($entity in $project.withoutManyToManyJoinEntities.list)
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/${entity.model.type.toLowerCase()}" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>${entity.model.type}</span>
+                  </a>
+                </li>
+#end
+              </ul>
+              <li>
+                <a (click)="closeSidenav()" routerLink="/pages/home" routerLinkActive="font-weight-bold">
+                  <i class="fas fa-fw fa-sign-out-alt"></i>
+                  <span>Sair</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </mat-sidenav>
+    <mat-sidenav-content class="pb-3 px-0 px-md-3">
+      <div class="container-fluid">
+        <app-breadcrumb></app-breadcrumb>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>
