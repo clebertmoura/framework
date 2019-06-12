@@ -1,0 +1,68 @@
+$output.file("src/assets/i18n/pt-br.json")##
+{
+    "PROJECT": {
+      "TITLE": "PilotoJee7"
+    },
+
+    "LABEL": {
+        "HOME": "Início",
+        "FORMS": "Cadastros",
+        "LOGOUT": "Sair",
+        "SAVE": "Salvar",
+        "BACK": "Voltar",
+        "NEW": "Novo",
+        "ADD": "Adicionar",
+        "EDIT": "Editar",
+        "CLEAN": "Limpar",
+        "LIST": "Listagem",
+        "VIEW": "Visualizar",
+        "CONFIRM": "Confirmar",
+        "CANCEL": "Cancelar",
+        "DELETE": "Remover",
+        "FILTER": "Filtrar",
+        "DETAIL": "Detalhar",
+        "ACTIONS": "Ações",
+        "RESEARCH": "Pesquisar",
+        "RESEARCH_FILTER": "Filtros de Pesquisa",
+        "LOADING": "Carregando..."
+    },
+
+    "MESSAGE": {
+        "ENTITY_MANAGEMENT": "Gerenciar {entity}",
+        "ENTITY_NEW": "Cadastro de {entity}",
+        "ENTITY_DETAIL": "Detalhamento de {entity}",
+        "LENGTH_IN_BYTES": "Tamanho em bytes:",
+        "DELETE_CONFIRMATION": "Você gostaria de remover este item?",
+        "SAVE_BEFORE_UPLOAD": "O registro deve ser salvo para que o upload seja habilitado",
+        "MIN_CHAR": "{field} deve conter no mínimo {numchar} {numchar, plural, one{caracter} other{caracteres}}.",
+        "MAX_CHAR": "{field} deve conter no máximo {numchar} caractere(s).",
+        "INVALID_EMAIL":"{field} valor é inválido para um e-mail.",
+        "INVALID_URL":"{field} valor é inválido para uma URL.",
+        "MANDATORY_FIELD": "{field} é obrigatório.",
+        "ITEM_NOT_FOUND": "Nenhum item encontrado",
+        "ITEM_REMOVED": "O registro foi removido.",
+        "ITEM_CREATED": "O registro foi inserido com sucesso!",
+        "ITEM_SAVED": "O registro foi atualizado com sucesso!",
+        "ERROR_WHEN_SAVING": "Erro ao salvar!",
+        "ERROR_ON_SAVING" :"Ocorreu um erro ao salvar um registro!",
+        "ERROR_WHEN_SEARCHING": "Erro ao consultar!"
+    },
+
+#foreach($entity in $project.withoutManyToManyJoinEntities.list)
+    "${entity.model.type.toUpperCase()}": {
+        "NAME": "${entity.labels.label}",
+#foreach($attr in $entity.formAttributes.flatUp.list)
+#if($velocityCount == $entity.formAttributes.flatUp.list.size()) 
+        "$attr.var.toUpperCase()": "$attr.labels.label"
+#else       
+        "$attr.var.toUpperCase()": "$attr.labels.label",
+#end
+#end
+#if($velocityCount == $project.withoutManyToManyJoinEntities.list.size()) 
+    }
+#else       
+        },
+
+#end
+#end
+}

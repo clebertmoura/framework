@@ -20,6 +20,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import org.keycloak.KeycloakPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -239,8 +240,56 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 		}
 		checkBeanValidation(entity);
 		validateEntityFields(entity, true);
+		setAuditedInfoOnInsert(entity);
 		getEntityManager().persist(entity);
 		return entity;
+	}
+	
+	/**
+	 * Seta as informações de auditoria ao inserir um registro.
+	 * 
+	 * @param entity
+	 */
+	@SuppressWarnings("rawtypes")
+	protected void setAuditedInfoOnInsert(E entity) {
+		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
+			// this will set the user id as userName
+			String userName = null;
+			try {
+				userName = sessionContext.getCallerPrincipal().getName();
+				if (sessionContext.getCallerPrincipal() instanceof KeycloakPrincipal) {
+					KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) sessionContext.getCallerPrincipal();
+					// this is how to get the real userName (or rather the login name)
+					userName = keycloakPrincipal.getKeycloakSecurityContext().getToken().getPreferredUsername();
+				}
+			} catch (IllegalStateException e) { }
+			((BaseEntityAudited<PK>) entity).setCreationAuthor(userName);
+			((BaseEntityAudited<PK>) entity).setLastModificationAuthor(userName);
+
+		}
+	}
+	
+	/**
+	 * Seta as informações de auditoria ao inserir um registro.
+	 * 
+	 * @param entity
+	 */
+	@SuppressWarnings("rawtypes")
+	protected void setAuditedInfoOnUpdate(E entity) {
+		if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
+			// this will set the user id as userName
+			String userName = null;
+			try {
+				userName = sessionContext.getCallerPrincipal().getName();
+				if (sessionContext.getCallerPrincipal() instanceof KeycloakPrincipal) {
+					KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) sessionContext.getCallerPrincipal();
+					// this is how to get the real userName (or rather the login name)
+					userName = keycloakPrincipal.getKeycloakSecurityContext().getIdToken().getPreferredUsername();
+				}
+			} catch (IllegalStateException e) { }
+			BaseEntityAudited<PK> entityAudited = (BaseEntityAudited<PK>) entity;
+			entityAudited.setLastModificationAuthor(userName);
+		}
 	}
 
 	/**
@@ -270,6 +319,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 			}
 			checkBeanValidation(entity);
 			validateEntityFields(entity, false);
+			setAuditedInfoOnUpdate(entity);
 			entity = getEntityManager().merge(entity);
 		} else {
 			if (logger.isDebugEnabled())
@@ -293,6 +343,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 			validateRemove(entity);
 			if (BaseEntityAudited.class.isAssignableFrom(getEntityClass())) {
 				((BaseEntityAudited<PK>)entity).setStatus(Status.INACTIVE);
+				setAuditedInfoOnUpdate(entity);
 				getEntityManager().merge(entity);
 			} else {
 				getEntityManager().remove(entity);

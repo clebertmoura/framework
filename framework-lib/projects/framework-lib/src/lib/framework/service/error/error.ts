@@ -14,11 +14,11 @@ export class Error {
     invalidValue?: any;
     propertyPath?: string;
 
-    _json: any;
+    _JSON: any;
 
     constructor(json?: any) {
         if (json != null) {
-            this._json = json;
+            this._JSON = json;
 
             this.httpStatus = json.httpStatus;
             this.layer = ErrorLayer[json.layer + ''];

@@ -2,14 +2,14 @@ $output.file("src/app/pages/pages.component.html")##
 <div class="app-container">
 
   <header class="navbar fixed-top navbar-expand navbar-dark bg-dark app-navbar">
-    <button class="btn btn-link btn-lg text-white p-0 mr-3 d-md-none" type="button" (click)="sidenav.toggle()"
+    <button class="btn btn-link btn-lg text-white p-0 mr-3" type="button" (click)="sidenav.toggle()"
       aria-label="Toggle navigation">
       <i class="fas fa-bars fa-lg"></i>
     </button>
     <a class="navbar-brand" href="/">
       <img src="/assets/img/brasao.png" height="36" class="d-inline-block align-content-center mr-2 my-0" alt="">
-      <span class="d-md-none">pilotojee7</span>
-      <span class="d-none d-md-inline">pilotojee7</span>
+      <span class="d-md-none">{{'PROJECT.TITLE' | translate}}</span>
+      <span class="d-none d-md-inline">{{'PROJECT.TITLE' | translate}}</span>
     </a>
   </header>
 
@@ -22,9 +22,8 @@ $output.file("src/app/pages/pages.component.html")##
             <i class="text-primary fas fa-user-circle fa-3x"></i>
           </div>
           <div class="d-block">
-            Nome do Usuário
+            {{ userFullName }}
           </div>
-          <div><span class="badge badge-dark">Administrador</span></div>
         </div>
         <div class="nav-side-menu">
           <div class="menu-list">
@@ -32,13 +31,13 @@ $output.file("src/app/pages/pages.component.html")##
               <li>
                 <a (click)="closeSidenav()" routerLink="/pages/home" routerLinkActive="font-weight-bold">
                   <i class="fas fa-fw fa-home"></i>
-                  <span>Início</span>
+                  <span>{{'LABEL.HOME' | translate}}</span>
                 </a>
               </li>
               <li expandMenu class="collapsed">
                 <a>
                   <i class="fas fa-fw fa-database"></i>
-                  <span>Cadastros</span>
+                  <span>{{'LABEL.FORMS' | translate}}</span>
                   <i class="fas fa-angle-down"></i>
                 </a>
               </li>
@@ -47,15 +46,15 @@ $output.file("src/app/pages/pages.component.html")##
                 <li>
                   <a (click)="closeSidenav()" routerLink="/pages/entities/${entity.model.type.toLowerCase()}" routerLinkActive="font-weight-bold">
                     <i class="fas fa-angle-right"></i>
-                    <span>${entity.model.type}</span>
+                    <span>{{ '${entity.model.type.toUpperCase()}.NAME' | translate }}</span>
                   </a>
                 </li>
 #end
               </ul>
               <li>
-                <a (click)="closeSidenav()" routerLink="/pages/home" routerLinkActive="font-weight-bold">
+                <a (click)="logout()" routerLink="/pages/home" routerLinkActive="font-weight-bold">
                   <i class="fas fa-fw fa-sign-out-alt"></i>
-                  <span>Sair</span>
+                  <span>{{'LABEL.LOGOUT' | translate}}</span>
                 </a>
               </li>
             </ul>

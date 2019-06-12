@@ -4,10 +4,20 @@
 
 
 # REMOVER OS SEGUINTES IGNORES APOS GERAR O PROJETO!
-**/app/entities/station/
-**/app/entities/accesslog/
-**/app/entities/device/
-**/app/entities/driver/
+**/app/entities/agenda/
+**/app/entities/agendadetalhe/
+**/app/entities/agendaperiodo/
+**/app/entities/especialidade/
+**/app/entities/paciente/
+**/app/entities/area/
+**/app/entities/bloqueio/
+**/app/entities/parametro/
+**/app/entities/consulta/
+**/app/entities/profissionalsaude/
+**/app/entities/qualificacaoprofissional/
+**/app/entities/status/
+**/app/entities/tipoagenda/
+**/app/entities/tipoconsulta/
 **/app/entities/entities-routing.module.ts
 **/app/entities/enumerators.service.ts
 **/app/entities/entities.module.ts          

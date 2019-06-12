@@ -2,7 +2,7 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 <span>
   <label [for]="id">{{label}}</label>
   <ng-select [labelForId]="id" [(ngModel)]="isMultiple() ? values : value" [bindLabel]="displayfield" [disabled]="disabled" [required]="required"
-    [placeholder]="placeholder" [items]="suggestions" [multiple]="multiple" (change)="select(${dollar}event)" [clearAllText]="'Limpar'" 
-    [notFoundText]="'Nenhum item encontrado'">
+    [placeholder]="placeholder" [items]="suggestions" [multiple]="multiple" (change)="select(${dollar}event)" [clearAllText]="'LABEL.CLEAN' | translate" 
+    [notFoundText]="'MESSAGE.ITEM_NOT_FOUND' | translate">
   </ng-select>
 </span>

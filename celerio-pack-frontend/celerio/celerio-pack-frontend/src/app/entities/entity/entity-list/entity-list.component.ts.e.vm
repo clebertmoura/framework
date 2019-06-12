@@ -2,12 +2,15 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 import { Component, Input } from '@angular/core';
 import { AppEntityListComponent } from '../../../core/components/app-entity-list.component';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService, FilterMetadata, Operator } from 'framework-lib';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { $entity.model.type } from '../${entity.model.type.toLowerCase()}';
 import { $entity.service.type } from '../${entity.model.type.toLowerCase()}.service';
 import { ${entity.model.type}DataSource } from '../${entity.model.type.toLowerCase()}.datasource';
 import { EnumeratorsService } from '../../enumerators.service';
+import { TranslateService } from '@ngx-translate/core';
+
 #set($imports = [])
 #foreach ($relation in $entity.xToOne.list)
 #if(!$imports.contains($relation.to.type))
@@ -25,83 +28,118 @@ import { $relation.to.type } from '../../$relation.toEntity.model.type.toLowerCa
 })
 export class ${entity.model.type}ListComponent extends AppEntityListComponent<${entity.model.type}, ${entity.service.type}> {
 
+  public isFiltersCollapsed = true;
+
 ## --------------- Many to One
 #foreach ($relation in $entity.forwardXToOne.list)
 #if ($velocityCount == 1)
-    // X to one: input param is used to filter the list when displayed
-    // as a one-to-many list by the other side.
+  // X to one: input param is used to filter the list when displayed
+  // as a one-to-many list by the other side.
 #end
-    private _${relation.to.var}: $relation.to.type;
+  private _${relation.to.var}: $relation.to.type;
 #end
 
-    constructor(protected router: Router,
-        protected messageService: MessageService,
-        protected confirmDeleteDialog: NgbModal,
-        protected enumeratorsService: EnumeratorsService,
-        protected entityService: $entity.service.type) {
-        super(router, messageService, confirmDeleteDialog, enumeratorsService, entityService, '${entity.model.type}');
-        // inicialização do dataSource
-        this.dataSource = new ${entity.model.type}DataSource(this.paginator, this.sort, this.entityService);
-        // configura as colunas exibidas no datatable.
-        this.displayedColumns = [
-## --- Result attributes
-#foreach ($attr in $entity.searchResultAttributes.flatUp.list)
-#if(!$attr.isInPk() && !$attr.isFile())
-#if ($attr.hasXToOneRelation())
-            '${attr.xToOneRelation.to.var}',
-#else
-            '${attr.var}',
+  constructor(
+    protected router: Router,
+    protected messageService: MessageService,
+    protected confirmDeleteDialog: NgbModal,
+    protected fb: FormBuilder,
+    protected translate: TranslateService,
+    protected enumeratorsService: EnumeratorsService,
+    protected entityService: $entity.service.type) {
+    super(router, messageService, confirmDeleteDialog, fb, translate, enumeratorsService, entityService, '${entity.model.type}');
+  }
+
+  protected async loadEnumValues() {
+#foreach($attr in $entity.enumAttributes.list)
+    this.cacheEnums['${attr.enumModel.type}'] = await this.enumeratorsService.get${attr.enumModel.type}Values().toPromise();
 #end
-#end
-#end
-            'actions'
-        ];
-        // configura os campos de filtro
-## --- Search attributes
+  }
+
+  protected setupEntityDataSource(): void {
+    this.dataSource = new ${entity.model.type}DataSource(this.paginator, this.sort, this.entityService);
+  }
+
+  /**
+   * Cria os FormGroup para os filtros de pesquisa.
+   */
+  protected createSearchFormGroup(): FormGroup {
+    return this.fb.group({
 #foreach($attr in $entity.searchAttributes.flatUp.list)
 #if(!$attr.isInPk() && !$attr.isFile())
 #if($attr.isString())
-        this.filters['${attr.var}'] = new FilterMetadata(null, Operator.LI);
+      ${attr.var}: [null],
 #elseif($attr.hasXToOneRelation())
-        this.filters['${attr.xToOneRelation.to.var}.id'] = new FilterMetadata(null, Operator.EQ);
+      ${attr.xToOneRelation.to.var}: [null],
 #else
-        this.filters['${attr.var}'] = new FilterMetadata(null, Operator.EQ);
+      ${attr.var}: [null],
 #end	
 #end
 #end
-    }
-    
-    protected loadEnumValues(): void {
-#foreach($attr in $entity.enumAttributes.list)
-        this.enumeratorsService.get${attr.enumModel.type}Values().subscribe(
-            enumItems => {this.cacheEnums['${attr.enumModel.type}'] = enumItems; },
-            error => this.messageService.error('', 'Não foi possível carregar os valores do campo ${attr.name}')
-        );
+    });
+  }
 
+  /**
+   * Configura as colunas a serem exibidas no datatable.
+   */
+  protected setupDatatableFields(): void {
+    this.displayedColumns = [
+#foreach ($attr in $entity.searchResultAttributes.flatUp.list)
+#if(!$attr.isInPk() && !$attr.isFile())
+#if ($attr.hasXToOneRelation())
+      '${attr.xToOneRelation.to.var}',
+#else
+      '${attr.var}',
 #end
-    }
+#end
+#end
+      'actions'
+    ];
+  }
+
+  /**
+   * Inicializa os campos do filtro com os valores dos campos no FormGroup.
+   */
+  protected setupFilterFields(): void {
+#foreach($attr in $entity.searchAttributes.flatUp.list)
+#if(!$attr.isInPk() && !$attr.isFile())
+#if($attr.isInCpk())
+#set( $valuePath = "${identifiableProperty.var}.${attr.var}")##
+#else
+#set( $valuePath = "${attr.var}")##
+#end
+#if($attr.isString())
+    this.setupFilterField('${valuePath}', '${valuePath}', Operator.LI);
+#elseif($attr.hasXToOneRelation())
+    this.setupFilterField('${attr.xToOneRelation.to.var}', '${attr.xToOneRelation.to.var}.id', Operator.EQ);
+#else
+    this.setupFilterField('${valuePath}', '${valuePath}', Operator.LI);
+#end	
+#end
+#end
+  }
 
 ## --------------- X to One
 #foreach ($relation in $entity.forwardXToOne.list)
 
 #if ($velocityCount == 1)
-    // X to one: input param is used to filter the list when displayed
-    // as a one-to-many list by the other side.
+  // X to one: input param is used to filter the list when displayed
+  // as a one-to-many list by the other side.
 #end
-    @Input()
-    set ${relation.to.var}(${relation.to.var}: $relation.to.type) {
-        if ($relation.to.var == null) {
-            return;
-        }
-        this._$relation.to.var = $relation.to.var;
-        this.filters['${relation.to.var}'].value = this._${relation.to.var}.${identifiableProperty.var};
+  @Input()
+  set ${relation.to.var}(${relation.to.var}: $relation.to.type) {
+    if ($relation.to.var == null) {
+      return;
     }
+    this._$relation.to.var = $relation.to.var;
+    this.filters['${relation.to.var}.id'].value = this._${relation.to.var}.${identifiableProperty.var};
+  }
 #end
-#if($entity.hasCompositePk())
 
-	protected getEntityId(entity: $entity.model.type): any
-		const id = #foreach($a in $primaryKey.attributes)entity.${identifiableProperty.var}.${a.var}#{if}($a.isDate()).toISOString().substring(0,19)#{end}#{if}($velocityHasNext) + '_' + #{else};#{end}#{end}
-        return id;
-    }
+#if($entity.hasCompositePk())
+	protected getEntityId(entity: $entity.model.type): any {
+		const id = #foreach($a in $primaryKey.attributes)entity.${identifiableProperty.var}.${a.var}#{if}($a.isDate()).toISOString().substring(0,19)#{end}#{if}($velocityHasNext) + '_' + #{else};#{end}#{end};
+    return id;
+  }
 #end
 }

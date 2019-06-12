@@ -46,7 +46,7 @@ export class $entity.model.type extends#if($entity.isEntityAudited()) BaseEntity
     // Raw attributes
 #end
 #if(!$attribute.isInPk() && !$attribute.isVersion() && !$attribute.isAuditEntityAttribute() && !$attribute.isInFk() && !$attribute.getColumnConfig().getFieldName().equals("status"))
-    ${attribute.var}#tstype($attribute);
+    ${attribute.var}#tstype($attribute) = null;
 #end
 #end
 ## --------------- X to One (except inverse one to one)
@@ -54,14 +54,14 @@ export class $entity.model.type extends#if($entity.isEntityAudited()) BaseEntity
 #if ($velocityCount == 1)
     // x-to-one
 #end
-    ${relation.to.var}: $relation.to.type;
+    ${relation.to.var}: $relation.to.type = null;
 #end
 ## --------------- many to many
 #foreach ($relation in $entity.manyToMany.list)
 #if ($velocityCount == 1)
     // many-to-many
 #end
-    ${relation.to.vars}: ${relation.to.type}[];
+    ${relation.to.vars}: ${relation.to.type}[] = [];
 #end
 
     constructor(json?: any, depth?: number) {
@@ -75,7 +75,9 @@ export class $entity.model.type extends#if($entity.isEntityAudited()) BaseEntity
         const entities: ${entity.model.type}[] = [];
         if (jsons != null) {
             for (const json of jsons) {
-                entities.push(new ${entity.model.type}(json, depth));
+              const entity = new ${entity.model.type}();
+              entity.loadFromJson(json, depth);
+              entities.push(entity);
             }
         }
         return entities;

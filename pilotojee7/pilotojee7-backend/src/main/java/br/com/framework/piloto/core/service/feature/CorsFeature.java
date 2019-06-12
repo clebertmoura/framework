@@ -2,7 +2,6 @@ package br.com.framework.piloto.core.service.feature;
 
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.core.FeatureContext;
-import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.plugins.interceptors.CorsFilter;
 
@@ -15,7 +14,7 @@ import org.jboss.resteasy.plugins.interceptors.CorsFilter;
  * @author Cleber Moura <cleber.t.moura@gmail.com>
  *
  */
-@Provider
+/*@Provider*/
 public class CorsFeature implements Feature {
 
     @Override

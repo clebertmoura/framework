@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AbstractEnumeratorsService } from 'framework-lib';
 import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
@@ -34,7 +35,10 @@ export class EnumeratorsService extends AbstractEnumeratorsService {
      * Retorna a coleção de valores do enumerator: TipoParametro
      */
     public getTipoParametroValues(): Observable<any[]> {
-        return this.getEnumValues('TipoParametro');
+        return this.http.get('./assets/mocks/Parametro/tipoparametro.json')
+      .pipe(
+        map((response: any) => response)
+      );
     }
 
 }

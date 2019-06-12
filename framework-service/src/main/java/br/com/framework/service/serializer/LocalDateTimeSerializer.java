@@ -24,7 +24,8 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 	@Override
 	public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider sp)
 			throws IOException{
-		LocalDateTime localDateTime = value.atZone(LocalDateTimeDeserializer.RECIFE_TIMEZONE)
+		LocalDateTime localDateTime = value
+			.atZone(LocalDateTimeDeserializer.RECIFE_TIMEZONE)
 			.withZoneSameInstant(LocalDateTimeDeserializer.UTC_TIMEZONE)
 			.toLocalDateTime();
 		gen.writeString(localDateTime.format(LocalDateTimeDeserializer.JAVASCRIPT_DATETIME_FORMAT));

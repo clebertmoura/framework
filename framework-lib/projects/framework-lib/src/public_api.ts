@@ -11,6 +11,7 @@ export * from './lib/framework/entity/baseEntityAudited';
 
 export * from './lib/framework/util/message.service';
 
+export * from './lib/framework/service/data-sharing.service';
 export * from './lib/framework/service/entity.service';
 export * from './lib/framework/service/enumerators.service';
 export * from './lib/framework/service/entity.datasource';

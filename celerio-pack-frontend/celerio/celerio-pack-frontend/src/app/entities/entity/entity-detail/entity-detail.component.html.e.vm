@@ -3,26 +3,28 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 
   <!-- Main content -->
   <section class="content">
-  <h2>{{ viewMode ? 'Detalhamento de ${entity.labels.label}' : 'Cadastro de ${entity.labels.label}' }}</h2>
+  <h2>{{ (viewMode ? 'MESSAGE.ENTITY_DETAIL' : 'MESSAGE.ENTITY_NEW') | translate:{'entity':'${entity.labels.label}'} }}</h2>
   
 ## -- [MACRO]
 #macro(xToOneEdit $relation)
 
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [dropdown]="true" [(ngModel)]="entity.${relation.to.var}" id="$relation.to.var"
-                            name="$relation.to.var" label="${relation.labels.label}" displayfield="${relation.toEntity.printerAttributes.flatUp.list.get(0).var}"
-                            [disabled]="viewMode">
+                        <app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [dropdown]="true" formControlName="${relation.to.var}" id="$relation.to.var"
+                            label="${relation.labels.label}" displayfield="${relation.toEntity.printerAttributes.flatUp.list.get(0).var}"
+                            [disabled]="viewMode" #if($relation.isMandatory())[required]="true" #end >
                         </app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
+                    #if($relation.isMandatory())
+                
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('${relation.to.var}').required && (detailForm.get('${relation.to.var}').dirty || detailForm.get('${relation.to.var}').touched)">
+                          {{'MESSAGE.MANDATORY_FIELD' | translate:{'field':'$relation.labels.label'} }}
+                        </div>
+                
+                    #end
                     </div>
                 </div>
-                #if($relation.isMandatory())
-                <!--
-                <div class="text-danger mt-1" *ngIf="!${relation.to.var}.valid && ${relation.to.var}.dirty && ${relation.to.var}.errors['required']">
-                    $relation.labels.label é obrigatório.
-                </div>
-                -->
-                #end
+
 #end
 #macro(required $attribute)
 #if($attribute.isRequired()) required #end
@@ -39,34 +41,43 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #macro(mderror $attribute)
 
 #if($attribute.isRequired())
-                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['required']">
-                        $attribute.labels.label é obrigatório.
-                    </div>
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('${attribute.var}').required && (detailForm.get('${attribute.var}').dirty || detailForm.get('${attribute.var}').touched)">
+                          {{'MESSAGE.MANDATORY_FIELD' | translate:{'field':'$attribute.labels.label'} }}
+                        </div>
 #end
 #if($attribute.columnConfig.hasMin() && $attribute.isString())
-                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['minlength']">
-                        $attribute.labels.label deve conter no mínimo $attribute.columnConfig.min caractere(s).
-                    </div>
+                        <div class="text-danger mt-1"
+                          *ngIf="detailForm.get('${attribute.var}').errors && detailForm.get('${attribute.var}').errors.minlength 
+                            && (detailForm.get('${attribute.var}').dirty || detailForm.get('${attribute.var}').touched)">
+                          {{'MESSAGE.MIN_CHAR' | translate:{'field':'$attribute.labels.label', 'numchar':'$attribute.columnConfig.min'} }}
+                        </div>
 #end
 #if($attribute.isString() && $attribute.columnConfig.getSize() > 0)
-                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['maxlength']">
-                        $attribute.labels.label deve conter no máximo $attribute.columnConfig.size caractere(s).
-                    </div>
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('${attribute.var}').errors && detailForm.get('${attribute.var}').errors.maxlength 
+                            && (detailForm.get('${attribute.var}').dirty || detailForm.get('${attribute.var}').touched)">
+                            {{'MESSAGE.MAX_CHAR' | translate:{'field':'$attribute.labels.label', 'numchar':'$attribute.columnConfig.min'} }}
+                        </div>
 #end
 #if($attribute.isEmail())
-                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['validateEmail']">
-                        $attribute.labels.label valor é inválido para um e-mail.
-                    </div>
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('${attribute.var}').errors && detailForm.get('${attribute.var}').errors.validateEmail
+                            && (detailForm.get('${attribute.var}').dirty || detailForm.get('${attribute.var}').touched)">
+                          {{'MESSAGE.INVALID_EMAIL' | translate:{'field':'$attribute.labels.label'} }}
+                        </div>
 #end
 #if($attribute.isUrl())
-                    <div class="text-danger mt-1" *ngIf="!${attribute.var}.valid && ${attribute.var}.dirty && ${attribute.var}.errors['pattern']">
-                        $attribute.labels.label valor é inválido para uma URL.
-                    </div>
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('${attribute.var}').errors && detailForm.get('${attribute.var}').errors.pattern
+                            && (detailForm.get('${attribute.var}').dirty || detailForm.get('${attribute.var}').touched)">
+                            {{'MESSAGE.INVALID_URL' | translate:{'field':'$attribute.labels.label'} }}
+                        </div>
 #end
 #end
 ## -- [/MACROS]
   
-    <form class="needs-validation" ngForm #${entity.model.var}Form="ngForm" *ngIf="entity">
+    <form class="needs-validation" ngForm *ngIf="entity" [formGroup]="detailForm">
         <div class="card mt-3 shadow-sm">
             <div class="card-body">
 
@@ -78,96 +89,103 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #xToOneEdit($attr.getXToOneRelation())
 #elseif(!$attr.isVersion())
 #if($attr.isInCpk())
-#set( $valuePath = "entity.${identifiableProperty.var}.${attr.var}")##
+#set( $valuePath = "${identifiableProperty.var}.${attr.var}")##
 #else
-#set( $valuePath = "entity.${attr.var}")##
+#set( $valuePath = "${attr.var}")##
 #end
                 <div class="row">
                     <div class="form-group col-md-12">
 #if($attr.isPassword())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="password" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
-                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <input class="form-control" type="password" #required($attr) #minlength($attr) #maxlength($attr)
+                          formControlName="$valuePath" id="$attr.var" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('${attr.var}').invalid && (detailForm.get('${attr.var}').dirty || detailForm.get('${attr.var}').touched)" />
                         #mderror($attr)
 #elseif($attr.isHtml())
 					<!-- TODO -->
                 todo html
 #elseif($attr.isTextArea() && $attr.getSize() > 255)
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <textarea class="form-control" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
-                            autoResize="true" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"></textarea>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <textarea class="form-control" autoResize="true" 
+                          #required($attr) #minlength($attr) #maxlength($attr)
+                          formControlName="$valuePath" id="$attr.var" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('${attr.var}').invalid && (detailForm.get('${attr.var}').dirty || detailForm.get('${attr.var}').touched)">
+                        </textarea>
                         #mderror($attr)
 #elseif($attr.isEnum())
-                        <label>$attr.labels.label</label>
+                        <label>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
                         <div>
-                        	<fieldset [disabled]="viewMode">
-	                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
-	                                <input type="radio" name="$attr.var" id="{{'${attr.var}Option' + i}}" class="custom-control-input"
-	                                    [value]="${attr.var}Option.key" [(ngModel)]="$valuePath">
-	                                <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
-	                            </div>
-                            </fieldset>
+                        	<fieldset [class.is-invalid]="detailForm.get('${attr.var}').invalid && (detailForm.get('${attr.var}').dirty || detailForm.get('${attr.var}').touched)">
+                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
+                              <input type="radio" class="custom-control-input" #required($attr)
+                                id="{{'${attr.var}Option' + i}}" [disableControl]="viewMode"
+                                [value]="${attr.var}Option.key" formControlName="$attr.var">
+                              <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
+                            </div>
+                          </fieldset>
+                          #mderror($attr)
                         </div>
-                        <!--
-                        #mderror($attr)
-                        -->
 #elseif($attr.isEmail())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="email" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr) validateEmail
-                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <input class="form-control" type="email" #required($attr) #minlength($attr) #maxlength($attr)
+                          formControlName="$valuePath" id="$attr.var" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('${attr.var}').invalid && (detailForm.get('${attr.var}').dirty || detailForm.get('${attr.var}').touched)" />
                         #mderror($attr)
 #elseif($attr.isUrl())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="url" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
-                            pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"
-                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <input class="form-control" type="url" #required($attr) #minlength($attr) #maxlength($attr)
+                          pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"
+                          formControlName="$valuePath" id="$attr.var" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('${attr.var}').invalid && (detailForm.get('${attr.var}').dirty || detailForm.get('${attr.var}').touched)"/>
                         #mderror($attr)
 #elseif($attr.isString())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="text" [(ngModel)]="$valuePath" #required($attr) #minlength($attr) #maxlength($attr)
-                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <input class="form-control" type="text" #required($attr) #minlength($attr) #maxlength($attr)
+                          formControlName="$valuePath" id="$attr.var" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('${attr.var}').invalid && (detailForm.get('${attr.var}').dirty || detailForm.get('${attr.var}').touched)"/>
                         #mderror($attr)
 #elseif($attr.isNumeric())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="number" [(ngModel)]="$valuePath" #required($attr)
-                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <input class="form-control" type="number" #required($attr)
+                          formControlName="$valuePath" id="$attr.var" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('${attr.var}').invalid && (detailForm.get('${attr.var}').dirty || detailForm.get('${attr.var}').touched)"/>
                         #mderror($attr)
 #elseif($attr.isDate() && !$attr.isVersion())
 #if($attr.isJavaUtilOnlyDate() || $attr.isLocalDate())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <app-datetime-picker [(ngModel)]="$valuePath" #required($attr) name="$attr.var" [id]="'$attr.var'"
-                            placement="bottom-left" [disabled]="viewMode"></app-datetime-picker>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <app-datetime-picker formControlName="$valuePath" #required($attr) [id]="'$attr.var'"
+                            placement="bottom-left" [disabledMode]="viewMode"></app-datetime-picker>
 #elseif($attr.isLocalDateTime() || $attr.isInstant())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <app-datetime-picker [(ngModel)]="$valuePath" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
-                            placement="bottom-left" [disabled]="viewMode"></app-datetime-picker>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <app-datetime-picker formControlName="$valuePath" #required($attr) [id]="'$attr.var'" [timePicker]="true"
+                            placement="bottom-left" [disabledMode]="viewMode"></app-datetime-picker>
 #else
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <app-datetime-picker [(ngModel)]="$valuePath" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
-                            placement="bottom-left" [disabled]="viewMode"></app-datetime-picker>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <app-datetime-picker formControlName="$valuePath" #required($attr) [id]="'$attr.var'" [timePicker]="true"
+                            placement="bottom-left" [disabledMode]="viewMode"></app-datetime-picker>
 #end
 #elseif($attr.isBoolean())
-                        <input class="custom-control-input" type="checkbox" [(ngModel)]="$valuePath" name="$attr.var" id="$attr.var"
-                            ${p}$attr.var="ngModel" [disabled]="viewMode" />
+                        <input class="custom-control-input" type="checkbox" 
+                          formControlName="$valuePath" id="$attr.var" [disableControl]="viewMode" />
                         <label for="$attr.var">${attr.labels.label}</label>
 #elseif($attr.isFile() && $attr.filename)
 					<!-- TODO -->
                 <ul *ngIf="entity.${attr.filename.var}">
                     <li><a href="{{ getApiUrl() + '/' + entity.${identifiableProperty.var} + '/${attr.var}/download' }}">Download {{entity.${attr.filename.var}}}</a></li>
                     <li>Content-Type: {{entity.${attr.fileContentType.var}}}</li>
-                    <li>Tamanho em bytes: {{entity.${attr.fileSize.var}}}</li>
+                    <li>{{'MESSAGE.LENGTH_IN_BYTES' | translate}} {{entity.${attr.fileSize.var}}}</li>
                 </ul>
 
                 <p-fileUpload *ngIf="entity.${identifiableProperty.var}" name="${attr.var}" url="{{ getApiUrl() + '/' + entity.${identifiableProperty.var} + '/${attr.var}/upload' }}" (onUpload)="on${attr.varUp}Upload(${d}event)" >
                 </p-fileUpload>
                 <p *ngIf="!entity.${identifiableProperty.var}">
-                	O registro deve ser salvo para que o upload seja habilitado
+                	{{'MESSAGE.SAVE_BEFORE_UPLOAD' | translate}}
                 </p>
 #else
 
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="text" [(ngModel)]="$valuePath" #required($attr)
-                            name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel" [disabled]="viewMode"/>
+                        <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                        <input class="form-control" type="text" formControlName="$valuePath" #required($attr)
+                            id="$attr.var" [disableControl]="viewMode"/>
                         #mderror($attr)
 #end
                     </div>
@@ -178,14 +196,14 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
                 <div class="row mt-3">
                     <div class="col align-self-start">
                         <button class="btn btn-outline-secondary mr-2" *ngIf="sub" (click)="onClickCancel()">
-                            <i class="fas fa-times"></i> Cancelar
+                            <i class="fas fa-times"></i> {{'LABEL.CANCEL' | translate}}
                         </button>
     
-                        <button class="btn btn-primary mr-2" (click)="onClickSave()" [disabled]="!${entity.model.var}Form.form.valid && viewMode">
-                            <i class="fas fa-check"></i> Salvar
+                        <button class="btn btn-primary mr-2" (click)="onClickSave()" [disabled]="detailForm.invalid || viewMode">
+                            <i class="fas fa-check"></i> {{'LABEL.SAVE' | translate}}
                         </button>
                         <button class="btn btn-outline-secondary mr-2" *ngIf="!sub" (click)="onClickBack()">
-                                <i class="fas fa-chevron-left"></i> Voltar
+                                <i class="fas fa-angle-left"></i> {{'LABEL.BACK' | translate}}
                         </button>
                     </div>
                 </div>

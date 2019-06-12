@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { KeycloakService, KeycloakAuthGuard } from 'keycloak-angular';
+import { ErrorService } from '../core/errors/error.service';
+import { constants } from '../app.constants';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppAuthGuard extends KeycloakAuthGuard {
-  constructor(protected router: Router, protected keycloakAngular: KeycloakService) {
+
+  constructor(
+    protected router: Router,
+    protected keycloakAngular: KeycloakService,
+    private errorService: ErrorService) {
     super(router, keycloakAngular);
   }
 
@@ -15,23 +23,28 @@ export class AppAuthGuard extends KeycloakAuthGuard {
         return;
       }
 
+      // Checa se o usuário possui a role
+      // mínima (pilotojee7-frontend.logar.sistema) para acessar a aplicação
+      let resultGrant = false;
       const requiredRoles = route.data.roles;
-      console.log(requiredRoles);
       if (!requiredRoles || requiredRoles.length === 0) {
-        return resolve(true);
+        resultGrant = true;
       } else {
         if (!this.roles || this.roles.length === 0) {
-          resolve(false);
+          resultGrant = false;
         }
-        let granted = false;
         for (const requiredRole of requiredRoles) {
           if (this.roles.indexOf(requiredRole) > -1) {
-            granted = true;
+            resultGrant = true;
             break;
           }
         }
-        resolve(granted);
+        if (!resultGrant) {
+          this.errorService.showNotAuthorizedError();
+        }
       }
+      return resolve(resultGrant);
     });
   }
+
 }

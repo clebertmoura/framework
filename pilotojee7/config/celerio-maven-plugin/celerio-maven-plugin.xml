@@ -182,7 +182,7 @@
     <!-- CHANGE IT OR COMMENT IT IF YOU USE YOUR OWN DATABASE -->
     <!-- Generate enums used by the entities above -->
     <sharedEnumConfigs>
-        <sharedEnumConfig userType="br.com.framework.domain.enums.Status" name="Status" type="ORDINAL">
+        <sharedEnumConfig name="Status" type="ORDINAL">
             <enumValues>
                 <enumValue value="INACTIVE" label="Inativo" />
                 <enumValue value="ACTIVE" label="Ativo" />

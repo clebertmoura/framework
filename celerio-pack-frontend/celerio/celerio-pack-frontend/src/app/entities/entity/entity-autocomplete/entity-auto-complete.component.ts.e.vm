@@ -4,6 +4,7 @@ import { EntityCompleteComponent, MessageService } from 'framework-lib';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ${entity.model.type} } from '../${entity.model.type.toLowerCase()}';
 import { ${entity.service.type} } from '../${entity.model.type.toLowerCase()}.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export const ${entity.model.type.toUpperCase()}_AUTO_COMPLETE_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -19,8 +20,8 @@ export const ${entity.model.type.toUpperCase()}_AUTO_COMPLETE_CONTROL_VALUE_ACCE
 })
 export class ${entity.model.type}AutocompleteComponent extends EntityCompleteComponent<${entity.model.type}, ${entity.model.type}Service> {
 
-  constructor(protected entityService: ${entity.model.type}Service, protected messageService: MessageService) {
-    super(entityService, messageService);
+  constructor(protected entityService: ${entity.model.type}Service, protected messageService: MessageService, protected translate: TranslateService) {
+    super(entityService, messageService, translate);
   }
 
 }

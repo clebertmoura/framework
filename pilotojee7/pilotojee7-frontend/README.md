@@ -5,9 +5,11 @@ Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli
 
 ## Development server
 
-Execute `ng serve` for a dev server.
+Execute `ng serve` para executar o servidor de desenvolvimento local.
 
 Abra o navegador em `http://localhost:4200/`. A aplicação será carregada automaticamente.
+
+Execute `ng serve --vendor-source-map` para executar o servidor de desenvolvimento local com acesso a debug das classes internas de bibliotecas.
 
 ## Code scaffolding
 

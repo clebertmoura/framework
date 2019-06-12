@@ -1,25 +1,31 @@
 $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model.type.toLowerCase()}-list/${entity.model.type.toLowerCase()}-list.component.html")##
-<app-loading-spinner-overlay label="Carregando..." *ngIf="dataSource.loading${dollar} | async"></app-loading-spinner-overlay>
+<app-loading-spinner-overlay label="{{'LABEL.LOADING' | translate}}" *ngIf="dataSource.loading${dollar} | async"></app-loading-spinner-overlay>
 <div>
-
     <!-- Main content -->
     <section class="content">
 
-        <h2>Gerenciar ${entity.labels.label}</h2>
+        <h2>{{'MESSAGE.ENTITY_MANAGEMENT' | translate:{'entity': '${entity.labels.label}'} }}</h2>
 
-        <div *ngIf="!sub" class="card mt-3 shadow-sm">
+        <div *ngIf="!sub" class="card mt-3 shadow-sm" [formGroup]="searchForm" id="${entity.model.type.toLowerCase()}FiltersCollapse">
             <div class="card-body">
-                <h4 class="card-title">Filtros de Pesquisa</h4>
+                <h4 [class.card-title]="!isFiltersCollapsed" [class.m-0]="isFiltersCollapsed">
+                    {{'LABEL.RESEARCH_FILTER' | translate}}
+                    <button class="btn btn-link pl-1" (click)="isFiltersCollapsed = !isFiltersCollapsed" [attr.aria-expanded]="!isFiltersCollapsed" 
+                            aria-controls="${entity.model.type.toLowerCase()}FiltersCollapse">
+                        <i class="fas fa-lg" [class.fa-chevron-up]="!isFiltersCollapsed" [class.fa-chevron-down]="isFiltersCollapsed"></i>
+                    </button>
+                </h4>
 
+                <div [ngbCollapse]="isFiltersCollapsed">
 ## -- [MACRO]
 #macro(listXToOneEdit $relation)
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [dropdown]="true" [(ngModel)]="filters['${relation.to.var}.id'].value" [id]="'{$relation.to.var}'"
-                            name="{$relation.to.var}" label="${relation.labels.label}" displayfield="${relation.toEntity.printerAttributes.flatUp.list.get(0).var}">
-                        </app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [dropdown]="true" formControlName="${relation.to.var}" [id]="'{$relation.to.var}'"
+                                label="${relation.labels.label}" displayfield="${relation.toEntity.printerAttributes.flatUp.list.get(0).var}">
+                            </app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
+                        </div>
                     </div>
-                </div>
 #end
 
 #foreach($attr in $entity.searchAttributes.flatUp.list)
@@ -34,68 +40,65 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #set( $valuePath = "${attr.var}")##
 #end
 
-                <div class="form-row">
-                    <div class="form-group col-md-12">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
 #if($attr.isTextArea())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <textarea class="form-control" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var" ${p}$attr.var="ngModel"></textarea>
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <textarea class="form-control" formControlName="$attr.var" id="$attr.var"></textarea>
 #elseif($attr.isEnum())
-                        <label>$attr.labels.label</label>
-                        <div>
-                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
-                                <input type="radio" name="$attr.var" id="{{'${attr.var}Option' + i}}" class="custom-control-input" [value]="${attr.var}Option.key" [(ngModel)]="filters['$valuePath'].value">
-                                <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
+                            <label>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <div>
+                                <div class="custom-control custom-radio custom-control-inline" *ngFor="let ${attr.var}Option of cacheEnums['${attr.enumModel.type}']; let i = index">
+                                    <input type="radio" id="{{'${attr.var}Option' + i}}" class="custom-control-input" 
+                                      [value]="${attr.var}Option.key" formControlName="$attr.var">
+                                    <label class="custom-control-label" for="{{'${attr.var}Option' + i}}">{{ ${attr.var}Option.label }}</label>
+                                </div>
                             </div>
-                        </div>
 #elseif($attr.isEmail())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="email" [(ngModel)]="filters['$valuePath'].value" validateEmail name="$attr.var" id="$attr.var"
-                            ${p}$attr.var="ngModel" />
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <input class="form-control" type="email" formControlName="$attr.var" validateEmail id="$attr.var" />
 #elseif($attr.isUrl())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="url" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
-                            pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" ${p}$attr.var="ngModel" />
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <input class="form-control" type="url" formControlName="$attr.var" id="$attr.var"
+                                pattern="^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?" />
 #elseif($attr.isString())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="text" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
-                            ${p}$attr.var="ngModel" />
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <input class="form-control" type="text" formControlName="$attr.var" id="$attr.var" />
 #elseif($attr.isNumeric())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="number" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
-                            ${p}$attr.var="ngModel" />
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <input class="form-control" type="number" formControlName="$attr.var" id="$attr.var" />
 #elseif($attr.isDate() && !$attr.isVersion())
 #if($attr.isJavaUtilOnlyDate() || $attr.isLocalDate())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <app-datetime-picker [(ngModel)]="filters['$valuePath'].value" #required($attr) name="$attr.var" [id]="'$attr.var'"
-                            placement="bottom-left"></app-datetime-picker>
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <app-datetime-picker formControlName="$attr.var" #required($attr) [id]="'$attr.var'"
+                                placement="bottom-left"></app-datetime-picker>
 #elseif($attr.isLocalDateTime() || $attr.isInstant())
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <app-datetime-picker [(ngModel)]="filters['$valuePath'].value" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
-                            placement="bottom-left"></app-datetime-picker>
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <app-datetime-picker formControlName="$attr.var" #required($attr) [id]="'$attr.var'" [timePicker]="true"
+                                placement="bottom-left"></app-datetime-picker>
 #else
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <app-datetime-picker [(ngModel)]="filters['$valuePath'].value" #required($attr) name="$attr.var" [id]="'$attr.var'" [timePicker]="true"
-                            placement="bottom-left"></app-datetime-picker>
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <app-datetime-picker formControlName="$attr.var" #required($attr) [id]="'$attr.var'" [timePicker]="true"
+                                placement="bottom-left"></app-datetime-picker>
 #end
 #elseif($attr.isBoolean())
 
-                        <input class="custom-control-input" type="checkbox" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
-                            ${p}$attr.var="ngModel" />
-                        <label for="$attr.var">$attr.labels.label</label>
+                            <input class="custom-control-input" type="checkbox" formControlName="$attr.var" id="$attr.var" />
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
 #else
-                        <label for="$attr.var">$attr.labels.label</label>
-                        <input class="form-control" type="text" [(ngModel)]="filters['$valuePath'].value" name="$attr.var" id="$attr.var"
-                            ${p}$attr.var="ngModel" />
+                            <label for="$attr.var">{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</label>
+                            <input class="form-control" type="text" formControlName="$attr.var" id="$attr.var" />
 #end
+                        </div>
                     </div>
-                </div>
 
 #end ##---------- [/NON VERSION]
 #end ## foreach(....
 
-                <button class="btn btn-primary" (click)="onClickSearch()">
-                    <i class="fas fas fa-search"></i> Pesquisar
-                </button>
+                    <button class="btn btn-primary" (click)="onClickSearch()">
+                        <i class="fas fas fa-search"></i> {{'LABEL.RESEARCH' | translate}}
+                    </button>
+                </div>
 
             </div>
         </div>
@@ -106,11 +109,11 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <button class="btn btn-primary" (click)="onClickNew()">
-                            <i class="fas fa-plus"></i> Adicionar
+                            <i class="fas fa-plus"></i> {{'LABEL.ADD' | translate}}
                         </button>
                     </div>
                     <div class="form-group col-md-4">
-                        <input class="form-control" type="text" placeholder="Filtrar" aria-label="Filtrar" #searchInput />
+                        <input class="form-control" type="text" placeholder="{{'LABEL.FILTER' | translate}}" attr.aria-label="{{'LABEL.FILTER' | translate}}" #searchInput />
                     </div>
                 </div>
 
@@ -123,7 +126,7 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 	#if(!$attr.isInPk() && !$attr.isFile())
 		#if ($attr.hasXToOneRelation())
                         <ng-container cdkColumnDef="$attr.xToOneRelation.to.var">
-                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">
                                 <app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line [entity]="entity"></app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line>
                             </td>
@@ -138,17 +141,17 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 			#####
 			#if($attr.isLocalDate())
                         <ng-container cdkColumnDef="$attr.var">
-                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd/MM/yyyy" }}</td>
                         </ng-container>
 			#elseif($attr.isLocalDateTime())
                         <ng-container cdkColumnDef="$attr.var">
-                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd/MM/yyyy HH:mm" }}</td>
                         </ng-container>
 			#else
                         <ng-container cdkColumnDef="$attr.var">
-                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>$attr.labels.label.toUpperCase()</th>
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">{{$valuePath}}</td>
                         </ng-container>
 			#end
@@ -157,15 +160,15 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #end
 
                         <ng-container cdkColumnDef="actions">
-                            <th cdk-header-cell *cdkHeaderCellDef><span class="sr-only">Ações</span></th>
+                            <th cdk-header-cell *cdkHeaderCellDef><span class="sr-only">{{'LABEL.ACTIONS' | translate}}</span></th>
                             <td cdk-cell *cdkCellDef="let entity" class="col-actions text-right">
-                                <button ngbTooltip="Detalhar" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickView(entity)" aria-label="Detalhar">
+                                <button ngbTooltip="{{'LABEL.DETAIL' | translate}}" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickView(entity)" attr.aria-label="{{'LABEL.DETAIL' | translate}}">
                                     <i class="fas fa-fw fa-file"></i>
                                 </button>
-                                <button ngbTooltip="Editar" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickEdit(entity)" aria-label="Editar">
+                                <button ngbTooltip="{{'LABEL.EDIT' | translate}}" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickEdit(entity)" attr.aria-label="{{'LABEL.EDIT' | translate}}">
                                     <i class="fas fa-fw fa-pen"></i>
                                 </button>
-                                <button ngbTooltip="Excluir" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickRemove(entity)" aria-label="Excluir">
+                                <button ngbTooltip="{{'LABEL.DELETE' | translate}}" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickRemove(entity)" attr.aria-label="{{'LABEL.DELETE' | translate}}">
                                     <i class="fas fa-fw fa-trash"></i>
                                 </button>
                             </td>
@@ -177,7 +180,9 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
                     </table>
 
                 </div>
-                <ngb-pagination class="d-flex justify-content-center" [collectionSize]="dataSource.itemsCount$ | async" [(page)]="paginator.page" [pageSize]="paginator.pageSize" (pageChange)="onPageChanges(${dollar}event)" [boundaryLinks]="true"></ngb-pagination>
+                <ngb-pagination class="d-flex justify-content-center" [collectionSize]="dataSource.itemsCount${dollar} | async" 
+                	[(page)]="paginator.page" (pageChange)="onPageChanges(${dollar}event)"
+                	[pageSize]="paginator.pageSize" [maxSize]="paginationMaxSize" [rotate]="paginationRotate" [boundaryLinks]="true"></ngb-pagination>
             </div>
         </div>
 

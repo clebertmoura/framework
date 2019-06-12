@@ -1,0 +1,195 @@
+{
+  "PROJECT": {
+    "TITLE": "PilotoJee7"
+  },
+
+  "LABEL": {
+      "HOME": "Home",
+      "FORMS": "Forms",
+      "LOGOUT": "Logout",
+      "SAVE": "Save",
+      "BACK": "Back",
+      "NEW": "New",
+      "ADD": "Add",
+      "EDIT": "Edit",
+      "CLEAN": "Clear",
+      "LIST": "List",
+      "VIEW": "View",
+      "CONFIRM": "Confirm",
+      "CANCEL": "Cancel",
+      "DELETE": "Remove",
+      "FILTER": "Filter",
+      "DETAIL": "Detail",
+      "ACTIONS": "Actions",
+      "RESEARCH": "Research",
+      "RESEARCH_FILTER": "Research Filters",
+      "LOADING": "Loading...",
+      "SUCCESS": "Success!"
+  },
+
+  "MESSAGE": {
+      "MANAGE_ENTITY": "Manage {{entity}}",
+      "ENTITY_NEW": "Register {{entity}}",
+      "ENTITY_DETAIL": "View {{entity}}",
+      "LENGTH_IN_BYTES": "Length in bytes:",
+      "DELETE_CONFIRMATION": "Would you like to remove this item?",
+      "SAVE_BEFORE_UPLOAD": "The registry should be saved to enable the uploading.",
+      "MIN_CHAR": "{{field}} must contain at least {{numchar}} character(s).",
+      "MAX_CHAR": "{{field}} must contain until {{numchar}} character(s).",
+      "INVALID_EMAIL":"{{field}} invalid value for an email.",
+      "INVALID_URL":"{{field}} invalid value for an url.",
+      "MANDATORY_FIELD": "{{field}} is mandatory.",
+      "ITEM_NOT_FOUND": "No item found.",
+      "ITEM_REMOVED": "The item has been removed.",
+      "ERROR_WHEN_SAVING": "Error when saved!",
+      "ERROR_ON_SAVING": "Error occorred on saving item!",
+      "ERROR_WHEN_SEARCHING": "Erro when searching!"
+  },
+
+  "AGENDA": {
+      "NAME": "Agenda",
+      "ID": "Id",
+      "DATAINICIO": "Data Inicio",
+      "DATAFINAL": "Data Final",
+      "DATAHORALIBERACAO": "Data Hora Liberacao",
+      "QUALIFICACAOPROFISSIONAL": "Qualificacao Profissional",
+      "QUANTIDADEVAGASDEPENDENTES": "Quantidade Vagas Dependentes",
+      "QUANTIDADEVAGASPRIMEIROATENDIMENTO": "Quantidade Vagas Primeiro Atendimento",
+      "VERSION": "Version",
+      "STATUS": "Status"
+      },
+
+  "AGENDADETALHE": {
+      "NAME": "Agenda Detalhe",
+      "ID": "Id",
+      "DATAHORAINICIO": "Data Hora Inicio",
+      "DATAHORAFINAL": "Data Hora Final",
+      "VERSION": "Version",
+      "TIPOCONSULTA": "Tipo Consulta",
+      "AGENDAPERIODO": "Agenda Periodo",
+      "STATUS": "Status"
+      },
+
+  "AGENDAPERIODO": {
+      "NAME": "Agenda Periodo",
+      "ID": "Id",
+      "QUANTIDADEVAGASGERAL": "Quantidade Vagas Geral",
+      "JUSTIFICATIVA": "Justificativa",
+      "DATAHORAINICIO": "Data Hora Inicio",
+      "DATAHORAFINAL": "Data Hora Final",
+      "AGENDA": "Agenda",
+      "BLOQUEIO": "Bloqueio",
+      "TIPOAGENDA": "Tipo Agenda",
+      "VERSION": "Version",
+      "STATUS": "Status"
+      },
+
+  "AREA": {
+      "NAME": "Area",
+      "ID": "Id",
+      "NOME": "Nome",
+      "STATUS": "Status",
+      "VERSION": "Version"
+      },
+
+  "BLOQUEIO": {
+      "NAME": "Bloqueio",
+      "ID": "Id",
+      "SIGLA": "Sigla",
+      "DESCRICAO": "Descricao",
+      "VERSION": "Version"
+      },
+
+  "CONSULTA": {
+      "NAME": "Consulta",
+      "ID": "Id",
+      "IDPROTOCOLO": "Id Protocolo",
+      "DATAHORACHEGADA": "Data Hora Chegada",
+      "MEDICOMARCOU": "Medico Marcou",
+      "JUSTIFICATIVA": "Justificativa",
+      "PACIENTE": "Paciente",
+      "AGENDADIA": "Agenda Dia",
+      "STATUSCONSULTA": "Status Consulta",
+      "VERSION": "Version",
+      "STATUS": "Status"
+      },
+
+  "ESPECIALIDADE": {
+      "NAME": "Especialidade",
+      "ID": "Id",
+      "NOME": "Nome",
+      "INFANTIL": "Infantil",
+      "AREA": "Area",
+      "STATUS": "Status",
+      "VERSION": "Version"
+      },
+
+  "PACIENTE": {
+      "NAME": "Paciente",
+      "ID": "Id",
+      "MATRICULA": "Matricula",
+      "NUMEROPRONTUARIO": "Numero Prontuario",
+      "NOME": "Nome",
+      "EMAILINSTITUCIONAL": "Email Institucional",
+      "EMAILPESSOAL": "Email Pessoal",
+      "DATANASCIMENTO": "Data Nascimento",
+      "DDDTELEFONEFIXO": "Ddd Telefone Fixo",
+      "TELEFONEFIXO": "Telefone Fixo",
+      "DDDTELEFONEMOVEL": "Ddd Telefone Movel",
+      "TELEFONEMOVEL": "Telefone Movel",
+      "TITULAR": "Titular",
+      "VERSION": "Version"
+      },
+
+  "PARAMETRO": {
+      "NAME": "Parametro",
+      "ID": "Id",
+      "DESCRICAO": "Descricao",
+      "VALOR": "Valor",
+      "CHAVE": "Chave",
+      "DATAHORAALTERACAO": "Data Hora Alteracao",
+      "TIPOPARAMETRO": "Tipo Parametro",
+      "VERSION": "Version"
+      },
+
+  "PROFISSIONALSAUDE": {
+      "NAME": "Profissional Saude",
+      "ID": "Id",
+      "NOME": "Nome",
+      "NOMEABREVIADO": "Nome Abreviado",
+      "MATRICULA": "Matricula",
+      "STATUS": "Status",
+      "VERSION": "Version"
+      },
+
+  "QUALIFICACAOPROFISSIONAL": {
+      "NAME": "Qualificacao Profissional",
+      "ID": "Id",
+      "PROFISSIONALSAUDE": "Profissional Saude",
+      "ESPECIALIDADE": "Especialidade",
+      "STATUS": "Status",
+      "VERSION": "Version"
+      },
+
+  "STATUS": {
+      "NAME": "Status",
+      "ID": "Id",
+      "SIGLA": "Sigla",
+      "DESCRICAO": "Descricao",
+      "VERSION": "Version"
+      },
+
+  "TIPOAGENDA": {
+      "NAME": "Tipo Agenda",
+      "ID": "Id",
+      "DESCRICAO": "Descricao",
+      "VERSION": "Version"
+      },
+
+  "TIPOCONSULTA": {
+      "NAME": "Tipo Consulta",
+      "ID": "Id",
+      "DESCRICAO": "Descricao",
+      "VERSION": "Version"
+  }
+}

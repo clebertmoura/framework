@@ -1,0 +1,149 @@
+<div class="app-container">
+
+  <header class="navbar fixed-top navbar-expand navbar-dark bg-dark app-navbar">
+    <button class="btn btn-link btn-lg text-white p-0 mr-3 d-md-none" type="button" (click)="sidenav.toggle()"
+      aria-label="Toggle navigation">
+      <i class="fas fa-bars fa-lg"></i>
+    </button>
+    <a class="navbar-brand" href="/">
+      <img src="/assets/img/brasao.png" height="36" class="d-inline-block align-content-center mr-2 my-0" alt="">
+      <span class="d-md-none">{{'PROJECT.TITLE' | translate}}</span>
+      <span class="d-none d-md-inline">{{'PROJECT.TITLE' | translate}}</span>
+    </a>
+  </header>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav class="sidenav p-0 bg-white border-right" fixedInViewport="true" [attr.role]="mobileQuery.matches ? 'dialog' : 'navigation'"
+      [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches" fixedTopGap="64">
+      <nav class="p-0">
+        <div class="m-0 p-3 border-bottom userbox text-center">
+          <div class="mb-0">
+            <i class="text-primary fas fa-user-circle fa-3x"></i>
+          </div>
+          <div class="d-block">
+            Nome do Usuário
+          </div>
+          <div><span class="badge badge-dark">Administrador</span></div>
+        </div>
+        <div class="nav-side-menu">
+          <div class="menu-list">
+            <ul id="menu-content" class="menu-content out">
+              <li>
+                <a (click)="closeSidenav()" routerLink="/pages/home" routerLinkActive="font-weight-bold">
+                  <i class="fas fa-fw fa-home"></i>
+                  <span>{{'LABEL.HOME' | translate}}</span>
+                </a>
+              </li>
+              <li expandMenu class="collapsed">
+                <a>
+                  <i class="fas fa-fw fa-database"></i>
+                  <span>{{'LABEL.FORMS' | translate}}</span>
+                  <i class="fas fa-angle-down"></i>
+                </a>
+              </li>
+              <ul class="submenu sub-menu collapse">
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/agenda" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'AGENDA.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/agendadetalhe" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'AGENDADETALHE.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/agendaperiodo" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'AGENDAPERIODO.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/area" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'AREA.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/bloqueio" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'BLOQUEIO.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/consulta" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'CONSULTA.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/especialidade" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'ESPECIALIDADE.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/paciente" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'PACIENTE.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/parametro" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'PARAMETRO.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/profissionalsaude" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'PROFISSIONALSAUDE.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/qualificacaoprofissional" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'QUALIFICACAOPROFISSIONAL.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/status" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'STATUS.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/tipoagenda" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'TIPOAGENDA.NAME' | translate }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a (click)="closeSidenav()" routerLink="/pages/entities/tipoconsulta" routerLinkActive="font-weight-bold">
+                    <i class="fas fa-angle-right"></i>
+                    <span>{{ 'TIPOCONSULTA.NAME' | translate }}</span>
+                  </a>
+                </li>
+              </ul>
+              <li>
+                <a (click)="closeSidenav()" routerLink="/pages/home" routerLinkActive="font-weight-bold">
+                  <i class="fas fa-fw fa-sign-out-alt"></i>
+                  <span>{{'LABEL.LOGOUT' | translate}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </mat-sidenav>
+    <mat-sidenav-content class="pb-3 px-0 px-md-3">
+      <div class="container-fluid">
+        <app-breadcrumb></app-breadcrumb>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

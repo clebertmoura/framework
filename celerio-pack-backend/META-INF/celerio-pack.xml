@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <celerioPack xmlns="http://www.jaxio.com/schema/celerio">
     <packName value="celerio-pack-backend"/>
-    <packDescription value="Pack de artefatos backend"/>
+    <packDescription value="Pack de artefatos TJPE backend"/>
     <packDescription2 value="Generates entities, meta model, repositories to access entities etc. Used by front-end packs."/>
     <packCommand value="mvn -Pdb,metadata,gen test"/>
     <packCommandHelp value=""/>

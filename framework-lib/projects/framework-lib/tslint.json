@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "flib",
+      "ftjpe",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "flib",
+      "ftjpe",
       "kebab-case"
     ]
   }

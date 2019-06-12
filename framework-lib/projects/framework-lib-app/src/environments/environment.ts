@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:4200/assets/mocks'
+  keycloakServerUrl: 'https://homologacao.tjpe.gov.br/auth',
+  keycloakRealm: 'tjpeconnect',
+  clientId: 'pilotojee7-frontend',
+  baseUrl: 'http://localhost:8080/pilotojee7-backend/api'
 };
 
 /*
