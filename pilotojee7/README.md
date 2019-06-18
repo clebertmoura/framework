@@ -1,10 +1,10 @@
-Projeto Piloto da Arquiteture de Referência do TJPE
+Projeto Piloto da Arquiteture de Referência
 ========================
-* Autor: Unidade de Arquitetura de Software
+* Autor: Cleber Moura
 
 # O que é?
 
-Este é um projeto de exemplo, implementado na Arquitetura de Referência do TJPE, utilizando os frameworks que a compem.
+Este é um projeto de exemplo, implementado na Arquitetura de Referência, utilizando os frameworks que a compem.
 
 # Módulos
 
