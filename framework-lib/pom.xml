@@ -70,7 +70,7 @@
 			        <nodeVersion>v10.15.1</nodeVersion>
 			        <workingDirectory>${project.basedir}</workingDirectory>
 			        <installDirectory>${project.build.outputDirectory}</installDirectory>
-			        <npmRegistryURL>http://www.tjpe.jus.br/nexus/repository/npm-group/</npmRegistryURL>
+			        <npmRegistryURL>http://localhost:8443/nexus/repository/npm-group/</npmRegistryURL>
 			    </configuration>
 		    </plugin>
 		</plugins> -->

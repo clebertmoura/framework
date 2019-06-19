@@ -1,4 +1,4 @@
-# Lib TJPE Framework
+# Lib Framework
 
 Projeto da biblioteca Angular para o framework.
 
@@ -32,7 +32,7 @@ Projeto da biblioteca Angular para o framework.
 - Execute os comandos abaixo para publicação no Nexus:
 
 ```
-> npm login --registry=http://www.tjpe.jus.br/nexus/repository/npm-tjpe/
+> npm login --registry=<URL NPM Repository>
 ```
 
 ```
@@ -40,5 +40,5 @@ Projeto da biblioteca Angular para o framework.
 ```
 
 ```
-> npm publish --registry=http://www.tjpe.jus.br/nexus/repository/npm-tjpe/
+> npm publish --registry=<URL NPM Repository>
 ```
