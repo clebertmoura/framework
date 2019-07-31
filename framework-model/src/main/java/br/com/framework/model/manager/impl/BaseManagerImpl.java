@@ -259,7 +259,6 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 				userName = sessionContext.getCallerPrincipal().getName();
 				if (sessionContext.getCallerPrincipal() instanceof KeycloakPrincipal) {
 					KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) sessionContext.getCallerPrincipal();
-					// this is how to get the real userName (or rather the login name)
 					userName = keycloakPrincipal.getKeycloakSecurityContext().getToken().getPreferredUsername();
 				}
 			} catch (IllegalStateException e) { }
@@ -283,8 +282,7 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 				userName = sessionContext.getCallerPrincipal().getName();
 				if (sessionContext.getCallerPrincipal() instanceof KeycloakPrincipal) {
 					KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) sessionContext.getCallerPrincipal();
-					// this is how to get the real userName (or rather the login name)
-					userName = keycloakPrincipal.getKeycloakSecurityContext().getIdToken().getPreferredUsername();
+					userName = keycloakPrincipal.getKeycloakSecurityContext().getToken().getPreferredUsername();
 				}
 			} catch (IllegalStateException e) { }
 			BaseEntityAudited<PK> entityAudited = (BaseEntityAudited<PK>) entity;

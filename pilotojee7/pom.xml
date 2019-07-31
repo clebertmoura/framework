@@ -148,9 +148,6 @@
 	<profiles>
 		<profile>
 			<id>oracle</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<!-- Driver properties -->
 				<jdbc.groupId>com.oracle</jdbc.groupId>
@@ -185,12 +182,12 @@
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				
 				<!-- Database properties -->
-				<jdbc.database.host>192.168.25.127</jdbc.database.host>
-				<jdbc.database.port>5434</jdbc.database.port>
-				<jdbc.database.name>dbroadcard</jdbc.database.name>
+				<jdbc.database.host>localhost</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>dbalgoinvest</jdbc.database.name>
 				
 				<jdbc.user>postgres</jdbc.user>
-				<jdbc.password>trinity123</jdbc.password>
+				<jdbc.password>postgres</jdbc.password>
 				<jdbc.schema></jdbc.schema>
 				<jdbc.catalog></jdbc.catalog>
 				

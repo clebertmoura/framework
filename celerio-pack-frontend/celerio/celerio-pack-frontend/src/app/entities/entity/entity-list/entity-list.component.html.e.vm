@@ -125,10 +125,10 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 #foreach ($attr in $entity.searchResultAttributes.flatUp.list)
 	#if(!$attr.isInPk() && !$attr.isFile())
 		#if ($attr.hasXToOneRelation())
-                        <ng-container cdkColumnDef="$attr.xToOneRelation.to.var">
+			            <ng-container cdkColumnDef="$attr.xToOneRelation.to.var">
                             <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">
-                                <app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line [entity]="entity"></app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line>
+                                <app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line [entity]="entity.${attr.var}"></app-${attr.xToOneRelation.toEntity.model.type.toLowerCase()}-line>
                             </td>
                         </ng-container>
 		#else
@@ -140,17 +140,17 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
 			#end
 			#####
 			#if($attr.isLocalDate())
-                        <ng-container cdkColumnDef="$attr.var">
+			            <ng-container cdkColumnDef="$attr.var">
                             <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd/MM/yyyy" }}</td>
                         </ng-container>
 			#elseif($attr.isLocalDateTime())
-                        <ng-container cdkColumnDef="$attr.var">
+			            <ng-container cdkColumnDef="$attr.var">
                             <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">{{$valuePath | date:"dd/MM/yyyy HH:mm" }}</td>
                         </ng-container>
 			#else
-                        <ng-container cdkColumnDef="$attr.var">
+			            <ng-container cdkColumnDef="$attr.var">
                             <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'${entity.model.type.toUpperCase()}.$attr.var.toUpperCase()' | translate}}</th>
                             <td cdk-cell *cdkCellDef="let entity">{{$valuePath}}</td>
                         </ng-container>

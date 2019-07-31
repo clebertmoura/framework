@@ -107,6 +107,7 @@ export class $entity.model.type extends#if($entity.isEntityAudited()) BaseEntity
 #foreach ($relation in $entity.xToOne.list)
             if (json.$relation.to.var != null) {
                 this.$relation.to.var = new ${relation.to.type}(json.$relation.to.var, depth);
+                this.${relation.to.var}.loadFromJson(json.$relation.to.var, depth);
             }
 #end
 ## --------------- many to many

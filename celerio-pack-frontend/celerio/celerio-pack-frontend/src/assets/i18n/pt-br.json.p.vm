@@ -51,8 +51,8 @@ $output.file("src/assets/i18n/pt-br.json")##
 #foreach($entity in $project.withoutManyToManyJoinEntities.list)
     "${entity.model.type.toUpperCase()}": {
         "NAME": "${entity.labels.label}",
-#foreach($attr in $entity.formAttributes.flatUp.list)
-#if($velocityCount == $entity.formAttributes.flatUp.list.size()) 
+#foreach($attr in $entity.nonCpkAttributes.flatUp.list)
+#if($velocityCount == $entity.nonCpkAttributes.flatUp.list.size()) 
         "$attr.var.toUpperCase()": "$attr.labels.label"
 #else       
         "$attr.var.toUpperCase()": "$attr.labels.label",
@@ -61,7 +61,7 @@ $output.file("src/assets/i18n/pt-br.json")##
 #if($velocityCount == $project.withoutManyToManyJoinEntities.list.size()) 
     }
 #else       
-        },
+    },
 
 #end
 #end

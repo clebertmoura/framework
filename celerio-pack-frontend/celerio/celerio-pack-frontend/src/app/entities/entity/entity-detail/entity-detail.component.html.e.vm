@@ -12,7 +12,7 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
                     <div class="form-group col-md-12">
                         <app-${relation.toEntity.model.type.toLowerCase()}-autocomplete [dropdown]="true" formControlName="${relation.to.var}" id="$relation.to.var"
                             label="${relation.labels.label}" displayfield="${relation.toEntity.printerAttributes.flatUp.list.get(0).var}"
-                            [disabled]="viewMode" #if($relation.isMandatory())[required]="true" #end >
+                            [disableControl]="viewMode" #if($relation.isMandatory())[required]="true" #end >
                         </app-${relation.toEntity.model.type.toLowerCase()}-autocomplete>
                     #if($relation.isMandatory())
                 
@@ -199,7 +199,7 @@ $output.file("src/app/entities/${entity.model.type.toLowerCase()}/${entity.model
                             <i class="fas fa-times"></i> {{'LABEL.CANCEL' | translate}}
                         </button>
     
-                        <button class="btn btn-primary mr-2" (click)="onClickSave()" [disabled]="detailForm.invalid || viewMode">
+                        <button class="btn btn-primary mr-2" (click)="onClickSave()" [disableControl]="detailForm.invalid || viewMode">
                             <i class="fas fa-check"></i> {{'LABEL.SAVE' | translate}}
                         </button>
                         <button class="btn btn-outline-secondary mr-2" *ngIf="!sub" (click)="onClickBack()">

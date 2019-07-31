@@ -83,96 +83,183 @@
 
     <entityConfigs>
 
-        <entityConfig tableName="driver" entityName="Driver" sequenceName="seq_driver" schema="cadastro">
+        <entityConfig tableName="assinatura" entityName="Assinatura" sequenceName="seq_assinatura" schema="cadastro" label="Assinatura">
             <columnConfigs>
             
-	            <columnConfig columnName="id_driver" formField="false" fieldName="id" />
-	            <columnConfig columnName="name" fieldName="name" searchField="true" searchResult="true" displayOrder="1"/>
-                <columnConfig columnName="cpf" fieldName="cpf" searchField="true" searchResult="true" displayOrder="2"/>
-                <columnConfig columnName="driver_key" fieldName="driverKey" searchField="false" searchResult="false" displayOrder="3"/>
+	            <columnConfig columnName="id_assinatura" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="id_usuario" fieldName="usuario" label="Usuário">
+					<manyToOneConfig var="usuario" />
+				</columnConfig>
+				<columnConfig columnName="id_plano" fieldName="plano" label="Plano">
+					<manyToOneConfig var="plano" />
+				</columnConfig>
+	            <columnConfig columnName="data_inicial" fieldName="dataInicial" searchResult="true" displayOrder="1" label="Data inicial"/>
+                <columnConfig columnName="data_final" fieldName="dataFinal" searchResult="true" displayOrder="2" label="Data final"/>
                 
 				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
             	
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="fl_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
                 
             </columnConfigs>
         </entityConfig>
         
-        <entityConfig tableName="device" entityName="Device" sequenceName="seq_device" schema="cadastro">
+        <entityConfig tableName="ativo" entityName="Ativo" sequenceName="seq_ativo" schema="cadastro" label="Ativo">
             <columnConfigs>
             
-	            <columnConfig columnName="id_device" formField="false" fieldName="id" />
-	            <columnConfig columnName="id_driver">
-					<manyToOneConfig var="driver"/>
-				</columnConfig>
-	            
-	            <columnConfig columnName="uuid" fieldName="uuid" searchField="false" searchResult="false" displayOrder="1"/>
-                <columnConfig columnName="model" fieldName="model" searchField="true" searchResult="true" displayOrder="2"/>
-                <columnConfig columnName="platform" fieldName="platform" searchField="true" searchResult="true" displayOrder="3"/>
-                <columnConfig columnName="device_version" fieldName="deviceVersion" searchField="false" searchResult="false" displayOrder="4"/>
-                <columnConfig columnName="mobile_number" fieldName="mobileNumber" searchField="true" searchResult="true" displayOrder="5"/>
-                <columnConfig columnName="fl_mobnumber_verified" fieldName="mobileNumberVerified" sharedEnumName="SimNao" searchField="true" searchResult="true" displayOrder="6"/>
-                <columnConfig columnName="pin_verification" fieldName="pinVerification" searchField="true" searchResult="false" displayOrder="7"/>
+	            <columnConfig columnName="id_ativo" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="sigla" fieldName="sigla" formField="true" unique="true" searchField="true" searchResult="true" displayOrder="1" label="Sigla"/>
+                <columnConfig columnName="nome" fieldName="nome" formField="true" searchField="true" searchResult="true" displayOrder="2" label="Nome"/>
+                <columnConfig columnName="descricao" fieldName="descricao" formField="true" searchField="false" searchResult="false" displayOrder="3" label="Descrição"/>
+                <columnConfig columnName="categoria" fieldName="categoria" sharedEnumName="CategoriaAtivo" formField="true" searchField="false" searchResult="false" displayOrder="4" label="Categoria"/>
+                <columnConfig columnName="ultima_cotacao" fieldName="ultimaCotacao" formField="true" searchField="false" searchResult="true" displayOrder="5" label="Última cotação"/>
+                <columnConfig columnName="data_ultima_cotacao" fieldName="dataUltimaCotacao" formField="true" searchField="false" searchResult="true" displayOrder="6" label="Última cotação"/>
                 
 				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
             	
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="fl_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
                 
             </columnConfigs>
         </entityConfig>
         
-        <entityConfig tableName="access_log" entityName="AccessLog" sequenceName="seq_access_log" schema="cadastro">
+        <entityConfig tableName="carteira" entityName="Carteira" sequenceName="seq_carteira" schema="cadastro" label="Carteira">
             <columnConfigs>
             
-	            <columnConfig columnName="id_access_log" formField="false" fieldName="id" />
-	            <columnConfig columnName="id_driver">
-					<manyToOneConfig var="driver"/>
+	            <columnConfig columnName="id_carteira" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="id_usuario" fieldName="usuario" label="Usuário" displayOrder="1">
+					<manyToOneConfig var="usuario" />
 				</columnConfig>
-	            <columnConfig columnName="id_device">
-					<manyToOneConfig var="device"/>
-				</columnConfig>
-	            
-	            <columnConfig columnName="access_date" fieldName="accesDate" searchField="false" searchResult="false" displayOrder="1"/>
-                <columnConfig columnName="api_url" fieldName="apiUrl" searchField="true" searchResult="true" displayOrder="2"/>
-                <columnConfig columnName="api_request_data" fieldName="apiRequestData" searchField="false" searchResult="false" displayOrder="3"/>
+	            <columnConfig columnName="apelido" fieldName="apelido" formField="true" searchField="true" searchResult="true" displayOrder="2" label="Apelido"/>
                 
 				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
                 
             </columnConfigs>
         </entityConfig>
         
-        <entityConfig tableName="station" entityName="Station" sequenceName="seq_station" schema="cadastro">
+        <entityConfig tableName="compra" entityName="Compra" sequenceName="seq_compra" schema="cadastro" label="Compra">
             <columnConfigs>
             
-	            <columnConfig columnName="id_station" formField="false" fieldName="id" />
-	            
-	            <columnConfig columnName="name" fieldName="name" searchField="true" searchResult="true" displayOrder="1"/>
-                <columnConfig columnName="company_name" fieldName="companyName" formField="true" searchField="true" searchResult="true" displayOrder="2"/>
-                <columnConfig columnName="cnpj" fieldName="cnpj" formField="true" searchField="true" searchResult="true" displayOrder="3"/>
-                <columnConfig columnName="ie" fieldName="ie" formField="true" searchField="true" searchResult="true" displayOrder="4"/>
-                <columnConfig columnName="phones" fieldName="phones" formField="true" searchField="true" searchResult="true" displayOrder="5"/>
-                <columnConfig columnName="address" fieldName="address" formField="true" searchField="false" searchResult="false" displayOrder="6"/>
-                <columnConfig columnName="zipcode" fieldName="zipcode" formField="true" searchField="true" searchResult="false" displayOrder="7"/>
-                <columnConfig columnName="city" fieldName="city" formField="true" searchField="true" searchResult="true" displayOrder="8"/>
-                <columnConfig columnName="state" fieldName="state" formField="true" searchField="true" searchResult="true" displayOrder="9"/>
-                <columnConfig columnName="lat" fieldName="lat" formField="true" searchField="false" searchResult="false" displayOrder="10"/>
-                <columnConfig columnName="lng" fieldName="lat" formField="true" searchField="false" searchResult="false" displayOrder="11"/>
+	            <columnConfig columnName="id_compra" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="id_ativo" fieldName="ativo" label="Ativo" displayOrder="1">
+					<manyToOneConfig var="ativo" />
+				</columnConfig>
+				<columnConfig columnName="id_carteira" fieldName="carteira" label="Carteira" displayOrder="2">
+					<manyToOneConfig var="carteira" />
+				</columnConfig>
+	            <columnConfig columnName="preco_unitario" fieldName="precoUnitario" formField="true" searchField="false" searchResult="true" displayOrder="3" label="Preço Unitário"/>
+	            <columnConfig columnName="quantidade" fieldName="quantidade" formField="true" searchField="false" searchResult="true" displayOrder="4" label="Quantidade"/>
+	            <columnConfig columnName="valor_total" fieldName="valorTotal" formField="true" searchField="false" searchResult="true" displayOrder="5" label="Valor Total"/>
+	            <columnConfig columnName="data_operacao" fieldName="dataOperacao" formField="true" searchField="false" searchResult="true" displayOrder="6" label="Data Operação"/>
                 
 				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
             	
-            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="true" searchField="false" searchResult="false" />
-            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" />
-                <columnConfig columnName="fl_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" />
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+        <entityConfig tableName="venda" entityName="Venda" sequenceName="seq_venda" schema="cadastro" label="Venda">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_venda" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="id_ativo" fieldName="ativo" formField="true" searchField="true" searchResult="true" displayOrder="1" label="Ativo" >
+					<manyToOneConfig var="ativo" />
+				</columnConfig>
+				<columnConfig columnName="id_carteira" fieldName="carteira" formField="true" searchField="true" searchResult="true" displayOrder="2" label="Carteira">
+					<manyToOneConfig var="carteira" />
+				</columnConfig>
+	            <columnConfig columnName="preco_unitario" fieldName="precoUnitario" formField="true" searchField="false" searchResult="true" displayOrder="3" label="Preço Unitário"/>
+	            <columnConfig columnName="quantidade" fieldName="quantidade" formField="true" searchField="false" searchResult="true" displayOrder="4" label="Quantidade"/>
+	            <columnConfig columnName="valor_total" fieldName="valorTotal" formField="true" searchField="false" searchResult="true" displayOrder="5" label="Valor Total"/>
+	            <columnConfig columnName="data_operacao" fieldName="dataOperacao" formField="true" searchField="false" searchResult="true" displayOrder="6" label="Data Operação"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+        <entityConfig tableName="plano" entityName="Plano" sequenceName="seq_plano" schema="cadastro" label="Plano">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_plano" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="nome" fieldName="nome" formField="true" searchField="true" searchResult="true" displayOrder="1" label="Nome"/>
+	            <columnConfig columnName="descricao" fieldName="descricao" formField="true" searchField="false" searchResult="false" displayOrder="2" label="Descrição"/>
+	            <columnConfig columnName="valor" fieldName="valor" formField="true" searchField="false" searchResult="true" displayOrder="3" label="Valor"/>
+	            <columnConfig columnName="vigencia_dias" fieldName="vigenciaDias" formField="true" searchField="false" searchResult="true" displayOrder="4" label="Vigência (dias)"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+        <entityConfig tableName="recomendacao" entityName="Recomendacao" sequenceName="seq_recomendacao" schema="cadastro" label="Recomendação">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_recomendacao" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="titulo" fieldName="titulo" formField="true" searchField="true" searchResult="true" displayOrder="1" label="Título" />
+	            <columnConfig columnName="texto" fieldName="texto" formField="true" searchField="false" searchResult="false" displayOrder="2" label="Texto" />
+	            <columnConfig columnName="id_ativo" fieldName="ativo" formField="true" searchField="true" searchResult="true" displayOrder="3" label="Ativo" >
+					<manyToOneConfig var="ativo" />
+				</columnConfig>
+	            <columnConfig columnName="preco_entrada" fieldName="precoEntrada" formField="true" searchField="false" searchResult="false" displayOrder="4" label="Preço Entrada"/>
+	            <columnConfig columnName="preco_saida" fieldName="precoSaida" formField="true" searchField="false" searchResult="false" displayOrder="5" label="Preço Saída"/>
+	            <columnConfig columnName="preco_saida_parcial" fieldName="precoSaidaParcial" formField="true" searchField="false" searchResult="false" displayOrder="5" label="Preço Saída Parcial"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
+                
+            </columnConfigs>
+        </entityConfig>
+        
+        <entityConfig tableName="usuario" entityName="Usuario" sequenceName="seq_usuario" schema="cadastro" label="Usuário">
+            <columnConfigs>
+            
+	            <columnConfig columnName="id_usuario" formField="false" fieldName="id" label="Id"/>
+	            <columnConfig columnName="login" fieldName="login" formField="true" searchField="true" searchResult="true" displayOrder="1" label="Login" />
+	            <columnConfig columnName="email" fieldName="email" formField="true" searchField="true" searchResult="true" displayOrder="2" label="E-mail" />
+	            <columnConfig columnName="telefone" fieldName="telefone" formField="true" searchField="true" searchResult="true" displayOrder="3" label="Telefone"/>
+                
+				<columnConfig columnName="version" fieldName="version" formField="false" searchField="false" version="true" type="BIGINT" />
+            	
+            	<columnConfig columnName="creation_date" fieldName="creationDate" formField="false" searchField="false" searchResult="false" label="Criado em" />
+            	<columnConfig columnName="creation_author" fieldName="creationAuthor" formField="false" searchField="false" searchResult="false" label="Criado por" />
+                <columnConfig columnName="last_modification_date" fieldName="lastModificationDate" formField="false" searchField="false" searchResult="true" label="Modificado em" />
+                <columnConfig columnName="last_modification_author" fieldName="lastModificationAuthor" formField="false" searchField="false" searchResult="false" label="Modificado por" />
+                <columnConfig columnName="is_enabled" sharedEnumName="Status" fieldName="status" formField="false" searchField="false" searchResult="false" label="Status" />
                 
             </columnConfigs>
         </entityConfig>
@@ -192,6 +279,11 @@
             <enumValues>
                 <enumValue value="S" label="Sim" />
                 <enumValue value="N" label="Não" />
+            </enumValues>
+        </sharedEnumConfig>
+        <sharedEnumConfig name="CategoriaAtivo" type="STRING">
+            <enumValues>
+                <enumValue value="AC" label="Ações" />
             </enumValues>
         </sharedEnumConfig>
     </sharedEnumConfigs>
