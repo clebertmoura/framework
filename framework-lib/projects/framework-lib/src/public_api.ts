@@ -29,3 +29,5 @@ export * from './lib/framework/components/entity-auto-complete.component';
 export * from './lib/framework/components/entity-delete-dialog.component';
 export * from './lib/framework/components/entity-detail.component';
 export * from './lib/framework/components/entity-list.component';
+
+export * from './lib/framework/components/events/service-error.event';
