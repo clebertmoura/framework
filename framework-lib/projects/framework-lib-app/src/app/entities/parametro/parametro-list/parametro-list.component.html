@@ -1,99 +1,145 @@
-<div class="card">
-  <div class="card-header">
-    Parâmetro
-  </div>
-  <div class="card-body">
-    <button type="button" class="btn btn-primary" (click)="onClickNew()">
-      Adicionar
-    </button>
-  </div>
-</div>
+<app-loading-spinner-overlay label="{{'LABEL.LOADING' | translate}}" *ngIf="dataSource.loading$ | async"></app-loading-spinner-overlay>
+<div>
+    <!-- Main content -->
+    <section class="content">
 
-<div class="card" *ngIf="!sub">
-  <div class="card-header">
-    Filtro
-  </div>
-  <div class="card-body">
-    <form (submit)="onClickSearch()">
-      <div class="form-group">
-        <label for="descricao">Descrição</label>
-        <input type="text" class="form-control" 
-          [(ngModel)]="filters['descricao'].value" name="descricao" id="descricao" #descricao="ngModel"
-          aria-describedby="descricaoHelp" placeholder="Descricao">
-        <small id="descricaoHelp" class="form-text text-muted">Descrição do parâmetro.</small>
-      </div>
-      <div class="form-group">
-        <label for="chave">Chave</label>
-        <input type="text" class="form-control" 
-          [(ngModel)]="filters['chave'].value" name="chave" id="chave" #chave="ngModel"
-          aria-describedby="chaveHelp" placeholder="chave">
-        <small id="chaveHelp" class="form-text text-muted">Chave do parâmetro.</small>
-      </div>
-      <div class="form-group">
-        <label for="valor">Valor</label>
-        <textarea class="form-control" autoResize="true" [(ngModel)]="filters['valor'].value" name="valor" id="valor" #valor="ngModel"
-          aria-describedby="valorHelp" placeholder="Valor"></textarea>
-        <small id="valorHelp" class="form-text text-muted">Valor do parâmetro.</small>
-      </div>
-      <button type="submit" class="btn btn-primary" (click)="onClickSearch()">Pesquisar</button>
-    </form>
-  </div>
-</div>
+        <h2>{{'MESSAGE.ENTITY_MANAGEMENT' | translate:{'entity': 'Parametro'} }}</h2>
 
-<div class="card">
-  <div class="card-header">
-    Resultados
-  </div>
-  <div class="card-body">
-    <mat-form-field class="globalFilter">
-      <input matInput placeholder="Filtrar" #searchInput>
-      
-    </mat-form-field>
+        <div *ngIf="!sub" class="card mt-3 shadow-sm" [formGroup]="searchForm" id="parametroFiltersCollapse">
+            <div class="card-body">
+                <h4 [class.card-title]="!isFiltersCollapsed" [class.m-0]="isFiltersCollapsed">
+                    {{'LABEL.RESEARCH_FILTER' | translate}}
+                    <button class="btn btn-link pl-1" (click)="isFiltersCollapsed = !isFiltersCollapsed" [attr.aria-expanded]="!isFiltersCollapsed" 
+                            aria-controls="parametroFiltersCollapse">
+                        <i class="fas fa-lg" [class.fa-chevron-up]="!isFiltersCollapsed" [class.fa-chevron-down]="isFiltersCollapsed"></i>
+                    </button>
+                </h4>
 
-    <mat-table [dataSource]="dataSource" matSort matSortActive="nome" matSortDirection="asc" matSortDisableClear>
+                <div [ngbCollapse]="isFiltersCollapsed">
 
-      <ng-container matColumnDef="descricao">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>DESCRICAO</mat-header-cell>
-        <mat-cell *matCellDef="let entity">{{entity.descricao}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="valor">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>VALOR</mat-header-cell>
-        <mat-cell *matCellDef="let entity">{{entity.valor}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="chave">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>CHAVE</mat-header-cell>
-        <mat-cell *matCellDef="let entity">{{entity.chave}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="dataHoraAlteracao">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>DATA HORA ALTERACAO</mat-header-cell>
-        <mat-cell *matCellDef="let entity">{{entity.dataHoraAlteracao | date:"dd-MM-yyyy hh:mm" }}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="tipoParametro">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO PARAMETRO</mat-header-cell>
-        <mat-cell *matCellDef="let entity">{{entity.tipoParametro}}</mat-cell>
-      </ng-container>
 
-      <ng-container matColumnDef="actions" class="col-actions">
-        <mat-header-cell *matHeaderCellDef>AÇÕES</mat-header-cell>
-        <mat-cell *matCellDef="let entity">
-          <button type="button" class="btn btn-primary" (click)="onClickView(entity)">
-            Ver
-          </button>
-          <button type="button" class="btn btn-warning" (click)="onClickEdit(entity)">
-            Editar
-          </button>
-          <button type="button" class="btn btn-danger" (click)="onClickRemove(entity)">
-            Remover
-          </button>
-        </mat-cell>
-      </ng-container>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="descricao">{{'PARAMETRO.DESCRICAO' | translate}}</label>
+                            <input class="form-control" type="text" formControlName="descricao" id="descricao" />
+                        </div>
+                    </div>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+ 
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="valor">{{'PARAMETRO.VALOR' | translate}}</label>
+                            <textarea class="form-control" formControlName="valor" id="valor"></textarea>
+                        </div>
+                    </div>
 
-    </mat-table>
+ 
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="chave">{{'PARAMETRO.CHAVE' | translate}}</label>
+                            <input class="form-control" type="text" formControlName="chave" id="chave" />
+                        </div>
+                    </div>
 
-    <mat-paginator [length]="dataSource.itemsCount$ | async" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 100]">
-    </mat-paginator>
-  </div>
+ 
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="dataHoraAlteracao">{{'PARAMETRO.DATAHORAALTERACAO' | translate}}</label>
+                            <app-datetime-picker formControlName="dataHoraAlteracao"  [id]="'dataHoraAlteracao'" [timePicker]="true"
+                                placement="bottom-left"></app-datetime-picker>
+                        </div>
+                    </div>
+
+ 
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label>{{'PARAMETRO.TIPOPARAMETRO' | translate}}</label>
+                            <div>
+                                <div class="custom-control custom-radio custom-control-inline" *ngFor="let tipoParametroOption of cacheEnums['TipoParametro']; let i = index">
+                                    <input type="radio" id="{{'tipoParametroOption' + i}}" class="custom-control-input" 
+                                      [value]="tipoParametroOption.key" formControlName="tipoParametro">
+                                    <label class="custom-control-label" for="{{'tipoParametroOption' + i}}">{{ tipoParametroOption.label }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+  
+                    <button class="btn btn-primary" (click)="onClickSearch()">
+                        <i class="fas fas fa-search"></i> {{'LABEL.RESEARCH' | translate}}
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="search-results card mt-4 shadow-sm">
+            <div class="card-body">
+
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <button class="btn btn-primary" (click)="onClickNew()">
+                            <i class="fas fa-plus"></i> {{'LABEL.ADD' | translate}}
+                        </button>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input class="form-control" type="text" placeholder="{{'LABEL.FILTER' | translate}}" attr.aria-label="{{'LABEL.FILTER' | translate}}" #searchInput />
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <table cdk-table class="table table-hover table-striped" [dataSource]="dataSource" matSort matSortDirection="asc" matSortDisableClear>
+
+																		                        <ng-container cdkColumnDef="descricao">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'PARAMETRO.DESCRICAO' | translate}}</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{entity.descricao}}</td>
+                        </ng-container>
+																								                        <ng-container cdkColumnDef="valor">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'PARAMETRO.VALOR' | translate}}</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{entity.valor}}</td>
+                        </ng-container>
+																								                        <ng-container cdkColumnDef="chave">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'PARAMETRO.CHAVE' | translate}}</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{entity.chave}}</td>
+                        </ng-container>
+																								                        <ng-container cdkColumnDef="dataHoraAlteracao">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'PARAMETRO.DATAHORAALTERACAO' | translate}}</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{entity.dataHoraAlteracao | date:"dd/MM/yyyy HH:mm" }}</td>
+                        </ng-container>
+																								                        <ng-container cdkColumnDef="tipoParametro">
+                            <th cdk-header-cell *cdkHeaderCellDef mat-sort-header>{{'PARAMETRO.TIPOPARAMETRO' | translate}}</th>
+                            <td cdk-cell *cdkCellDef="let entity">{{entity.tipoParametro}}</td>
+                        </ng-container>
+						
+                        <ng-container cdkColumnDef="actions">
+                            <th cdk-header-cell *cdkHeaderCellDef><span class="sr-only">{{'LABEL.ACTIONS' | translate}}</span></th>
+                            <td cdk-cell *cdkCellDef="let entity" class="col-actions text-right">
+                                <button ngbTooltip="{{'LABEL.DETAIL' | translate}}" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickView(entity)" attr.aria-label="{{'LABEL.DETAIL' | translate}}">
+                                    <i class="fas fa-fw fa-file"></i>
+                                </button>
+                                <button ngbTooltip="{{'LABEL.EDIT' | translate}}" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickEdit(entity)" attr.aria-label="{{'LABEL.EDIT' | translate}}">
+                                    <i class="fas fa-fw fa-pen"></i>
+                                </button>
+                                <button ngbTooltip="{{'LABEL.DELETE' | translate}}" class="btn btn-sm btn-outline-dark grid-button" (click)="onClickRemove(entity)" attr.aria-label="{{'LABEL.DELETE' | translate}}">
+                                    <i class="fas fa-fw fa-trash"></i>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+                        <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+
+                    </table>
+
+                </div>
+                <ngb-pagination class="d-flex justify-content-center" [collectionSize]="dataSource.itemsCount$ | async" 
+                	[(page)]="paginator.page" (pageChange)="onPageChanges($event)"
+                	[pageSize]="paginator.pageSize" [maxSize]="paginationMaxSize" [rotate]="paginationRotate" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+
 </div>

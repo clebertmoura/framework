@@ -1,9 +1,7 @@
 export class Paginator {
-    
-    pageIndex: number;
 
-    pageSize: number;
-
-    page: number = 1;
+  pageIndex: number;
+  pageSize: number;
+  page = 1;
 
 }

@@ -1,64 +1,114 @@
-<div class="card" *ngIf="entity">
-    <div class="card-header">
-        Detalhes do Parâmetro
-    </div>
-    <div class="card-body">
-        <form ngForm #parametroForm="ngForm" (submit)="onClickSave()">
-            <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <input type="text" class="form-control" [(ngModel)]="entity.descricao" minlength="2" maxlength="200" name="descricao" id="descricao" #descricao
-                    [disabled]="viewMode" placeholder="Descricao" aria-describedby="descricaoHelp">
-                <small id="descricaoHelp" class="form-text text-muted">Descrição do parâmetro.</small>
-                <mat-error *ngIf="!descricao.valid && descricao.dirty && descricao.errors['minlength']">
-                    Descricao deve conter no mínimo 2 caractere(s).
-                </mat-error>
-                <mat-error *ngIf="!descricao.valid && descricao.dirty && descricao.errors['maxlength']">
-                    Descricao deve conter no máximo 200 caractere(s).
-                </mat-error>
-            </div>
-            <div class="form-group">
-                <label for="chave">Chave</label>
-                <input type="text" class="form-control" [(ngModel)]="entity.chave"  required   minlength="2"  maxlength="100" name="chave" id="chave" #chave
-                    [disabled]="viewMode" placeholder="Chave" aria-describedby="chaveHelp">
-                <small id="chaveHelp" class="form-text text-muted">Chave do parâmetro.</small>
-                <mat-error *ngIf="!chave.valid && chave.dirty && chave.errors['required']">
-                    Chave é obrigatório.
-                </mat-error>
-                <mat-error *ngIf="!chave.valid && chave.dirty && chave.errors['minlength']">
-                    Chave deve conter no mínimo 2 caractere(s).
-                </mat-error>
-                <mat-error *ngIf="!chave.valid && chave.dirty && chave.errors['maxlength']">
-                    Chave deve conter no máximo 100 caractere(s).
-                </mat-error>
-            </div>
-            <div class="form-group">
-                <label for="valor">Valor</label>
-                <textarea class="form-control" autoResize="true" [(ngModel)]="entity.valor"    maxlength="500" autoResize="true" name="valor" id="valor" #valor
-                    [disabled]="viewMode" placeholder="Valor" aria-describedby="valorHelp"></textarea>
-                <small id="valorHelp" class="form-text text-muted">Valor do parâmetro.</small>
-                <mat-error *ngIf="!valor.valid && valor.dirty && valor.errors['maxlength']">
-                    Valor deve conter no máximo 500 caractere(s).
-                </mat-error>
-            </div>
-            <div class="form-group">
-                <label for="dataHoraAlteracao">Data Hora Alteração</label>
-                <input class="form-control" [(ngModel)]="entity.dataHoraAlteracao"  name="dataHoraAlteracao" id="dataHoraAlteracao" #dataHoraAlteracao
-                    [owlDateTime]="dataHoraAlteracao" [owlDateTimeTrigger]="dataHoraAlteracao" [disabled]="viewMode" 
-                    placeholder="Data Hora Alteracao" aria-describedby="dataHoraAlteracaoHelp" />
-                <owl-date-time #dataHoraAlteracao></owl-date-time>
-                <small id="dataHoraAlteracaoHelp" class="form-text text-muted">Data hora da última alteração.</small>
-            </div>
-            <div class="row">
-                <div class="col-1">
-                    <button type="submit" class="btn btn-primary" (click)="onClickSave()" [disabled]="!parametroForm.form.valid && viewMode">Salvar</button>
+<div>
+
+  <!-- Main content -->
+  <section class="content">
+  <h2>{{ (viewMode ? 'MESSAGE.ENTITY_DETAIL' : 'MESSAGE.ENTITY_NEW') | translate:{'entity':'Parametro'} }}</h2>
+  
+  
+    <form class="needs-validation" ngForm *ngIf="entity" [formGroup]="detailForm">
+        <div class="card mt-3 shadow-sm">
+            <div class="card-body">
+
+                 <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="descricao">{{'PARAMETRO.DESCRICAO' | translate}}</label>
+                        <input class="form-control" type="text"   minlength="2"  maxlength="200"                          formControlName="descricao" id="descricao" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('descricao').invalid && (detailForm.get('descricao').dirty || detailForm.get('descricao').touched)"/>
+                        
+                        <div class="text-danger mt-1"
+                          *ngIf="detailForm.get('descricao').errors && detailForm.get('descricao').errors.minlength 
+                            && (detailForm.get('descricao').dirty || detailForm.get('descricao').touched)">
+                          {{'MESSAGE.MIN_CHAR' | translate:{'field':'Descricao', 'numchar':'2'} }}
+                        </div>
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('descricao').errors && detailForm.get('descricao').errors.maxlength 
+                            && (detailForm.get('descricao').dirty || detailForm.get('descricao').touched)">
+                            {{'MESSAGE.MAX_CHAR' | translate:{'field':'Descricao', 'numchar':'200'} }}
+                        </div>
+                    </div>
                 </div>
-                <div class="col-1" *ngIf="sub">
-                    <button type="button" class="btn btn-warning" (click)="onClickCancel()">Cancelar</button>
+                 <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="valor">{{'PARAMETRO.VALOR' | translate}}</label>
+                        <textarea class="form-control" autoResize="true" 
+                             maxlength="500"                          formControlName="valor" id="valor" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('valor').invalid && (detailForm.get('valor').dirty || detailForm.get('valor').touched)">
+                        </textarea>
+                        
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('valor').errors && detailForm.get('valor').errors.maxlength 
+                            && (detailForm.get('valor').dirty || detailForm.get('valor').touched)">
+                            {{'MESSAGE.MAX_CHAR' | translate:{'field':'Valor', 'numchar':'$attribute.columnConfig.min'} }}
+                        </div>
+                    </div>
                 </div>
-                <div class="col-1" *ngIf="!sub">
-                    <button type="button" class="btn btn-secondary" (click)="onClickBack()">Voltar</button>
+                 <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="chave">{{'PARAMETRO.CHAVE' | translate}}</label>
+                        <input class="form-control" type="text"  required   minlength="2"  maxlength="100"                          formControlName="chave" id="chave" [disableControl]="viewMode"
+                          [class.is-invalid]="detailForm.get('chave').invalid && (detailForm.get('chave').dirty || detailForm.get('chave').touched)"/>
+                        
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('chave').required && (detailForm.get('chave').dirty || detailForm.get('chave').touched)">
+                          {{'MESSAGE.MANDATORY_FIELD' | translate:{'field':'Chave'} }}
+                        </div>
+                        <div class="text-danger mt-1"
+                          *ngIf="detailForm.get('chave').errors && detailForm.get('chave').errors.minlength 
+                            && (detailForm.get('chave').dirty || detailForm.get('chave').touched)">
+                          {{'MESSAGE.MIN_CHAR' | translate:{'field':'Chave', 'numchar':'2'} }}
+                        </div>
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('chave').errors && detailForm.get('chave').errors.maxlength 
+                            && (detailForm.get('chave').dirty || detailForm.get('chave').touched)">
+                            {{'MESSAGE.MAX_CHAR' | translate:{'field':'Chave', 'numchar':'2'} }}
+                        </div>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="dataHoraAlteracao">{{'PARAMETRO.DATAHORAALTERACAO' | translate}}</label>
+                        <app-datetime-picker formControlName="dataHoraAlteracao"  [id]="'dataHoraAlteracao'" [timePicker]="true"
+                            placement="bottom-left" [disabledMode]="viewMode"></app-datetime-picker>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>{{'PARAMETRO.TIPOPARAMETRO' | translate}}</label>
+                        <div>
+                        	<fieldset [class.is-invalid]="detailForm.get('tipoParametro').invalid && (detailForm.get('tipoParametro').dirty || detailForm.get('tipoParametro').touched)">
+                            <div class="custom-control custom-radio custom-control-inline" *ngFor="let tipoParametroOption of cacheEnums['TipoParametro']; let i = index">
+                              <input type="radio" class="custom-control-input"                                 id="{{'tipoParametroOption' + i}}" [disableControl]="viewMode"
+                                [value]="tipoParametroOption.key" formControlName="tipoParametro">
+                              <label class="custom-control-label" for="{{'tipoParametroOption' + i}}">{{ tipoParametroOption.label }}</label>
+                            </div>
+                          </fieldset>
+                          
+                        <div class="text-danger mt-1" 
+                          *ngIf="detailForm.get('tipoParametro').errors && detailForm.get('tipoParametro').errors.maxlength 
+                            && (detailForm.get('tipoParametro').dirty || detailForm.get('tipoParametro').touched)">
+                            {{'MESSAGE.MAX_CHAR' | translate:{'field':'Tipo Parametro', 'numchar':'$attribute.columnConfig.min'} }}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                   <div class="row mt-3">
+                    <div class="col align-self-start">
+                        <button class="btn btn-outline-secondary mr-2" *ngIf="sub" (click)="onClickCancel()">
+                            <i class="fas fa-times"></i> {{'LABEL.CANCEL' | translate}}
+                        </button>
+    
+                        <button class="btn btn-primary mr-2" (click)="onClickSave()" [disabled]="detailForm.invalid || viewMode">
+                            <i class="fas fa-check"></i> {{'LABEL.SAVE' | translate}}
+                        </button>
+                        <button class="btn btn-outline-secondary mr-2" *ngIf="!sub" (click)="onClickBack()">
+                                <i class="fas fa-angle-left"></i> {{'LABEL.BACK' | translate}}
+                        </button>
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+
+  </section>
+  <!-- /.content -->
 </div>

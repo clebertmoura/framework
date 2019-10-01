@@ -1,15 +1,7 @@
-<div class="ui-autocomplete-container">
-  <span class="ui-float-label">
-    <!--
-    <p-autoComplete [id]="id" [(ngModel)]="isMultiple() ? values : value" [field]="displayfield" [disabled]="disabled" [required]="required"
-      [placeholder]="placeholder" [dropdown]="dropdown" [autoHighlight]="true" [suggestions]="suggestions" [multiple]="multiple"
-      (completeMethod)="complete($event)" (onSelect)="select($event)">
-      <ng-template let-entity pTemplate="item">
-        <app-parametro-line [entity]="entity"></app-parametro-line>
-      </ng-template>
-    </p-autoComplete>
-    -->
-    <label [for]="id">{{label}}</label>
-  </span>
-  <div class="ui-autocomplete-field-underline"><span class="ui-autocomplete-field-ripple"></span></div>
-</div>
+<span>
+  <label [for]="id">{{label}}</label>
+  <ng-select [labelForId]="id" [(ngModel)]="isMultiple() ? values : value" [bindLabel]="displayfield" [disabled]="disabled" [required]="required"
+    [placeholder]="placeholder" [items]="suggestions" [multiple]="multiple" (change)="select($event)" [clearAllText]="'LABEL.CLEAN' | translate" 
+    [notFoundText]="'MESSAGE.ITEM_NOT_FOUND' | translate">
+  </ng-select>
+</span>

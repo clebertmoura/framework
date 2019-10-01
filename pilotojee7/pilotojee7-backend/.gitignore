@@ -108,9 +108,6 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
-**/src/main/resources/Enums.properties
-**/src/main/resources/Enums_pt_BR.properties
-**/src/main/resources/Mensagens.properties
 **/src/main/resources/Mensagens_pt_BR.properties
 **/src/main/resources/ValidationMessages.properties
 **/src/main/resources/ValidationMessages_pt_BR.properties

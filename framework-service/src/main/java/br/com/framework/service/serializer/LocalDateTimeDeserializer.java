@@ -21,6 +21,7 @@ public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 	private static final long serialVersionUID = 1L;
 
 	public static final DateTimeFormatter JAVASCRIPT_DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
 	public static final ZoneId RECIFE_TIMEZONE = ZoneId.of("America/Recife");
 	public static final ZoneId UTC_TIMEZONE = ZoneId.of("UTC");
 

@@ -7,6 +7,8 @@ import { BaseEntity } from '../entity/baseEntity';
 import { EntityService } from './entity.service';
 import { FilterMetadata } from './paging/filtermetadata';
 import { Paginator } from './paging/paginator';
+import { Output, EventEmitter } from '@angular/core';
+import { ServiceErrorEvent, ServiceErrorType } from '../components/events/service-error.event';
 
 export class EntityDataSource<E extends BaseEntity, S extends EntityService<E>> implements DataSource<E> {
 
@@ -16,6 +18,10 @@ export class EntityDataSource<E extends BaseEntity, S extends EntityService<E>> 
 
   public loading$ = this.loadingSubject.asObservable();
   public itemsCount$ = this.itemsCountSubject.asObservable();
+  public items$ = this.itemsSubject.asObservable();
+
+  @Output()
+  public serviceErrorEvent = new EventEmitter<ServiceErrorEvent>();
 
   constructor(public paginator: Paginator, public sort: MatSort, public entityService: S) {
   }
@@ -46,7 +52,10 @@ export class EntityDataSource<E extends BaseEntity, S extends EntityService<E>> 
     this.entityService
       .findPage(globalFilter, filters, sortField, sortOrder, pageIndex, pageSize, depth, entityGraph)
       .pipe(
-        catchError(error => throwError(error)),
+        catchError(error => {
+          this.serviceErrorEvent.emit(new ServiceErrorEvent(ServiceErrorType.LIST, error));
+          return throwError(error);
+        }),
         finalize(() => this.loadingSubject.next(false))
       ).subscribe(response => {
         this.itemsCountSubject.next(response.totalRegisters);

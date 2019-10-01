@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.framework</groupId>
 	<artifactId>framework-parent</artifactId>
-	<version>3.0.6</version>
+	<version>3.1.0</version>
 	<packaging>pom</packaging>
 	<name>framework-parent</name>
 	<description>Projeto raiz do Framework</description>

@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -32,6 +31,7 @@ import br.com.framework.search.indexer.api.IndexedDocument;
 import br.com.framework.search.indexer.api.IndexedDocumentSearch;
 import br.com.framework.search.indexer.api.service.IndexerService;
 import br.com.framework.search.util.SearchUtil;
+import br.com.framework.util.date.DateUtil;
 import br.com.framework.util.reflection.ReflectionUtils;
 
 /**
@@ -140,7 +140,7 @@ public abstract class IndexedDocumentSearchImpl<DocId extends Serializable, Doc 
 										} else {
 											value = fieldValue;
 										}
-										Date dateValue = DateUtils.parseDate(value.toString(), DATE_FORMATS);
+										Date dateValue = DateUtil.parseDate(value.toString());
 										if (Date.class.isAssignableFrom(field.getType())) {
 											field.set(instance, dateValue);
 										} else if (java.sql.Date.class.isAssignableFrom(field.getType())){

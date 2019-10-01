@@ -26,8 +26,13 @@ public class LocaleInterceptor {
 	@AroundInvoke
 	public Object intercept(InvocationContext context) throws Exception {
 		if (!request.isAmbiguous() && !request.isUnsatisfied()) {
-			HttpServletRequest httpServletRequest = request.get();
-			sessionContext.getContextData().put(LOCALE, httpServletRequest.getLocale());
+			try {
+				HttpServletRequest httpServletRequest = request.get();
+				sessionContext.getContextData().put(LOCALE, httpServletRequest.getLocale());
+			} catch (Exception e) {
+				sessionContext.getContextData().put(LOCALE, 
+						new Locale(System.getProperty("user.language"), System.getProperty("user.country")));
+			}
 		} else {
 			sessionContext.getContextData().put(LOCALE, 
 				new Locale(System.getProperty("user.language"), System.getProperty("user.country")));

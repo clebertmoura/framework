@@ -33,11 +33,14 @@ public class DateDeserializer extends StdDeserializer<Date> {
 	public Date deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException{
 		Date date = null;
-		for (FastDateFormat dateFormat : DATE_FORMATS) {
-			try {
-				date = dateFormat.parse(jp.readValueAs(String.class));
-				break;
-			} catch (ParseException e) {
+		String readValueAs = jp.readValueAs(String.class);
+		if (readValueAs != null) {
+			for (FastDateFormat dateFormat : DATE_FORMATS) {
+				try {
+					date = dateFormat.parse(jp.readValueAs(String.class));
+					break;
+				} catch (ParseException e) {
+				}
 			}
 		}
 		return date;

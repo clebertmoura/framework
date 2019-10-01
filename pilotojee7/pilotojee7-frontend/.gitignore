@@ -4,10 +4,14 @@
 
 
 # REMOVER OS SEGUINTES IGNORES APOS GERAR O PROJETO!
-**/app/entities/station/
-**/app/entities/accesslog/
-**/app/entities/device/
-**/app/entities/driver/
+**/app/entities/assinatura/
+**/app/entities/ativo/
+**/app/entities/carteira/
+**/app/entities/compra/
+**/app/entities/plano/
+**/app/entities/recomendacao/
+**/app/entities/usuario/
+**/app/entities/venda/
 **/app/entities/entities-routing.module.ts
 **/app/entities/enumerators.service.ts
 **/app/entities/entities.module.ts          

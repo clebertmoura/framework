@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { isArray } from 'util';
 import { Error } from '../service/error/error';
 import { ErrorLayer } from '../service/error/errorlayer';
+import { TranslateService } from '@ngx-translate/core';
 
 export abstract class EntityCompleteComponent<E extends BaseEntity, S extends EntityService<E>>
     implements ControlValueAccessor, OnInit, OnDestroy {
@@ -27,6 +28,14 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
   @Input() dropdown = false;
   @Input() loadOnInit = true;
   @Input() multiple = false;
+  /**
+   * Profundidade da serialização das entidades. Default: 0
+   */
+  @Input() depth = 0;
+  /**
+   * Nome do EntityGraph a ser utilizado para carregamento das entidades.
+   */
+  @Input() entityGraph: string;
 
   // The internal data model
   private internalValue: E = null;
@@ -45,7 +54,8 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
 
   constructor(
     protected entityService: S,
-    protected messageService: MessageService
+    protected messageService: MessageService,
+    protected translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -59,7 +69,7 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
       tap(() => this.loading = true),
       switchMap(
         term => this.entityService
-        .findPage(term, null, this.sortField, this.sortOrder, 0, this.maxItems).pipe(
+        .findPage(term, null, this.sortField, this.sortOrder, 0, this.maxItems, this.depth, this.entityGraph).pipe(
             map(response =>  response.results),
             tap(() => this.loading = false),
             catchError(() => {
@@ -77,6 +87,10 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
   }
 
   public handleError(httpError: HttpErrorResponse) {
+    let errorMsg = '';
+    this.translate.get('MESSAGE.ERROR_WHEN_SEARCHING').subscribe((res:string) => {
+      errorMsg = res;
+    });
     if (httpError.status === 400) {
         if (httpError.error && isArray(httpError.error)) {
           const errors = Error.toArray(httpError.error);
@@ -94,10 +108,10 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
             }
           }
         } else {
-          this.messageService.error('Erro ao consultar!');
+          this.messageService.error(errorMsg);
         }
     } else {
-      this.messageService.error('Erro ao consultar!');
+      this.messageService.error(errorMsg);
     }
   }
 
@@ -154,7 +168,7 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
 
   private fetchByFilter(): void {
     this.entityService
-      .findPage('', this.internalFilters, this.sortField, this.sortOrder, 0, this.maxItems)
+      .findPage('', this.internalFilters, this.sortField, this.sortOrder, 0, this.maxItems, this.depth, this.entityGraph)
       .pipe(catchError(error => throwError(error)))
       .subscribe(response => {
         this.suggestions = response.results;
@@ -193,11 +207,13 @@ export abstract class EntityCompleteComponent<E extends BaseEntity, S extends En
   }
 
   // From ControlValueAccessor interface
-  setDisabledState(isDisabled: boolean) {}
+  setDisabledState(isDisabled: boolean) {
+    this.disabled = isDisabled;
+  }
 
   complete(event: any) {
     this.entityService
-      .findPage(event.query, null, this.sortField, this.sortOrder, 0, this.maxItems)
+      .findPage(event.query, null, this.sortField, this.sortOrder, 0, this.maxItems, this.depth, this.entityGraph)
       .pipe(catchError(error => throwError(error)))
       .subscribe(response => {
         this.suggestions = response.results;

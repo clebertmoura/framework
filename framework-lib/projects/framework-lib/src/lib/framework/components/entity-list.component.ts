@@ -27,6 +27,10 @@ import { isArray } from 'util';
 import { ErrorLayer } from '../service/error/errorlayer';
 import { Error } from '../service/error/error';
 import { AbstractEnumeratorsService } from '../service/enumerators.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Operator } from '../service/paging/operator';
+import { ServiceErrorEvent, ServiceErrorType } from './events/service-error.event';
+import { TranslateService } from '@ngx-translate/core';
 
 export abstract class EntityListComponent<E extends BaseEntity, S extends EntityService<E>> implements OnChanges, OnInit, AfterViewInit {
 
@@ -37,6 +41,8 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
   sort: MatSort;
   @ViewChild('searchInput')
   searchInput: ElementRef;
+
+  public searchForm: FormGroup;
 
   protected cacheEnums: any[] = [];
 
@@ -55,26 +61,100 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
   @Output()
   public addNewClicked = new EventEmitter();
 
+  @Output()
+  public entityDeleted = new EventEmitter<E>();
+
+  @Output()
+  public serviceErrorEvent = new EventEmitter<ServiceErrorEvent>();
+
   public entityToDelete: E;
 
   public searchFields: { [s: string]: any };
 
-  // filtros
+  /**
+   * Filtros
+   */
   public filters: { [s: string]: FilterMetadata } = {};
 
-  // list is paginated
-  public currentPage: PageResponse<E> = new PageResponse<E>();
-
+  /**
+   * Paginação
+   */
   public paginator: Paginator = new Paginator();
+
+  /**
+   * quantidade máxima de páginas exibidas pelo componente de paginação.
+   */
+  public paginationMaxSize = 5;
+  /**
+   * rotação do componente de paginação
+   */
+  public paginationRotate = true;
+
+  /**
+   * Profundidade da serialização dos objetos. Padrão: 0
+   * Pode ser sobrescrito na classe concreta.
+   */
+  protected loadPageDepth = 1;
+
+  /**
+   * Nome do EntityGraph a ser utilizado na consulta. Padrão: nenhum.
+   * Pode ser sobrescrito na classe concreta.
+   */
+  protected loadPageEntityGraph: string;
 
   constructor(
     protected router: Router,
     protected messageService: MessageService,
     protected confirmDeleteDialog: NgbModal,
+    protected fb: FormBuilder,
+    protected translate: TranslateService,
     protected enumeratorsService: AbstractEnumeratorsService,
     protected entityService: S,
     protected entityName: string
-  ) {}
+  ) {
+     this.searchForm = this.createSearchFormGroup();
+     this.setupFilterFields();
+     this.setupDatatableFields();
+     this.setupEntityDataSource();
+  }
+
+  /**
+   * Cria os FormGroup para os filtros de pesquisa.
+   * Deve ser sobrescrito na classe concreta.
+   */
+  protected abstract createSearchFormGroup(): FormGroup;
+
+  /**
+   * Configura o EntityDataSource
+   * Deve ser sobrescrito na classe concreta.
+   */
+  protected abstract setupEntityDataSource(): void;
+
+  /**
+   * Configura as colunas a serem exibidas no datatable.
+   * Deve ser sobrescrito na classe concreta.
+   */
+  protected setupDatatableFields(): void {
+    this.displayedColumns = [
+      'actions'
+    ];
+  }
+
+  /**
+   * Inicializa um campo do filtro com o respectivo valor do campo no FormGroup.
+   * @param filterName nome do filtro
+   * @param fieldName nome do campo
+   * @param operator operador
+   */
+  protected setupFilterField(filterName: string, fieldName: string, operator: Operator): void {
+    this.filters[fieldName] = new FilterMetadata(this.searchForm.get(filterName).value, operator);
+  }
+
+  /**
+   * Inicializa os campos do filtro com os valores dos campos no FormGroup.
+   * Deve ser sobrescrito na classe concreta.
+   */
+  protected abstract setupFilterFields(): void;
 
   /**
    * Retorna o campo padrão de ordenação.
@@ -108,10 +188,43 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
       this.getSortField(),
       this.getSortOrder(),
       0,
-      this.paginator.pageSize
+      this.paginator.pageSize,
+      this.loadPageDepth,
+      this.loadPageEntityGraph
     );
     // Load Enum Values
     this.loadEnumValues();
+  }
+
+  /**
+   * Trata o erro de requisição.
+   * @param httpError erro
+   * @param message mensagem default
+   * @param title titulo default
+   */
+  protected handleHttpError(httpError: HttpErrorResponse, message?: string, title?: string) {
+    if (httpError.status === 400) {
+      if (httpError.error && isArray(httpError.error)) {
+        const errors = Error.toArray(httpError.error);
+        for (const e of errors) {
+          switch (e.layer) {
+            case ErrorLayer.BEAN_VALIDATION:
+              this.messageService.warning(e.propertyPath + ': ' + e.message);
+              break;
+            case ErrorLayer.BUSINESS:
+              this.messageService.warning(e.message);
+              break;
+            default:
+              this.messageService.error(e.message);
+              break;
+          }
+        }
+      } else {
+        this.messageService.error(message, title);
+      }
+    } else {
+      this.messageService.error(message, title);
+    }
   }
 
   /**
@@ -130,11 +243,7 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
       )
       .subscribe();
 
-    /*merge(this.sort.sortChange, this.paginator.page)
-      .pipe(tap(() => this.loadPage()))
-      .subscribe();*/
-
-      this.sort.sortChange
+    this.sort.sortChange
       .pipe(tap(() => this.loadPage()))
       .subscribe();
   }
@@ -154,7 +263,9 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
       this.sort.active,
       this.sort.direction,
       this.paginator.pageIndex,
-      this.paginator.pageSize
+      this.paginator.pageSize,
+      this.loadPageDepth,
+      this.loadPageEntityGraph
     );
   }
 
@@ -166,13 +277,13 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
 
   /**
    * Retorna a label de um enum.
-   * 
+   *
    * @param enumName Nome do enum
    * @param enumValue Valor do enum.
    */
   public getEnumLabel(enumName: string, enumValue: string): string {
-      const values = this.cacheEnums[enumName].filter(e => e.key === enumValue);
-      return values.length > 0 ? values[0].label : enumValue;
+    const values = this.cacheEnums[enumName].filter(e => e.key === enumValue);
+    return values.length > 0 ? values[0].label : enumValue;
   }
 
   /**
@@ -188,6 +299,7 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
    */
   public onClickSearch(): void {
     if (!this.sub) {
+      this.setupFilterFields();
       this.loadPage();
     }
   }
@@ -197,7 +309,7 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
   }
 
   protected getEntityPath(): string {
-      return this.getModulePath() + '/' + this.entityName.toLowerCase();
+    return this.getModulePath() + '/' + this.entityName.toLowerCase();
   }
 
   protected getEntityId(entity: E): any {
@@ -218,14 +330,11 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
    * @param entity registro selecionado.
    */
   public onClickRemove(entity: E): void {
-    console.log('onClickRemove: ', entity);
     const dialogRef = this.confirmDeleteDialog.open(EntityDeleteDialogComponent);
     dialogRef.result.then((result) => {
       if (result === 'delete') {
         this.delete(entity);
       }
-    }).catch((error) => {
-      console.log(error);
     });
   }
 
@@ -266,37 +375,49 @@ export abstract class EntityListComponent<E extends BaseEntity, S extends Entity
     const id = this.getEntityId(entity);
     this.entityService.delete(id).subscribe(
       response => {
-        //this.currentPage.remove(entity);
-        this.messageService.info('O registro foi removido.', 'Sucesso!');
+        this.entityDeleted.emit(entity);
+        let msg = '', title = '';
+        this.translate.get('MESSAGE.ITEM_REMOVED').subscribe((res:string) => {
+          msg = res;
+        });
+        this.translate.get('LABEL.SUCCESS').subscribe((res:string) => {
+          title = res;
+        });
+        this.messageService.info(msg, title);
         this.loadPage();
       },
-      error => this.handleErrorOnDelete(error)
+      error => {
+        this.serviceErrorEvent.emit(new ServiceErrorEvent(ServiceErrorType.DELETE, error));
+      }
     );
   }
 
   public handleErrorOnDelete(httpError: HttpErrorResponse) {
+    let errorMsg = '';
+    this.translate.get('MESSAGE.ERROR_WHEN_SAVING').subscribe((res:string) => {
+      errorMsg = res;
+    });
     if (httpError.status === 400) {
-        if (httpError.error && isArray(httpError.error)) {
-            const errors = Error.toArray(httpError.error);
-            for (let i = 0; i < errors.length; i++) {
-                const e = errors[i];
-                switch (e.layer) {
-                    case ErrorLayer.BEAN_VALIDATION:
-                        this.messageService.warning(e.propertyPath + ': ' + e.message);
-                        break;
-                    case ErrorLayer.BUSINESS:
-                        this.messageService.warning(e.message);
-                        break;
-                    default:
-                        this.messageService.error(e.message);
-                    break;
-                }
-            }
-        } else {
-            this.messageService.error('Erro ao salvar!');
+      if (httpError.error && isArray(httpError.error)) {
+        const errors = Error.toArray(httpError.error);
+        for (const e of errors) {
+          switch (e.layer) {
+            case ErrorLayer.BEAN_VALIDATION:
+              this.messageService.warning(e.propertyPath + ': ' + e.message);
+              break;
+            case ErrorLayer.BUSINESS:
+              this.messageService.warning(e.message);
+              break;
+            default:
+              this.messageService.error(e.message);
+              break;
+          }
         }
+      } else {
+        this.messageService.error(errorMsg);
+      }
     } else {
-        this.messageService.error('Erro ao salvar!');
+      this.messageService.error(errorMsg);
     }
   }
 }

@@ -8,9 +8,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,6 +42,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import br.com.framework.domain.api.BaseEntity;
 import br.com.framework.domain.api.BaseEntityAudited;
@@ -60,7 +62,9 @@ import br.com.framework.search.impl.SearchImpl;
 import br.com.framework.search.impl.SortMeta;
 import br.com.framework.search.impl.Ordering.Order;
 import br.com.framework.search.util.SearchUtil;
+import br.com.framework.util.date.DateUtil;
 import br.com.framework.util.reflection.ReflectionUtils;
+import br.com.framework.util.validation.BooleanUtils;
 
 /**
  * Implementação base do {@link BaseDao} das entidades de domínio.
@@ -356,14 +360,43 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	}
 
 	/**
-	 * Verifica se o tipo Ã© equivalente da tipos de Data. 
+	 * Verifica se o tipo é equivalente a uma Data
 	 * 
 	 * @param clazz
 	 * @return
 	 */
 	private boolean isAssignableFromDateType(Class<?> clazz) {
-		return clazz.isAssignableFrom(LocalDateTime.class) ||clazz.isAssignableFrom(LocalDate.class) || clazz.isAssignableFrom(LocalTime.class) || 
-				clazz.isAssignableFrom(Date.class) || clazz.isAssignableFrom(java.sql.Date.class) || clazz.isAssignableFrom(java.sql.Timestamp.class) || clazz.isAssignableFrom(java.sql.Time.class);
+		return isAssignableFromUtilDateType(clazz) || isAssignableFromSqlDateType(clazz) || isAssignableFromTemporal(clazz);
+	}
+	
+	/**
+	 * Verifica se o tipo é equivalente a um dos tipos: {@link java.sql.Date}, {@link java.sql.Timestamp} ou {@link java.sql.Time}
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	private boolean isAssignableFromUtilDateType(Class<?> clazz) {
+		return Date.class.isAssignableFrom(clazz);
+	}
+	
+	/**
+	 * Verifica se o tipo é equivalente a um dos tipos: {@link java.sql.Date}, {@link java.sql.Timestamp} ou {@link java.sql.Time}
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	private boolean isAssignableFromSqlDateType(Class<?> clazz) {
+		return java.sql.Date.class.isAssignableFrom(clazz) || java.sql.Timestamp.class.isAssignableFrom(clazz) || java.sql.Time.class.isAssignableFrom(clazz);
+	}
+	
+	/**
+	 * Verifica se o tipo é equivalente a um dos tipos: {@link Temporal}
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	private boolean isAssignableFromTemporal(Class<?> clazz) {
+		return Temporal.class.isAssignableFrom(clazz);
 	}
 
 	/**
@@ -883,17 +916,41 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	
 	private <Y extends Comparable<? super Y>> Predicate returnPredicateByOperator(CriteriaBuilder cBuilder, Operator operator,Expression<? extends Y> x, Y y) {
 		switch (operator) {
-		case LT:
-			return cBuilder.lessThan(x,  y);
-		case LE:
-			return cBuilder.lessThanOrEqualTo(x,  y);
-		case GT:
-			return cBuilder.greaterThan(x,  y);
-		case GE:
-			return cBuilder.greaterThanOrEqualTo(x,  y);
-		default:
-			return null;
+			case LT:
+				return cBuilder.lessThan(x, y);
+			case LE:
+				return cBuilder.lessThanOrEqualTo(x, y);
+			case GT:
+				return cBuilder.greaterThan(x, y);
+			case GE:
+				return cBuilder.greaterThanOrEqualTo(x, y);
+			default:
+				return null;
 		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Predicate returnDatePredicate(CriteriaBuilder cBuilder, Path<?> pathLeaf, Operator operator, Object value) {
+		Predicate predicate = null;
+		Date date = DateUtil.parseDate(value.toString());
+		if (date != null) {
+			if (isAssignableFromTemporal(pathLeaf.getJavaType())) {
+				Instant instant = date.toInstant();
+				LocalDateTime temporal = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+				if (!operator.equals(Operator.EQ)) {
+					predicate = returnPredicateByOperator(cBuilder, operator, (Path) pathLeaf, temporal);
+				} else {
+					predicate = cBuilder.equal((Path) pathLeaf, temporal);
+				}
+			} else {
+				if (!operator.equals(Operator.EQ)) {
+					predicate = returnPredicateByOperator(cBuilder, operator, (Path) pathLeaf, date);
+				} else {
+					predicate = cBuilder.equal((Path) pathLeaf, date);
+				}
+			}
+		}
+		return predicate;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -938,11 +995,50 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 	 */
 	protected void addGlobalFilterPredicate(List<Predicate> predicates, String fieldName, Operator operator, String filterValue, Map<String, Path<?>> mapFieldPaths, 
     		Root<E> from, CriteriaBuilder cBuilder) {
+		Field fieldType = this.getFieldType(fieldName, mapFieldPaths, from);
     	Predicate predicate = this.createFieldPredicate(fieldName, operator, filterValue, mapFieldPaths, from, cBuilder);
     	if (predicate != null) {
     		predicates.add(predicate);
     	}
     }
+	
+	/**
+	 * Retorna o {@link Field} 
+	 * 
+	 * @param fieldName
+	 * @param mapFieldPaths
+	 * @param from
+	 * @return
+	 */
+	protected Field getFieldType(String fieldName, Map<String, Path<?>> mapFieldPaths, Root<E> from) {
+		Path<?> pathLeaf = null;
+		if (mapFieldPaths != null && mapFieldPaths.containsKey(fieldName)) {
+			pathLeaf = mapFieldPaths.get(fieldName);
+		}
+		String leaf = fieldName;
+		String[] fieldPathArray = fieldName.split("[.]");
+		if (pathLeaf == null) {
+			if (fieldPathArray != null && fieldPathArray.length > 1) {
+				Join<Object, Object> leafJoin = null;
+				for (int i = 0; i < fieldPathArray.length - 1; i++) {
+					leaf = fieldPathArray[i];
+					if (i == 0) {
+						leafJoin = from.join(leaf);
+					} else {
+						leafJoin = leafJoin.join(leaf);
+					}
+				}
+				leaf = fieldPathArray[fieldPathArray.length - 1];
+				pathLeaf = leafJoin.get(leaf);
+			} else {
+				pathLeaf = from.get(fieldName);
+			}
+			mapFieldPaths.put(fieldName, pathLeaf);
+		} else {
+			leaf = fieldPathArray[fieldPathArray.length - 1];
+		}
+		return ReflectionUtils.getField(leaf, pathLeaf.getParentPath().getJavaType());
+	}
 	
 	
 	/**
@@ -1018,15 +1114,19 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 						predicate = cBuilder.lessThan((Path) pathLeaf, value.toString());
 					}
 				} else {
-					if (pathLeaf.getJavaType().isAssignableFrom(Number.class)) {
-						predicate = returnPredicateByOperatorFromPathAndNumber(cBuilder, operator, (Path) pathLeaf, (Number) value);
-					} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
-						Date date = parseDate(value.toString());
-						if (date != null) {
-							predicate = returnPredicateByOperator(cBuilder, operator,(Path) pathLeaf, date);
+					if (Number.class.isAssignableFrom(fieldClass)) {
+						if (String.class.isAssignableFrom(value.getClass())) {
+							if (NumberUtils.isNumber(value.toString().trim())) {
+								Number number = NumberUtils.createNumber(value.toString().trim());
+								predicate = returnPredicateByOperatorFromPathAndNumber(cBuilder, operator, (Path) pathLeaf, number);
+							}
+						} else {
+							predicate = returnPredicateByOperatorFromPathAndNumber(cBuilder, operator, (Path) pathLeaf, (Number) value);
 						}
+					} else if (isAssignableFromDateType(fieldClass)) {
+						predicate = returnDatePredicate(cBuilder, pathLeaf, operator, value);
 					} else {
-						predicate = returnPredicateByOperator(cBuilder, operator,(Path) pathLeaf,  value.toString());
+						predicate = returnPredicateByOperator(cBuilder, operator, (Path) pathLeaf, value.toString());
 					}
 				}
 				break;
@@ -1050,17 +1150,24 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 						predicate = cBuilder.equal((Path) pathLeaf, enumValue);
 					} else if (Number.class.isAssignableFrom(fieldClass)) {
 						if (String.class.isAssignableFrom(value.getClass())) {
-							if (!((String)value).trim().isEmpty()) {
-								predicate = cBuilder.equal((Path) pathLeaf, value);
+							if (NumberUtils.isNumber(value.toString().trim())) {
+								Number number = NumberUtils.createNumber(value.toString().trim());
+								predicate = cBuilder.equal((Path) pathLeaf, number);
 							}
 						} else {
 							predicate = cBuilder.equal((Path) pathLeaf, value);
 						}
-					} else if (isAssignableFromDateType(fieldClass)) {
-						Date date = parseDate(value.toString());
-						if (date != null) {
-							predicate = cBuilder.equal((Path) pathLeaf, date);
+					}  else if (Boolean.class.isAssignableFrom(fieldClass)) {
+						if (String.class.isAssignableFrom(value.getClass())) {
+							Boolean booleanObject = BooleanUtils.toBooleanObject(value.toString());
+							if (booleanObject != null) {
+								predicate = returnPredicateByOperator(cBuilder, operator, (Path) pathLeaf, booleanObject);
+							}
+						} else {
+							predicate = returnPredicateByOperator(cBuilder, operator, (Path) pathLeaf, (Boolean) value);
 						}
+					} else if (isAssignableFromDateType(fieldClass)) {
+						predicate = returnDatePredicate(cBuilder, pathLeaf, operator, value);
 					} else {
 						predicate = cBuilder.equal((Path) pathLeaf, value);
 					}
@@ -1073,17 +1180,15 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 					predicate = cBuilder.equal((Path) pathLeaf, enumValue);
 				} else if (Number.class.isAssignableFrom(pathLeaf.getJavaType())) {
 					if (String.class.isAssignableFrom(value.getClass())) {
-						if (!((String)value).trim().isEmpty()) {
-							predicate = cBuilder.equal((Path) pathLeaf, value);
+						if (NumberUtils.isNumber(value.toString().trim())) {
+							Number number = NumberUtils.createNumber(value.toString().trim());
+							predicate = cBuilder.equal((Path) pathLeaf, number);
 						}
 					} else {
 						predicate = cBuilder.equal((Path) pathLeaf, value);
 					}
 				} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
-					Date date = parseDate(value.toString());
-					if (date != null) {
-						predicate = cBuilder.equal((Path) pathLeaf, date);
-					}
+					predicate = returnDatePredicate(cBuilder, pathLeaf, operator, value);
 				} else {
 					predicate = cBuilder.equal(cBuilder.upper((Path) pathLeaf), value.toString().toUpperCase());
 				}
@@ -1108,17 +1213,24 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 						predicate = cBuilder.notEqual((Path) pathLeaf, enumValue);
 					} else if (Number.class.isAssignableFrom(pathLeaf.getJavaType())) {
 						if (String.class.isAssignableFrom(value.getClass())) {
-							if (!((String)value).trim().isEmpty()) {
-								predicate = cBuilder.notEqual((Path) pathLeaf, value);
+							if (NumberUtils.isNumber(value.toString().trim())) {
+								Number number = NumberUtils.createNumber(value.toString().trim());
+								predicate = cBuilder.notEqual((Path) pathLeaf, number);
 							}
 						} else {
 							predicate = cBuilder.notEqual((Path) pathLeaf, value);
 						}
-					} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
-						Date date = parseDate(value.toString());
-						if (date != null) {
-							predicate = cBuilder.notEqual((Path) pathLeaf, date);
+					} else if (Boolean.class.isAssignableFrom(fieldClass)) {
+						if (String.class.isAssignableFrom(value.getClass())) {
+							Boolean booleanObject = BooleanUtils.toBooleanObject(value.toString());
+							if (booleanObject != null) {
+								predicate = returnPredicateByOperator(cBuilder, operator, (Path) pathLeaf, booleanObject);
+							}
+						} else {
+							predicate = returnPredicateByOperator(cBuilder, operator, (Path) pathLeaf, (Boolean) value);
 						}
+					} else if (isAssignableFromDateType(pathLeaf.getJavaType())) {
+						predicate = returnDatePredicate(cBuilder, pathLeaf, operator, value);
 					} else {
 						predicate = cBuilder.notEqual((Path) pathLeaf, value);
 					}

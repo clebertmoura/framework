@@ -1,5 +1,6 @@
 package br.com.framework.util.date;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 
 /**
@@ -40,12 +43,122 @@ public final class DateUtil {
 
     /** Data com fomato para exibir dia, mês, ano, hora e minuto. */
     public static final String FORMAT_DAY_MONTH_YEAR_HOURS_MINUTES = "dd/MM/yyyy HH:mm";
+    
+    public static final String[] DATE_FORMATS = new String[] {
+			"dd-MM-yyyy'T'HH:mm:ss.SSS'Z'",
+			"dd/MM/yyyy'T'HH:mm:ss.SSS'Z'",
+			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+			"yyyy/MM/dd'T'HH:mm:ss.SSS'Z'",
+			
+			"dd-MM-yyyy'T'HH:mm:ss.SSSZ",
+			"dd/MM/yyyy'T'HH:mm:ss.SSSZ",
+			"yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+			"yyyy/MM/dd'T'HH:mm:ss.SSSZ",
+			
+			"dd-MM-yyyy'T'HH:mm:ss.SSSXXX",
+			"dd/MM/yyyy'T'HH:mm:ss.SSSXXX",
+			"yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+			"yyyy/MM/dd'T'HH:mm:ss.SSSXXX",
+			
+			"dd-MM-yyyy'T'HH:mm:ss.SSS",
+			"dd/MM/yyyy'T'HH:mm:ss.SSS",
+			"yyyy-MM-dd'T'HH:mm:ss.SSS",
+			"yyyy/MM/dd'T'HH:mm:ss.SSS",
+			
+			"dd-MM-yyyy'T'HH:mm:ss",
+			"dd/MM/yyyy'T'HH:mm:ss",
+			"yyyy-MM-dd'T'HH:mm:ss",
+			"yyyy/MM/dd'T'HH:mm:ss",
+			
+			"dd-MM-yyyy'T'HH:mm",
+			"dd/MM/yyyy'T'HH:mm",
+			"yyyy-MM-dd'T'HH:mm",
+			"yyyy/MM/dd'T'HH:mm",
+			
+			"dd-MM-yyyy'T'HH",
+			"dd/MM/yyyy'T'HH",
+			"yyyy-MM-dd'T'HH",
+			"yyyy/MM/dd'T'HH",
+			
+			"dd-MM-yyyy HH:mm:ss.SSS'Z'",
+			"dd/MM/yyyy HH:mm:ss.SSS'Z'",
+			"yyyy-MM-dd HH:mm:ss.SSS'Z'",
+			"yyyy/MM/dd HH:mm:ss.SSS'Z'",
+			
+			"dd-MM-yyyy HH:mm:ss.SSSZ",
+			"dd/MM/yyyy HH:mm:ss.SSSZ",
+			"yyyy-MM-dd HH:mm:ss.SSSZ",
+			"yyyy/MM/dd HH:mm:ss.SSSZ",
+			
+			"dd-MM-yyyy HH:mm:ss.SSSXXX",
+			"dd/MM/yyyy HH:mm:ss.SSSXXX",
+			"yyyy-MM-dd HH:mm:ss.SSSXXX",
+			"yyyy/MM/dd HH:mm:ss.SSSXXX",
+			
+			"dd-MM-yyyy HH:mm:ss.SSS",
+			"dd/MM/yyyy HH:mm:ss.SSS",
+			"yyyy-MM-dd HH:mm:ss.SSS",
+			"yyyy/MM/dd HH:mm:ss.SSS",
+			
+			"dd-MM-yyyy HH:mm:ss",
+			"dd/MM/yyyy HH:mm:ss",
+			"yyyy-MM-dd HH:mm:ss",
+			"yyyy/MM/dd HH:mm:ss",
+			
+			"dd-MM-yyyy HH:mm",
+			"dd/MM/yyyy HH:mm",
+			"yyyy-MM-dd HH:mm",
+			"yyyy/MM/dd HH:mm",
+			
+			"dd-MM-yyyy HH",
+			"dd/MM/yyyy HH",
+			"yyyy-MM-dd HH",
+			"yyyy/MM/dd HH",
+			
+			"dd-MM-yyyy",
+			"dd/MM/yyyy",
+			"yyyy-MM-dd",
+			"yyyy/MM/dd",
+			
+			"dd-MM-yy",
+			"dd/MM/yy",
+			"yy-MM-dd",
+			"yy/MM/dd",
+			
+			"dd-MM",
+			"dd/MM",
+			"MM-dd",
+			"MM/dd",
+			
+			"dd",
+			
+			"HH:mm:ss.SSS'Z'",
+			"HH:mm:ss.SSSZ",
+			"HH:mm:ss.SSSXXX",
+			"HH:mm:ss.SSS",
+			"HH:mm:ss",
+			"HH:mm",
+			"HH"};
 
     /**
      * Construtor privado.
      */
     private DateUtil() {
     }
+    
+    /**
+     * Faz o parser de uma Data.
+     * 
+     * @param dateStr
+     * @return
+     */
+    public static Date parseDate(String dateStr) {
+		Date dateValue = null;
+		try {
+			dateValue = DateUtils.parseDate(dateStr, DATE_FORMATS);
+		} catch (ParseException e){ }
+		return dateValue;
+	}
 
     /**
      * Formata uma data em um determinado formato.

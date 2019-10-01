@@ -11,6 +11,7 @@ export * from './lib/framework/entity/baseEntityAudited';
 
 export * from './lib/framework/util/message.service';
 
+export * from './lib/framework/service/data-sharing.service';
 export * from './lib/framework/service/entity.service';
 export * from './lib/framework/service/enumerators.service';
 export * from './lib/framework/service/entity.datasource';
@@ -28,3 +29,5 @@ export * from './lib/framework/components/entity-auto-complete.component';
 export * from './lib/framework/components/entity-delete-dialog.component';
 export * from './lib/framework/components/entity-detail.component';
 export * from './lib/framework/components/entity-list.component';
+
+export * from './lib/framework/components/events/service-error.event';

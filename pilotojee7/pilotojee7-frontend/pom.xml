@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>pilotojee7</artifactId>
-		<version>3.0.6</version>
+		<version>3.1.0</version>
 	</parent>
 	<artifactId>pilotojee7-frontend</artifactId>
 	<packaging>war</packaging>
@@ -60,7 +60,7 @@
 			        <nodeVersion>v10.15.1</nodeVersion>
 			        <workingDirectory>${project.basedir}</workingDirectory>
 			        <installDirectory>${project.build.outputDirectory}</installDirectory>
-			        <npmRegistryURL>http://nexus.trinitysolucoes.com.br:8081/repository/npm-group/</npmRegistryURL>
+			        <npmRegistryURL>http://localhost:8443/nexus/repository/npm-group/</npmRegistryURL>
 			    </configuration>
 		    </plugin>
 			<plugin>
@@ -106,21 +106,21 @@
 			<id>teste</id>
 			<properties>
 				<keycloak.credentials.secret>aa337708-0677-4c32-8d0b-d7eaee5f375c</keycloak.credentials.secret>
-				<backendUrl>https://teste.tjpe.gov.br/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>https://localhost:8443/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>homologacao</id>
 			<properties>
 				<keycloak.credentials.secret>aa337708-0677-4c32-8d0b-d7eaee5f375c</keycloak.credentials.secret>
-				<backendUrl>https://homologacao.tjpe.jus.br/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>https://localhost:8443/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		<profile>
 			<id>producao</id>
 			<properties>
 				<keycloak.credentials.secret>aa337708-0677-4c32-8d0b-d7eaee5f375c</keycloak.credentials.secret>
-				<backendUrl>https://www.tjpe.jus.br/pilotojee7-backend/api/</backendUrl>
+				<backendUrl>https://localhost:8443/pilotojee7-backend/api/</backendUrl>
 			</properties>
 		</profile>
 		

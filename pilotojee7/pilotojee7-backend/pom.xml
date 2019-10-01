@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>pilotojee7</artifactId>
-		<version>3.0.6</version>
+		<version>3.1.0</version>
 	</parent>
 
 	<properties>
@@ -36,8 +36,6 @@
 		<celerio-maven-plugin.outputDir>${project.basedir}</celerio-maven-plugin.outputDir>
 		<celerio-maven-plugin.configuration>${project.basedir}/../config/celerio-maven-plugin/celerio-maven-plugin.xml</celerio-maven-plugin.configuration>
 		<celerio-maven-plugin.packs.configuration>${project.basedir}/src/main/config/celerio-maven-plugin/celerio-template-packs.xml</celerio-maven-plugin.packs.configuration>
-		
-		<keycloak.resource>${project.artifactId}</keycloak.resource>
 		
 		<context-root>${project.artifactId}</context-root>
 
@@ -126,11 +124,6 @@
 					<artifactId>validation-api</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Keycloak -->
@@ -370,61 +363,20 @@
 			</plugin>
 			
 			<plugin>
-				<groupId>com.coderplus.maven.plugins</groupId>
-				<artifactId>copy-rename-maven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<id>copy-file-Enums</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<sourceFile>src/main/resources/Enums_pt_BR.properties</sourceFile>
-							<destinationFile>src/main/resources/Enums.properties</destinationFile>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-file-Mensagens</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<sourceFile>src/main/resources/Mensagens_pt_BR.properties</sourceFile>
-							<destinationFile>src/main/resources/Mensagens.properties</destinationFile>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-file-ValidationMessages</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<sourceFile>src/main/resources/ValidationMessages_pt_BR.properties</sourceFile>
-							<destinationFile>src/main/resources/ValidationMessages.properties</destinationFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${version.war.plugin}</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
 					<webResources>
-						<resource>
+						<webResource>
 							<directory>src/main/webapp</directory>
 							<filtering>true</filtering>
 							<includes>
-								<include>**/keycloak.json</include>
-								<include>**/jboss-web.xml</include>
+								<include>**/*.xml</include>
+								<include>**/*.json</include>
 							</includes>
-						</resource>
+						</webResource>
 					</webResources>
 				</configuration>
 			</plugin>
@@ -483,7 +435,7 @@
 			</plugin>
 			
 			<!-- Exemplo de geração de cliente para dado canonico -->
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
         		<artifactId>jaxws-maven-plugin</artifactId>
 				<version>2.5</version>
@@ -512,7 +464,7 @@
 					<keep>true</keep>
 					<extension>true</extension>
 				</configuration>
-			</plugin> -->
+			</plugin>
 
 		</plugins>
 		<pluginManagement>

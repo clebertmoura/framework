@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>3.0.6</version>
+		<version>3.1.0</version>
 	</parent>
 	
 	<artifactId>pilotojee7</artifactId>
@@ -51,12 +51,11 @@
 		<version.gson>2.7</version.gson>
 		<version.hibernate-envers>5.0.1.Final</version.hibernate-envers>
 		<version.caelum-stella>2.1.2</version.caelum-stella>
-		<version.keycloak>5.0.0</version.keycloak>
+		<version.keycloak>3.1.0.Final</version.keycloak>
 
 		<!-- Aplication Properties -->
 		<dataSource.jndiName>java:jboss/datasources/pilotojee7DataSource</dataSource.jndiName>
 		<jpaProvider.class>org.hibernate.jpa.HibernatePersistenceProvider</jpaProvider.class>
-		<jpaProvider.dialect>org.hibernate.dialect.PostgreSQL94Dialect</jpaProvider.dialect>
 		<jtaPlatform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</jtaPlatform>
 		<componentLookup.class>br.com.framework.util.lookup.JBossEAP6ComponentLookup</componentLookup.class>
 		
@@ -183,12 +182,12 @@
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				
 				<!-- Database properties -->
-				<jdbc.database.host>192.168.25.127</jdbc.database.host>
-				<jdbc.database.port>5434</jdbc.database.port>
-				<jdbc.database.name>dbroadcard</jdbc.database.name>
+				<jdbc.database.host>localhost</jdbc.database.host>
+				<jdbc.database.port>5432</jdbc.database.port>
+				<jdbc.database.name>dbalgoinvest</jdbc.database.name>
 				
 				<jdbc.user>postgres</jdbc.user>
-				<jdbc.password>trinity123</jdbc.password>
+				<jdbc.password>postgres</jdbc.password>
 				<jdbc.schema></jdbc.schema>
 				<jdbc.catalog></jdbc.catalog>
 				

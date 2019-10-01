@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>br.com.framework</groupId>
 		<artifactId>framework-parent</artifactId>
-		<version>3.0.6</version>
+		<version>3.1.0</version>
 	</parent>
 	<artifactId>celerio-pack-frontend</artifactId>
 	<name>celerio-pack-frontend</name>

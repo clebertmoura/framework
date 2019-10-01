@@ -32,7 +32,7 @@ Projeto da biblioteca Angular para o framework.
 - Execute os comandos abaixo para publicação no Nexus:
 
 ```
-> npm login --registry=http://nexus.trinitysolucoes.com.br:8081/repository/npm-local/
+> npm login --registry=<URL NPM Repository>
 ```
 
 ```
@@ -40,5 +40,5 @@ Projeto da biblioteca Angular para o framework.
 ```
 
 ```
-> npm publish --registry=http://nexus.trinitysolucoes.com.br:8081/repository/npm-local/
+> npm publish --registry=<URL NPM Repository>
 ```

@@ -4,14 +4,11 @@
 package br.com.framework.search.impl;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NonUniqueResultException;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,23 +38,6 @@ public abstract class SearchImpl<DocId extends Serializable, Doc extends Seriali
 	protected Class<Doc> documentClass;
 	
 	protected SearchUtil searchUtil = SearchUtil.newInstance();
-	
-	public static final String[] DATE_FORMATS = new String[] {
-			"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-			"yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-			"yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
-			"yyyy-MM-dd'T'HH:mm:ss.SSS",
-			"yyyy-MM-dd'T'HH:mm:ss",
-			"yyyy-MM-dd'T'HH:mm",
-			"yyyy-MM-dd'T'HH",
-			"yyyy-MM-dd",
-			"HH:mm:ss.SSS'Z'",
-			"HH:mm:ss.SSSZ",
-			"HH:mm:ss.SSSXXX",
-			"HH:mm:ss.SSS",
-			"HH:mm:ss",
-			"HH:mm",
-			"HH"};
 	
 	/**
 	 * @param documentClass
@@ -192,22 +172,6 @@ public abstract class SearchImpl<DocId extends Serializable, Doc extends Seriali
 	@Override
 	public abstract PageResponse<Doc> findPage(PageRequest pageRequest) throws SearchException;
 	
-	/**
-	 * Efetuar o parser de uma string data.
-	 * 
-	 * @param dateStr
-	 * @return
-	 */
-	protected Date parseDate(String dateStr) {
-		Date dateValue = null;
-		try {
-			dateValue = DateUtils.parseDate(dateStr, DATE_FORMATS);
-		} catch (ParseException e) {
-			logger.error("Erro ao realizar parser de data: " + dateStr, e);
-		}
-		return dateValue;
-	}
-
 	/**
 	 * @return the logger
 	 */
