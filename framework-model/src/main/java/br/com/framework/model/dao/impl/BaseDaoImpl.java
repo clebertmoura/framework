@@ -55,12 +55,12 @@ import br.com.framework.search.exception.SearchException;
 import br.com.framework.search.impl.FilterMetadata;
 import br.com.framework.search.impl.Operator;
 import br.com.framework.search.impl.Ordering;
+import br.com.framework.search.impl.Ordering.Order;
 import br.com.framework.search.impl.PageRequest;
 import br.com.framework.search.impl.PageResponse;
 import br.com.framework.search.impl.Restriction;
 import br.com.framework.search.impl.SearchImpl;
 import br.com.framework.search.impl.SortMeta;
-import br.com.framework.search.impl.Ordering.Order;
 import br.com.framework.search.util.SearchUtil;
 import br.com.framework.util.date.DateUtil;
 import br.com.framework.util.reflection.ReflectionUtils;
@@ -1094,6 +1094,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		Class<?> fieldClass = field.getType();
 		Method fieldGetter = getFieldGetter(pathLeaf, leaf); 
 		boolean isIdField = fieldGetter.isAnnotationPresent(Id.class);
+		fieldClass = (Class<?>) fieldGetter.getGenericReturnType();
 		switch (operator) {
 			case LT:
 			case LE:
@@ -1132,7 +1133,16 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 				break;
 			case EQ:
 				if (isIdField) {
-					if (String.class.isAssignableFrom(value.getClass())) {
+					if (Number.class.isAssignableFrom(fieldClass)) {
+						if (String.class.isAssignableFrom(value.getClass())) {
+							if (NumberUtils.isNumber(value.toString().trim())) {
+								Number number = NumberUtils.createNumber(value.toString().trim());
+								predicate = cBuilder.equal((Path) pathLeaf, number);
+							}
+						} else {
+							predicate = cBuilder.equal((Path) pathLeaf, value);
+						}
+					} else if (String.class.isAssignableFrom(value.getClass())) {
 						if (!((String) value).trim().isEmpty()) {
 							predicate = cBuilder.equal((Path) pathLeaf, value);
 						}
