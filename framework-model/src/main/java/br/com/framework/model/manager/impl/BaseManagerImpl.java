@@ -35,6 +35,9 @@ import br.com.framework.model.manager.api.BaseManager;
 import br.com.framework.model.util.Constants;
 import br.com.framework.search.api.Search;
 import br.com.framework.search.api.SearchUniqueResult;
+import br.com.framework.search.impl.Operator;
+import br.com.framework.search.impl.Restriction;
+import br.com.framework.search.util.SearchUtil;
 import br.com.framework.util.Config;
 import br.com.framework.util.resource.MessageSource;
 
@@ -50,6 +53,8 @@ import br.com.framework.util.resource.MessageSource;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEntity<PK>, B extends Search<PK, E>> implements BaseManager<PK, E, B> {
+
+	private static final String STATUS_FIELD = "status";
 
 	/**
 	 * 
@@ -305,6 +310,29 @@ public abstract class BaseManagerImpl<PK extends Serializable, E extends BaseEnt
 	 * @throws ModelException
 	 */
 	public void validateRemove(E entity) throws ModelException {}
+	
+	/**
+	 * Valida a unicidade de um campo da entidade.
+	 * 
+	 * @param entity
+	 * @param fieldName
+	 * @param fieldValue
+	 * @param isInsert
+	 * @param errors
+	 * @param errorKey
+	 */
+	protected void validateUniqueField(E entity, String fieldName, Object fieldValue, 
+			boolean isInsert, List<ErrorBusiness> errors, String errorKey) {
+		List<Restriction> restrictions = new ArrayList<Restriction>();
+		restrictions.add(SearchUtil.instance().restriction(fieldName, Operator.EQ, fieldValue));
+		if (BaseEntityAudited.class.isAssignableFrom(entity.getClass())) {
+			restrictions.add(SearchUtil.instance().restriction(STATUS_FIELD, Operator.EQ, Status.ACTIVE));
+		}
+		E entityAttr = getSearch().findUniqueByRestrictions(restrictions).getUniqueResult();
+		if ((isInsert && entityAttr != null) || (!isInsert && entityAttr != null && !entityAttr.getId().equals(entity.getId()))) {
+		    addError(errors, errorKey, fieldValue);
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see br.com.framework.model.manager.impl.BaseNegocio#update(E)
