@@ -37,6 +37,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -1067,9 +1068,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 				for (int i = 0; i < fieldPathArray.length - 1; i++) {
 					leaf = fieldPathArray[i];
 					if (i == 0) {
-						leafJoin = from.join(leaf);
+						leafJoin = from.join(leaf, JoinType.LEFT);
 					} else {
-						leafJoin = leafJoin.join(leaf);
+						leafJoin = leafJoin.join(leaf, JoinType.LEFT);
 					}
 				}
 				leaf = fieldPathArray[fieldPathArray.length - 1];
@@ -1139,6 +1140,10 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 								Number number = NumberUtils.createNumber(value.toString().trim());
 								predicate = cBuilder.equal((Path) pathLeaf, number);
 							}
+						} else if (Map.class.isAssignableFrom(value.getClass())) {
+							Map<String, Object> valuesMap = (Map<String, Object>) value;
+							Object objectValue = valuesMap.get(leaf);
+							predicate = cBuilder.equal((Path) pathLeaf, objectValue);
 						} else {
 							predicate = cBuilder.equal((Path) pathLeaf, value);
 						}
