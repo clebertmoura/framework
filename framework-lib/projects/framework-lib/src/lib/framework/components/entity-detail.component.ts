@@ -190,6 +190,20 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
   protected assignFormValues(): void {
     Object.assign(this.entity, this.detailForm.value);
   }
+  
+  /**
+   * Emite o evento quando a entidade é inserida com sucesso.
+   */
+  protected emitEntityInserted(entity: E): void {
+  	this.entityInserted.emit(entity);
+  }
+  
+  /**
+   * Emite o evento quando a entidade é atualizada com sucesso.
+   */
+  protected emitEntityUpdated(entity: E): void {
+  	this.entityUpdated.emit(entity);
+  }
 
   /**
    * Executado ao clicar no botão Salvar
@@ -202,7 +216,7 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
       this.entityService.insert(this.entity).subscribe(
         entity => {
           this.entity = entity;
-          this.entityInserted.emit(entity);
+          this.emitEntityInserted(entity);
           let msg = '', title = '';
           this.translate.get('MESSAGE.ITEM_CREATED').subscribe((res:string) => {
             msg = res;
@@ -223,7 +237,7 @@ export abstract class EntityDetailComponent<E extends BaseEntity, S extends Enti
       this.entityService.update(this.entity).subscribe(
         entity => {
           this.entity = entity;
-          this.entityUpdated.emit(entity);
+          this.emitEntityUpdated(entity);
           let msg = '', title = '';
           this.translate.get('MESSAGE.ITEM_SAVED').subscribe((res:string) => {
             msg = res;

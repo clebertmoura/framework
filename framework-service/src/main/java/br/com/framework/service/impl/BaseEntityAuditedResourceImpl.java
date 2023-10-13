@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import br.com.framework.domain.api.BaseEntityAudited;
 import br.com.framework.domain.enums.Status;
 import br.com.framework.service.api.BaseEntityAuditedResource;
@@ -22,6 +24,7 @@ import br.com.framework.service.api.BaseResource;
  * @param <E>
  */
 @XmlRootElement
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class BaseEntityAuditedResourceImpl<PK extends Serializable, E extends BaseEntityAudited<PK>> extends BaseEntityResourceImpl<PK, E> implements BaseEntityAuditedResource<PK, E> {
 
 	/**

@@ -37,6 +37,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -55,12 +56,12 @@ import br.com.framework.search.exception.SearchException;
 import br.com.framework.search.impl.FilterMetadata;
 import br.com.framework.search.impl.Operator;
 import br.com.framework.search.impl.Ordering;
+import br.com.framework.search.impl.Ordering.Order;
 import br.com.framework.search.impl.PageRequest;
 import br.com.framework.search.impl.PageResponse;
 import br.com.framework.search.impl.Restriction;
 import br.com.framework.search.impl.SearchImpl;
 import br.com.framework.search.impl.SortMeta;
-import br.com.framework.search.impl.Ordering.Order;
 import br.com.framework.search.util.SearchUtil;
 import br.com.framework.util.date.DateUtil;
 import br.com.framework.util.reflection.ReflectionUtils;
@@ -1067,9 +1068,9 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 				for (int i = 0; i < fieldPathArray.length - 1; i++) {
 					leaf = fieldPathArray[i];
 					if (i == 0) {
-						leafJoin = from.join(leaf);
+						leafJoin = from.join(leaf, JoinType.LEFT);
 					} else {
-						leafJoin = leafJoin.join(leaf);
+						leafJoin = leafJoin.join(leaf, JoinType.LEFT);
 					}
 				}
 				leaf = fieldPathArray[fieldPathArray.length - 1];
@@ -1094,6 +1095,7 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 		Class<?> fieldClass = field.getType();
 		Method fieldGetter = getFieldGetter(pathLeaf, leaf); 
 		boolean isIdField = fieldGetter.isAnnotationPresent(Id.class);
+		fieldClass = (Class<?>) fieldGetter.getGenericReturnType();
 		switch (operator) {
 			case LT:
 			case LE:
@@ -1132,7 +1134,20 @@ public abstract class BaseDaoImpl<PK extends Serializable, E extends BaseEntity<
 				break;
 			case EQ:
 				if (isIdField) {
-					if (String.class.isAssignableFrom(value.getClass())) {
+					if (Number.class.isAssignableFrom(fieldClass)) {
+						if (String.class.isAssignableFrom(value.getClass())) {
+							if (NumberUtils.isNumber(value.toString().trim())) {
+								Number number = NumberUtils.createNumber(value.toString().trim());
+								predicate = cBuilder.equal((Path) pathLeaf, number);
+							}
+						} else if (Map.class.isAssignableFrom(value.getClass())) {
+							Map<String, Object> valuesMap = (Map<String, Object>) value;
+							Object objectValue = valuesMap.get(leaf);
+							predicate = cBuilder.equal((Path) pathLeaf, objectValue);
+						} else {
+							predicate = cBuilder.equal((Path) pathLeaf, value);
+						}
+					} else if (String.class.isAssignableFrom(value.getClass())) {
 						if (!((String) value).trim().isEmpty()) {
 							predicate = cBuilder.equal((Path) pathLeaf, value);
 						}

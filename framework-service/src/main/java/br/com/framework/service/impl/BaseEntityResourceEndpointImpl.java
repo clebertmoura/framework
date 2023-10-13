@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJBException;
 import javax.ejb.TransactionAttribute;
@@ -391,44 +392,25 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 	public <ThePK extends Serializable, ThePE extends BaseEntity<ThePK>, TheE extends BaseEntity<ThePK>, TheR extends BaseEntityResource<ThePK, TheE>, TheB extends Search<ThePK, TheE>> 
 		void loadEntityRelations(final Collection<TheE> entityList, final Collection<TheR> resourceList, int depth, TheB search, LoadRelatedEntityResource<ThePE, TheE, TheR> loaderRelatedEntity) {
 		
-		entityList.stream().forEach(entity -> {
-			boolean found = resourceList.stream().filter(
-				resource -> resource.getId() != null && resource.getId().equals(entity.getId())).count() > 0;
-			if (found) {
-				entityList.remove(entity);
-			}
+		// List<TheE> entitiesNotInResourseList = entityList.stream()
+		// 	.filter(e -> {
+		// 		return resourceList.stream()
+		// 			.map(r -> r.getId())
+		// 			.filter(r -> r != null && r.equals(e.getId())).count() == 0;
+		// 	}).collect(Collectors.toList());
+
+		entityList.removeIf(e -> {
+			return resourceList.stream()
+				.map(r -> r.getId())
+				.filter(r -> r != null && r.equals(e.getId())).count() == 0;
 		});
-		
-		
-		Iterator<TheE> itEntities = entityList.iterator();
-		while (itEntities.hasNext()) {
-			boolean found = false;
-			TheE entity = itEntities.next();
-			Iterator<TheR> itResources = resourceList.iterator();
-			while (itResources.hasNext()) {
-				TheR resource = itResources.next();
-				if (resource.getId() != null && resource.getId().equals(entity.getId())) {
-					found = true;
-					break;
-				}
-			}
-			if (found == false) {
-				itEntities.remove();
-			}
-		}
-		Iterator<TheR> itResources = resourceList.iterator();
-		while (itResources.hasNext()) {
-			boolean found = false;
-			TheR resource = itResources.next();
-			itEntities = entityList.iterator();
-			while (itEntities.hasNext()) {
-				TheE entity = itEntities.next();
-				if (resource.getId() != null && resource.getId().equals(entity.getId())) {
-					found = true;
-					break;
-				}
-			}
-			if (found == false) {
+
+		resourceList.stream()
+			.filter(r -> {
+				return entityList.stream()
+					.map(e -> e.getId())
+					.filter(e -> e.equals(r.getId())).count() == 0;
+			}).forEach(resource -> {
 				TheE entity = null;
 				if (resource.getId() != null) {
 					entity = search.findById(resource.getId()).getUniqueResult();
@@ -439,8 +421,59 @@ public abstract class BaseEntityResourceEndpointImpl<PK extends Serializable, E 
 				if (entity != null && !entityList.contains(entity)) {
 					entityList.add(entity);
 				}
-			}
-		}
+			});
+		
+
+		// entityList.stream().forEach(entity -> {
+		// 	boolean found = resourceList.stream().filter(
+		// 		resource -> resource.getId() != null && resource.getId().equals(entity.getId())).count() > 0;
+		// 	if (found) {
+		// 		entityList.remove(entity);
+		// 	}
+		// });
+		
+		
+		// Iterator<TheE> itEntities = entityList.iterator();
+		// while (itEntities.hasNext()) {
+		// 	boolean found = false;
+		// 	TheE entity = itEntities.next();
+		// 	Iterator<TheR> itResources = resourceList.iterator();
+		// 	while (itResources.hasNext()) {
+		// 		TheR resource = itResources.next();
+		// 		if (resource.getId() != null && resource.getId().equals(entity.getId())) {
+		// 			found = true;
+		// 			break;
+		// 		}
+		// 	}
+		// 	if (found == false) {
+		// 		itEntities.remove();
+		// 	}
+		// }
+		// Iterator<TheR> itResources = resourceList.iterator();
+		// while (itResources.hasNext()) {
+		// 	boolean found = false;
+		// 	TheR resource = itResources.next();
+		// 	itEntities = entityList.iterator();
+		// 	while (itEntities.hasNext()) {
+		// 		TheE entity = itEntities.next();
+		// 		if (resource.getId() != null && resource.getId().equals(entity.getId())) {
+		// 			found = true;
+		// 			break;
+		// 		}
+		// 	}
+		// 	if (found == false) {
+		// 		TheE entity = null;
+		// 		if (resource.getId() != null) {
+		// 			entity = search.findById(resource.getId()).getUniqueResult();
+		// 		}
+		// 		if (loaderRelatedEntity != null) {
+		// 			entity = loaderRelatedEntity.loadRelatedEntityResource(entity, resource);
+		// 		}
+		// 		if (entity != null && !entityList.contains(entity)) {
+		// 			entityList.add(entity);
+		// 		}
+		// 	}
+		// }
 	}
 	
 	
